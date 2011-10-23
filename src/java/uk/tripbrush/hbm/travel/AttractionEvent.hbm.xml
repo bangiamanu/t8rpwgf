@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 24, 2007 3:59:18 PM by Hibernate Tools 3.1.0.beta5 -->
+<hibernate-mapping>
+  <class name="uk.tripbrush.model.travel.AttractionEvent" table="attractionevent">
+    <id name="id" type="integer">
+      <generator class="native"/>
+    </id>
+    <many-to-one class="uk.tripbrush.model.travel.Attraction" name="attraction">
+      <column length="32" name="attraction_id" not-null="true"/>
+    </many-to-one>
+    <property name="hday" type="calendar"/>
+    <property name="starthour" type="int"/>
+    <property name="startminute" type="int"/>
+    <property name="endhour" type="int"/>
+    <property name="endminute" type="int"/>
+  </class>
+</hibernate-mapping>

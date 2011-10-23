@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE struts-config PUBLIC
+          "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN"
+          "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+
+
+<struts-config>
+    <form-beans>
+        <form-bean name="QueryForm" type="uk.tripbrush.form.QueryForm"/>
+    </form-beans>
+
+    <global-exceptions>
+
+    </global-exceptions>
+    <global-forwards>
+        <forward name="message" path="/message.jsp"/>
+    </global-forwards>
+
+    <action-mappings>
+        <action name="QueryForm" path="/QueryAction" scope="request" type="uk.tripbrush.action.QueryAction" validate="false">
+            <forward name="categories" path="/categories.jsp"/>
+            <forward name="attractions" path="/attractions.jsp"/>
+            
+        </action>
+    </action-mappings>
+
+    <message-resources parameter="uk/tripbrush/struts/ApplicationResource"/>  
+    
+    <plug-in className="uk.tripbrush.service.DatabasePlugIn"/>
+</struts-config>

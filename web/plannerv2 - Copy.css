@@ -1,0 +1,255 @@
+@charset "utf-8";
+/* CSS Document */
+
+body{
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:10px;
+	
+	margin:0;
+	padding:0;
+	//overflow:hidden;
+}
+
+p{
+	margin:0;
+	padding:0;
+}
+
+#container{
+	position: absolute;
+	width:100%;
+	height:546px;
+}
+	
+/********************************** toolbar ********************************/
+#toolbar{
+	width:100%;
+	height: 30px;
+	padding: 5px;
+
+	position: fixed;
+	top: 0px;
+	left:0px;
+
+	z-index:101;
+	
+	background-image:url(toolbarbackground.jpg);
+	background-repeat:repeat-x;
+}
+#toolbar #loginactions{
+	float: right;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	margin-right: 15px;
+	
+	color:white;
+	font-size:12px;
+}
+#toolbar #logo{
+	margin-left:5px;
+	float:left;
+}
+
+
+/********************************** cat names ********************************/
+#categorynamecolumn{
+	width: 120px;
+	height: 100%;
+	padding:0px;
+
+	position: fixed;
+	top: 40px;
+	left:0px;
+		
+	z-index:100;
+
+	text-align:left;
+	border-right:solid rgb(200,200,200) 1px;
+}
+
+#categorynamecolumn #divider{
+	//margin-top:5px;
+	//margin-bottom:10px;
+	width: 120px;
+	height: 1px;
+	background-color:rgb(200,200,200);
+}
+
+.headingtext{
+	text-align:center;
+	font-weight:bold;
+	margin:15px;
+	color: #254995;
+	font-family: "Comic Sans MS", cursive;
+	font-size: 12px;
+}
+
+
+.category{
+	position:relative;
+	height:65px;
+	width:120px;
+
+	//border: solid 1px black;
+	cursor:pointer;
+	cursor:hand;
+}
+
+.category .image{
+	position: absolute;
+	top:7px;
+	left:0;
+	width: 65px;
+
+	//border: solid 1px black;
+}
+
+.category .text{
+	position: absolute;
+	top:7px;
+	right:0px;
+	width: 50px;
+	padding-top:12px;
+	padding-right: 5px;
+	
+
+	//border: solid 1px black;
+}
+
+/**************************** cat desc heading *****************************/
+#categorydescriptionheading{
+	width: 250px;
+	height: 42px;
+	padding: 10px 0px;
+
+	position: fixed;
+	top: 40px;
+	left:121px;
+	
+	background-color:white;
+	border-right:solid rgb(200,200,200) 1px;
+	border-bottom:solid rgb(200,200,200) 1px;
+
+	//border: solid 1px black;
+	-moz-box-shadow: 3px -2px 8px #888;
+	-webkit-box-shadow: 3px -2px 8px #888;
+	text-align:center;
+	z-index: 102;
+}
+
+/**************************** cat desc  *****************************/
+#categorydescriptioncolumn{
+	width: 250px;
+	height: 400px;
+
+	position: fixed;
+	top: 100px;
+	left:121px;
+	overflow: auto;
+	
+	border-right:solid rgb(200,200,200) 1px;
+
+	//border: solid 1px black;
+	-moz-box-shadow: 3px -2px 8px #888;
+	-webkit-box-shadow: 3px -2px 8px #888;
+	text-align:center;
+	z-index: 101;
+}
+
+#categorydescriptioncolumn #destinations{
+	margin:0; padding:0;
+	border-bottom: 1px rgb(200,200,200) solid;		
+}
+
+#categorydescriptioncolumn #destinations li{
+	display: block;
+	text-align:left;
+	border-top: 1px rgb(200,200,200) solid;
+	padding: 5px;
+	height: 82px;
+	overflow:hidden;
+	
+	cursor:pointer;
+	cursor:hand;
+}
+
+#categorydescriptioncolumn #destinations .destinationtitle{
+	margin:0;
+	padding:0px 5px;
+	display:block;
+	font-weight: bold;
+}
+
+#categorydescriptioncolumn #destinations img{
+	padding:5px;
+	float:left;
+	display:block;
+}
+
+#categorydescriptioncolumn #destinations .destinationdescription{
+	margin:0;
+	padding:5px;
+}
+
+#categorydescriptioncolumn #dateandtime{
+	text-align:left;
+}
+
+#categorydescriptioncolumn p{
+	margin: 5px 15px;
+}
+
+
+/**************************** Destination Details column  ******************/
+#destinationdetailscolumn{
+	width: 250px;
+	padding: 10px;
+
+	position: fixed;
+	top: 40px;
+	left:372px;
+	
+	background-color:white;
+	border-right:solid rgb(200,200,200) 1px;
+	border-bottom:solid rgb(200,200,200) 1px;
+
+	//border: solid 1px black;
+	-moz-box-shadow: 3px -2px 8px #888;
+	-webkit-box-shadow: 3px -2px 8px #888;
+	text-align:center;
+	z-index: 300;	
+}
+
+
+/**************************** calendar  *****************************/
+#calendarcontainer{
+	position: absolute;
+	top: 40px;
+	right: 0px;
+	border-bottom: solid 1px rgb(200,200,200);
+	overflow:hidden;
+	padding: 15px;
+	//height: 31px;
+
+	z-index: 200;
+
+	overflow:hidden;
+}
+
+/**************************** map  *****************************/
+#mapcontainer{
+	position: fixed;
+	bottom: 0px;
+	left: 375px;
+	height: 250px;
+
+
+	//border: solid 1px black;
+	padding: 15px;
+	z-index: -2;
+	
+}
+
+.left{
+	text-align:left;	
+}
