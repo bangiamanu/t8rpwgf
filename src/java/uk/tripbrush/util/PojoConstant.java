@@ -14,6 +14,9 @@ import java.io.Serializable;
 public class PojoConstant implements Serializable {
     public static final String MODEL = "uk.tripbrush.model.";
   
+    public static final String LOCATION = "core.Location";
+    public static final String LOCATION_MODEL = MODEL+LOCATION;
+
     public static final String CATEGORY = "travel.Category";
     public static final String CATEGORY_MODEL = MODEL+CATEGORY;
     public static final String ATTRACTION = "travel.Attraction";
@@ -25,5 +28,7 @@ public class PojoConstant implements Serializable {
     public static final String ATTRACTIONSEASON = "travel.AttractionSeason";
     public static final String ATTRACTIONSEASON_MODEL = MODEL+ATTRACTIONSEASON;
 
-
+    public static void main(String[] args) {
+        System.out.println("IDD");
+    }
 }

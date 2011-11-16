@@ -36,7 +36,7 @@ public class QueryAction extends org.apache.struts.action.Action {
             return mapping.findForward("categories");
         }
         else if (CommandConstant.GET_ATTRACTIONS.equals(qform.getCommand())) {
-            List<Attraction> attractions = CalendarService.getAttractions(qform.getFrom(),qform.getDuration());
+            List<Attraction> attractions = CalendarService.getAttractions(qform.getDestination(),qform.getFrom(),qform.getDuration());
             request.setAttribute(Constant.REQUEST_MESSAGE, attractions);
             return mapping.findForward("attractions");
         }

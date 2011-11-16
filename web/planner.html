@@ -70,7 +70,7 @@
           
           <form id="categoryform">
             <input type="hidden" id="selectedcategory" value=""/>
-                
+            <input type="hidden" id="destination" value=""/>
             <input type="hidden" id="howlong" value="7"/>
             <input type="hidden" id="fromdate" value="26/09/2011"/>
           </form>
@@ -131,15 +131,15 @@
             <div id="debug"></div>
         </div>
 
-	<script type="text/javascript">
-      var uvOptions = {};
-      (function() {
-        var uv = document.createElement('script'); uv.type = 'text/javascript'; uv.async = true;
-        uv.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'widget.uservoice.com/l3uTJFGEljmmexUUy9dZmg.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(uv, s);
-      })();
-    </script>
-    
+		<script type="text/javascript">
+          var uvOptions = {};
+          (function() {
+            var uv = document.createElement('script'); uv.type = 'text/javascript'; uv.async = true;
+            uv.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'widget.uservoice.com/l3uTJFGEljmmexUUy9dZmg.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(uv, s);
+          })();
+        </script>  
+
     </div><!-- container -->
 
     <!-- **************** guideboxes **************** -->
@@ -171,32 +171,18 @@
     <div id="guidebox4text">
         <p style="padding-bottom:2px;color:#36c" align="center"><b>Your calendar was updated. Some tips:</b></p>
         <ul>
-            <li>The events can be dragged around and will turn red if not available<br/>
-            <img src="calendar.png" width="450"/><br/><br/>
+            <li>You can drag the events around and we will check availability for you.
+            <img src="calendar.png" width="450"/>
             </li>
             
-            <li>Click Print (top right) to get a summary of your schedule<br/>
-            <img src="print.png"/><br/><br/>
-            </li>
-
-            <li>The events can be dragged from the bottom to make them longer or shorter<br/><br/>
-          	</li>
-              
-            <li>Please provide us feedback using the link at the bottom left<br />
-            <img src="feedback.png"/>
+            <li>You can make the events longer or shorter by dragging it from the bottom</li>
+            <li>Once you're finished, click Print (top right)<br/>
+            <img src="print.png"/>
             </li>
         </ul>
-        <div style="margin:auto" align="center">
-        <div id="facebook">
-        <br />
-        Like us on facebook!
-        <br /> 
-            <iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.facebook.com%2Fpages%2FTripbrush%2F144328425633175&amp;layout=box_count&amp;show_faces=true&amp;width=50&amp;action=like&amp;font&amp;colorscheme=light&amp;height=65" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:50px; height:65px;" allowTransparency="true"></iframe>
-        </div> <!-- facbebook likes -->
-        </div>
-
-        <input type="button" value="Close" onclick="javascript:endTutorial()"/>
-     </div>
+        <p style="padding-bottom:2px;color:#36c" align="center">Happy Planning!</p>
+        <p style="font-size:10px"><a href="javascript:endTutorial()">Close</a></p        
+    ></div>
         
 </body>
 </html>

@@ -25,6 +25,8 @@ public class QueryForm extends ActionForm {
     
     private String email;
 
+    private String destination;
+
     /**
      * @return the from
      */
@@ -107,6 +109,20 @@ public class QueryForm extends ActionForm {
      */
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    /**
+     * @return the destination
+     */
+    public String getDestination() {
+        return destination;
+    }
+
+    /**
+     * @param destination the destination to set
+     */
+    public void setDestination(String destination) {
+        this.destination = destination;
     }
 
 }

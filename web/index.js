@@ -42,6 +42,34 @@ function hideLoginWindow(){
 }
 
 function selectlondon() {
-    $("#destination").val("London");
+    if ($("#destination").val()=="Other") {
+        $("#destination").val("London");
+    }
+}
+
+function verifypassword() {
+    var password = $("#alpha_password").val();
+    $("#alpha_password").val("XXX");
+    var params = "command=validate&password="+password;
+    $.ajax({
+        type: "POST",
+        url: "QueryAction.do",
+        cache: false,
+        data: params,
+        success: function(xml) {
+
+                $(xml).find("result").each(function() {
+                    var result= $(this).text();
+                    if (result=="OK") {
+                        loadPage();
+                    }
+                    else {
+                        unloadPage();
+                        alert("Sorry. Wrong Password. Are you sure you're supposed to be here");
+                        window.location = "index.html"
+                    }
+                });
+        }
+    });
 }
 

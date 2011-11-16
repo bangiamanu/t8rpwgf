@@ -41,7 +41,7 @@ function loadAvailableDestinations(){
 
     
 
-    var params = "command=getAttractions&from="+escape($("#fromdate").val())+"&duration="+$("#howlong").val();
+    var params = "command=getAttractions&from="+escape($("#fromdate").val())+"&duration="+$("#howlong").val()+"&destination="+$("#destination").val();
     $.ajax({
         type: "POST",
         url: "QueryAction.do",
@@ -52,6 +52,7 @@ function loadAvailableDestinations(){
 }
         
 function loadAvailableDestinationsData(xml) {
+    alert(xml);
     counter = 0;
     $(xml).find("attraction").each(function() {
 

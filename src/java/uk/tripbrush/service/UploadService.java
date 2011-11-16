@@ -105,8 +105,10 @@ public class UploadService {
         
         XSSFSheet sheet = wb.getSheetAt(1);
         Iterator rows = sheet.rowIterator();
-        
+
         Session session = Database.getSession();
+
+        Database.beginTransaction();
 
         for (Object atr: session.createCriteria(PojoConstant.ATTRACTIONTIME_MODEL).list()) {
             session.delete(atr);
@@ -126,31 +128,34 @@ public class UploadService {
         while (rows.hasNext()) {
             row = getRow((XSSFRow) rows.next());
             Attraction attraction = new Attraction();
+            attraction.setId(Integer.parseInt(getRowValue(row,0)));
             attraction.setCategory(CalendarService.getCategory(getRowValue(row,1)));
             if (attraction.getCategory()==null) {
-                break;
+                continue;
             }
+            attraction.setLocation(CalendarService.getLocation(getRowValue(row,3)));
             attraction.setName(getRowValue(row,2));
-            attraction.setPostcode(getRowValue(row,4));
-            attraction.setDescription_short(getRowValue(row,12));
-            attraction.setDescription(getRowValue(row,13));
-            attraction.setImageFileName(getRowValue(row,15));
-            attraction.setImageFileName_small(getRowValue(row,14));
-            attraction.setWikiurl(getRowValue(row,16));
-            attraction.setOtherlinks(getRowValue(row,17));
-            session.saveOrUpdate(attraction);
+            attraction.setPostcode(getRowValue(row,5));
+            attraction.setDescription_short(getRowValue(row,13));
+            attraction.setDescription(getRowValue(row,14));
+            attraction.setImageFileName(getRowValue(row,16));
+            attraction.setImageFileName_small(getRowValue(row,15));
+            attraction.setWikiurl(getRowValue(row,17));
+            attraction.setOtherlinks(getRowValue(row,18));
+            session.save(attraction);
             
-            addTime(session,attraction,Calendar.MONDAY,getRowValue(row,5));
-            addTime(session,attraction,Calendar.TUESDAY,getRowValue(row,6));
-            addTime(session,attraction,Calendar.WEDNESDAY,getRowValue(row,7));
-            addTime(session,attraction,Calendar.THURSDAY,getRowValue(row,8));
-            addTime(session,attraction,Calendar.FRIDAY,getRowValue(row,9));
-            addTime(session,attraction,Calendar.SATURDAY,getRowValue(row,10));
-            addTime(session,attraction,Calendar.SUNDAY,getRowValue(row,11));
+            addTime(session,attraction,Calendar.MONDAY,getRowValue(row,6));
+            addTime(session,attraction,Calendar.TUESDAY,getRowValue(row,7));
+            addTime(session,attraction,Calendar.WEDNESDAY,getRowValue(row,8));
+            addTime(session,attraction,Calendar.THURSDAY,getRowValue(row,9));
+            addTime(session,attraction,Calendar.FRIDAY,getRowValue(row,10));
+            addTime(session,attraction,Calendar.SATURDAY,getRowValue(row,11));
+            addTime(session,attraction,Calendar.SUNDAY,getRowValue(row,12));
             
             
         }
 
+        Database.commitTransaction();
     }
     
     public static String convertArray(String[] input) {
@@ -163,8 +168,8 @@ public class UploadService {
     }    
     
     public static void main(String[] args) throws Exception {
-        String file = "//Users//sseetal//Dropbox//Life Made Easy Ltd//Attraction Data Capture v1.1.xlsx";
-        //sString file = "c://Users//Samir//Documents//My DropBox//Mauritius//input//Agro-Industry and FS//input.xlsx";
+        String file = "c://Users//Samir//Documents//My Dropbox//Life Made Easy Ltd//Attraction Data Capture v2.5.xlsx";
+        //String file = "c://Users//Samir//Documents//My DropBox//Mauritius//input//Agro-Industry and FS//input.xlsx";
         InputStream input = new BufferedInputStream(new FileInputStream(file));
         process(input);      
     }

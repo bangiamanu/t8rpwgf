@@ -11,11 +11,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import org.hibernate.Criteria;
 import uk.tripbrush.model.travel.Attraction;
 import uk.tripbrush.model.travel.Category;
 import uk.tripbrush.util.PojoConstant;
 import org.hibernate.classic.Session;
 import org.hibernate.criterion.Restrictions;
+import uk.tripbrush.model.core.Location;
 import uk.tripbrush.model.travel.AttractionEvent;
 import uk.tripbrush.model.travel.AttractionSeason;
 import uk.tripbrush.model.travel.AttractionTime;
@@ -44,7 +46,12 @@ public class CalendarService implements Serializable {
     public static Category getCategory(String name) {
         Session session = Database.getSession();
         return (Category)session.createCriteria(PojoConstant.CATEGORY_MODEL).add(Restrictions.eq("name", name)).uniqueResult();
-    }    
+    }
+
+    public static Location getLocation(String name) {
+        Session session = Database.getSession();
+        return (Location)session.createCriteria("uk.tripbrush.model.core.Location").add(Restrictions.eq("name", name)).uniqueResult();
+    }
     
     public static HashMap<Integer,AttractionTime> buildTimes(Attraction attraction,List<AttractionTime> times) {
         HashMap<Integer,AttractionTime> result = new HashMap<Integer,AttractionTime>();
@@ -71,7 +78,7 @@ public class CalendarService implements Serializable {
         return result;
     }
     
-    public static List<Attraction> getAttractions(String from,int duration) {
+    public static List<Attraction> getAttractions(String destination,String from,int duration) {
         if (sdf==null) {
             sdf = new SimpleDateFormat("dd/MM/yyyy");
         }
@@ -92,7 +99,8 @@ public class CalendarService implements Serializable {
         todate.add(Calendar.DAY_OF_MONTH, duration);
         List<Attraction> result = new ArrayList<Attraction>();
         Session session = Database.getSession();
-        for (Object atr: session.createCriteria(PojoConstant.ATTRACTION_MODEL).list()) {
+        Criteria c = session.createCriteria(PojoConstant.ATTRACTION_MODEL).add(Restrictions.eq("location",CalendarService.getLocation(destination)));
+        for (Object atr: c.list()) {
             Attraction attraction = (Attraction)atr;
             List<AttractionOpenView> aovlist = new ArrayList<AttractionOpenView>();
             List<AttractionTime> times =  session.createCriteria(PojoConstant.ATTRACTIONTIME_MODEL).add(Restrictions.eq("attraction", attraction)).list();
@@ -129,5 +137,9 @@ public class CalendarService implements Serializable {
             result.add(attraction);
         }
         return result;
+    }
+
+    public static void main(String[] args) {
+        System.out.println("DDD");
     }
 }

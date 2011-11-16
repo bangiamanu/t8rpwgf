@@ -195,8 +195,11 @@ function setCategoryHighlight(clickedcategory){
 
 // dynamically resizing map and calendar windows
 window.onload = function(){
-    loadPage();
+
+        var password = gup("alpha_password");
         //verifypassword(password);
+loadPage();
+ 
 };
 
 window.onresize = function(){
@@ -458,10 +461,32 @@ function gup( name )
     return results[1];
 }
 
+function verifypassword(password) {
+    var params = "command=validate&password="+password;
+    $.ajax({
+        type: "POST",
+        url: "QueryAction.do",
+        cache: false,
+        data: params,
+        success: function(xml) {
+
+                $(xml).find("result").each(function() {
+                    var result= $(this).text();
+                    if (result=="OK") {
+                        loadPage();
+                    }
+                    else {
+                        unloadPage();
+                        alert("Sorry. Wrong Password. Are you sure you're supposed to be here");
+                        window.location = "index.html"
+                    }
+                });
+        }
+    });    
+}
 
 function loadPage() {
-        var destination = unescape(gup("destination"));
-        var fromdate = unescape(gup("fromdate"));
+       var fromdate = unescape(gup("fromdate"));
         var howlong = gup("howlong");
 
 
@@ -476,11 +501,6 @@ function loadPage() {
         }
         $("#howlong").val(howlong);
 
-
-        if (destination=='') {
-            destination = 'London';
-        }
-        $("#destination").val(destination);
 
 	// Load available events
 	loadAvailableDestinations();
