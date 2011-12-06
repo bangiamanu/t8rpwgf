@@ -6,7 +6,7 @@
     <id name="id" type="integer">
       <generator class="native"/>
     </id>
-    <many-to-one class="uk.tripbrush.model.travel.Category" name="category" lazy="false">
+    <many-to-one class="uk.tripbrush.model.travel.Category" lazy="false" name="category">
       <column length="32" name="category_id" not-null="true"/>
     </many-to-one>
     <many-to-one class="uk.tripbrush.model.core.Location" lazy="false" name="location">

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 24, 2007 3:59:18 PM by Hibernate Tools 3.1.0.beta5 -->
+<hibernate-mapping>
+  <class name="uk.tripbrush.model.core.Plan" table="plan">
+    <id name="id" type="integer">
+      <generator class="native"/>
+    </id>
+    <many-to-one class="uk.tripbrush.model.core.User" name="user">
+      <column length="32" name="user_id" not-null="true"/>
+    </many-to-one>
+    <many-to-one class="uk.tripbrush.model.core.Location" lazy="false" name="location">
+      <column length="32" name="location_id" not-null="true"/>
+    </many-to-one>
+    <property insert="true" name="startdate" type="calendar" update="true"/>
+    <property insert="true" name="enddate" type="calendar" update="true"/>
+    <property length="255" name="title" type="java.lang.String"/>
+    <property length="5000" name="description" type="java.lang.String"/>
+    <property length="10" name="reference" type="java.lang.String"/>
+    <property name="view" type="int"/>
+  </class>
+</hibernate-mapping>

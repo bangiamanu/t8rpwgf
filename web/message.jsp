@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8" ?>
 <%@ page import="uk.tripbrush.util.Constant"%>
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
@@ -8,7 +9,6 @@
     String result = (String) request.getAttribute(Constant.REQUEST_MESSAGE);
     if (result==null) result="";
 %>
-<?xml version="1.0" encoding="utf-8" ?>
 <response>
     <result><%=result%></result>
     <messages>

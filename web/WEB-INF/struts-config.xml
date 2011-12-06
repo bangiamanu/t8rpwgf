@@ -8,6 +8,7 @@
 <struts-config>
     <form-beans>
         <form-bean name="QueryForm" type="uk.tripbrush.form.QueryForm"/>
+        <form-bean name="LoginForm" type="uk.tripbrush.form.LoginForm"/>
     </form-beans>
 
     <global-exceptions>
@@ -23,6 +24,12 @@
             <forward name="attractions" path="/attractions.jsp"/>
             
         </action>
+
+        <action name="LoginForm" path="/LoginAction" scope="request" type="uk.tripbrush.action.LoginAction" validate="false">
+            <forward name="success" path="/planner.jsp"/>
+            <forward name="index" path="/index.jsp"/>
+        </action>
+
     </action-mappings>
 
     <message-resources parameter="uk/tripbrush/struts/ApplicationResource"/>  

@@ -6,8 +6,9 @@
 <result>
 <%
     List<Attraction> result = (List<Attraction>)request.getAttribute(Constant.REQUEST_MESSAGE);
+    int counter = 0;
     for (Attraction c: result) {
-        out.println("<attraction id=\"" + c.getId() + "\">");
+        out.println("<attraction id=\"" + (counter++) + "\" aid=\"" + c.getId() + "\">");
         out.println("<category>" + c.getCategory().getName() + "</category>");                        
         out.println("<title>" + c.getName() + "</title>");
         if (c.getDescription_short().length()>100) {

@@ -23,7 +23,7 @@ import uk.tripbrush.service.UploadService;
  *
  * @author Samir
  */
-public class QueryAction extends org.apache.struts.action.Action {
+public class PlanAction extends org.apache.struts.action.Action {
 
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,HttpServletRequest request, HttpServletResponse response) throws Exception {

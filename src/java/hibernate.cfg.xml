@@ -26,5 +26,10 @@
     <mapping resource="uk/tripbrush/hbm/travel/AttractionTime.hbm.xml"/>
     <mapping resource="uk/tripbrush/hbm/travel/AttractionEvent.hbm.xml"/>
     <mapping resource="uk/tripbrush/hbm/travel/AttractionSeason.hbm.xml"/>
+
+    <mapping resource="uk/tripbrush/hbm/core/User.hbm.xml"/>
+    <mapping resource="uk/tripbrush/hbm/core/Plan.hbm.xml"/>
+    <mapping resource="uk/tripbrush/hbm/travel/Event.hbm.xml"/>
+
   </session-factory>
 </hibernate-configuration>

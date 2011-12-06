@@ -31,6 +31,10 @@ public class Constant implements Serializable {
     public static final String SESSION_PLAN = "PlanXXX";
     public static final String SESSION_ACCESS = "AccessXXX";
 
+    public static final String SESSION_DESTINATION = "DestXXX";
+    public static final String SESSION_DURATION = "DurXXX";
+    public static final String SESSION_FROM = "FromXXX";
+
     public static final String REQUEST_MESSAGE = "RequestMessage";
 
 }

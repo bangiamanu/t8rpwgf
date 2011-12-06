@@ -28,6 +28,15 @@ public class PojoConstant implements Serializable {
     public static final String ATTRACTIONSEASON = "travel.AttractionSeason";
     public static final String ATTRACTIONSEASON_MODEL = MODEL+ATTRACTIONSEASON;
 
+    public static final String USER = "core.User";
+    public static final String USER_MODEL = MODEL+USER;
+
+    public static final String PLAN = "core.Plan";
+    public static final String PLAN_MODEL = MODEL+PLAN;
+
+    public static final String EVENT = "travel.Event";
+    public static final String EVENT_MODEL = MODEL+EVENT;
+
     public static void main(String[] args) {
         System.out.println("IDD");
     }

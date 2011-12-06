@@ -10,6 +10,7 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
+import uk.tripbrush.model.core.User;
 import uk.tripbrush.util.StringUtil;
 
 /**
@@ -20,9 +21,14 @@ public class EmailService {
 
     public static String EMAIL_FROM = "admin@tripbrush.com";
 
-    public static void emailIntro(String email) {
-        String message = "Access the website using http://www.tripbrush.com/plannerv6.html";
-        sendEmail(email,"Website link",message);
+    public static void sendResetPassword(User user) {
+        String message = "Your password has been reset to " + user.getPassword();
+        sendEmail(user.getEmail(),"Password Reset",message);
+    }
+
+    public static void sendVerify(User user) {
+        String message = "Your code is" + user.getReference();
+        sendEmail(user.getEmail(),"Verify Account",message);
     }
 
     public static void sendEmail(String email,String subject,String body) {

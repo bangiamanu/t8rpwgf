@@ -92,7 +92,7 @@ public class CalendarService implements Serializable {
             todate.setTime(fromdate.getTime());
         }
         catch (Exception e) {
-            
+            e.printStackTrace();
         }
         int dow = fromdate.get(Calendar.DAY_OF_WEEK);
         
