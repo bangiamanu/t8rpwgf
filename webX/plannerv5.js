@@ -5,8 +5,6 @@ var directionsService;
 var london_lat;
 var directionsDisplay;
 
-var local = false;
-
 // selected_destination_id is the selected destination
 var selected_destination_id = "";
 
@@ -30,7 +28,7 @@ function populateDestinations(category){
 		if (evnt.category.toString() == category.toString() || category.toString() == "all"){
 				str += "<li id='" + evnt.id + "' onmouseover='highlightDestination(this)' onmouseout='removeDestinationHighlight(this)' onclick='setDestinationHighlight(this)'>";
 				str += "<p class='destinationtitle'>"+ evnt.title +"</p>";
-				str += "<img src='includes/images/data/" + evnt.image_file_name_small +"' width='" + SMALL_IMAGE_SIZE + "' height='" + SMALL_IMAGE_SIZE + "' />";
+				str += "<img src='" + evnt.image_file_name_small +"' width='" + SMALL_IMAGE_SIZE + "' height='" + SMALL_IMAGE_SIZE + "' />";
 				str += "<p class='destinationdescription'>" + evnt.description_short + " (<a href='#' onclick='addEvent(" + evnt.id +")'>Add>></a>)</p>"
 				str += "</li>";
 		}
@@ -48,7 +46,7 @@ function populateCategories(){
 		str += "<p>" + cat.title + "</p>";
 		str += "</div><!-- text -->";
 		str += "<div class='image'>";
-		str += "<img src='includes/images/" + cat.image_file_name + "' width='65' height='52'/>"
+		str += "<img src='" + cat.image_file_name + "' width='65' height='52'/>"
 		str += "</div><!-- image -->"
 		str += "</div><!-- category -->"
 		str += "<div id='divider'></div>"
@@ -62,14 +60,12 @@ function populateCategories(){
 		destination = available_destinations[destination_id];
 		
 		// Update map
-                if (!local) {
-                    addMarker(destination.postcode, destination.title);
-                }
+		addMarker(destination.postcode, destination.title);
 		
 		// Update description tab
 		var str = "";
 		str += "<h3 style='float:left'>" + destination.title + " (<a href='#' onclick='addEvent(" + destination.id +")'>Add</a>)</h3><br/><br/><br/>";
-		str += "<img id='large_image' src='includes/images/data/" + destination.image_file_name_large + "' style='float:right;margin:0px 10px;' />";
+		str += "<img id='large_image' src='" + destination.image_file_name_large + "' style='float:right;margin:0px 10px;' />";
 		str += "<p>" + destination.description_long + "</p>";
 		getElement("destination_description").innerHTML = str;
 		
@@ -77,25 +73,7 @@ function populateCategories(){
 		// TODO
 		
 		// Update opening hours
-                var hours = "";
-                hours = "<p>This attraction is open during the following times:</p>";
-                hours+="<br/>";
-		for (i in destination.opening_hours){
-                    hour = destination.opening_hours[i];
-                    var month = hour.start.getMonth() + 1;
-                    var day = hour.start.getDate();
-                    var year = hour.start.getFullYear();
-
-                    var shour = hour.start.getHours();
-                    var smin = hour.start.getMinutes();
-
-                    var ehour = hour.end.getHours();
-                    var emin = hour.end.getMinutes();
-
-                    hours+="<p>"+day+"/"+month+"/"+year+" " +pad(shour)+":"+pad(smin)+"-"+pad(ehour)+":"+pad(emin)+"</p>";
-		}
-
-                getElement("destination_hours").innerHTML = hours;
+		// TODO
 		
 		// Update links tab
 		str = "";
@@ -111,18 +89,13 @@ function populateCategories(){
 		divsResize();
 	}
 
-function pad(input) {
-    if (input<10) return "0"+input;
-    return input;
-}
-
 
 /********************** Destination highlight code **********************/
 
 //onmouseover
 function highlightDestination(destination){
 	//showDebug("OnMouseOver for: " + destination.id + " ");
-	destination.style.backgroundImage="url(includes/images/destinationhighlight.jpg)";
+	destination.style.backgroundImage="url(destinationhighlight.jpg)";
 	var filename_length = destination.childNodes[1].src.length;
 	
 	imagename = destination.childNodes[1].src.substring(0,filename_length - 4);
@@ -179,7 +152,7 @@ function getElement(name) {
 
 //onmouseover
 function highlightCategory(el){
-	el.style.backgroundImage="url(includes/images/categoryhighlight.jpg)";
+	el.style.backgroundImage="url(categoryhighlight.jpg)";
 }
 
 //onmouseout
@@ -378,6 +351,19 @@ function startTutorial(){
 	refreshSteps();
 }
 
+function email1() {
+    var params = "command=email&email="+$("#email").val();
+    $.ajax({
+        type: "POST",
+        url: "QueryAction.do",
+        cache: false,
+        data: params,
+        success: function(xml) {
+            alert("You will receive an email with details. Enjoy!");
+        }
+    });    
+}
+
 function printEvents(){
 	var print_events = new Array();
 
@@ -386,7 +372,7 @@ function printEvents(){
 		var cal_event = calendar_events[i];
 		var available_destination = available_destinations[cal_event.available_event_id];
 
-		var print_event={start: cal_event.start,
+		var print_event={	start: cal_event.start,
 							start_date_formatted: cal_event.start.formatDate('l, F jS'),
 							start_time_formatted: cal_event.start.formatDate('g:i a'),
 							end: cal_event.end,
@@ -474,7 +460,7 @@ function gup( name )
 
 
 function loadPage() {
-        /*var destination = unescape(gup("destination"));
+        var destination = unescape(gup("destination"));
         var fromdate = unescape(gup("fromdate"));
         var howlong = gup("howlong");
 
@@ -495,15 +481,13 @@ function loadPage() {
             destination = 'London';
         }
         $("#destination").val(destination);
-*/
+
 	// Load available events
 	loadAvailableDestinations();
 	loadCategories();
 
 	// Google maps code
-        if (!local) {
-            initGoogleMaps();
-        }
+	initGoogleMaps();
 	//addMarker("W1U5BP","Luxborough Towers");
 	//showDirections("W1U5BP","SE288HD");
 

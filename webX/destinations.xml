@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<result>
+    <attraction id="0">
+        <category>landmark</category>
+        <title>London eye</title>
+        <description_short>London eye is the shit. London eye is the shit. London eye is the shit. London eye is the shit. London eye is the shit.</description_short>
+        <description_long>The EDF Energy London Eye is a giant 135-metre (443 ft) tall Ferris wheel situated on the banks of the River Thames, in London, England. Since 20 January 2011, it has been officially known as the EDF Energy London Eye following a three-year sponsorship deal.&lt;/p&gt;&lt;br&gt;&lt;p&gt;It is the tallest Ferris wheel in Europe, and the most popular paid tourist attraction in the United Kingdom, visited by over 3.5 million people annually. When erected in 1999, it was the tallest Ferris wheel in the world, until surpassed first by the 160 m (520 ft) Star of Nanchang in 2006, and then the 165 m (541 ft) Singapore Flyer in 2008. It is still described by its operators as \"the world's tallest cantilevered observation wheel\" (as the wheel is supported by an A-frame on one side only, unlike the Nanchang and Singapore wheels).</description_long>
+        <image_file_name_small>londoneye_small.jpg</image_file_name_small>
+        <image_file_name_large>londoneye.jpg</image_file_name_large>
+        <wikipedia_url>http://en.m.wikipedia.org/wiki?search=london+eye</wikipedia_url>
+        <postcode>SE17PB</postcode>
+        <other_links>
+            <link name="Official Website" url="http://www.londoneye.com/"/>
+            <link name="TripAdvisor" url="http://www.tripadvisor.co.uk/Attraction_Review-g186338-d553603-Reviews-The_London_Eye-London_England.html"/>
+        </other_links>
+        <opening_hours>
+            <open fromy="2011" fromm="9" fromd="15" fromh="10" fromn="0" toy="2011" tom="9" tod="15" toh="11" ton="30" />
+            <open fromy="2011" fromm="9" fromd="16" fromh="9" fromn="0" toy="2011" tom="9" tod="16" toh="10" ton="30" />
+            <open fromy="2011" fromm="9" fromd="17" fromh="11" fromn="0" toy="2011" tom="9" tod="17" toh="13" ton="30" />
+        </opening_hours>
+    </attraction>
+</result>
