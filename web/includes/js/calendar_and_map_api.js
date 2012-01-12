@@ -182,7 +182,7 @@ function getInfoWindow(destination_id){
 	
 	//setup infowindow
 	var content_string = "<table><tr> <td><img src='" + dest.image_file_name_small.substring(0,dest .image_file_name_small.length - 4) + "co.jpg' /></td><td>&nbsp;</td><td valign=top align=left><span style='font-weight:bold; text-align:left;'>" + dest.title + "</span><br/><br/>"
-	content_string += "<table cellspacing=0 cellpadding=2 valign=middle>"
+	content_string += "<table cellspacing=0 cellpadding=2 valign=top>"
 	
 	// add or remove to calendar
 	if (calendar_helper_isPlanned(dest.id)){
@@ -200,8 +200,9 @@ function getInfoWindow(destination_id){
 		content_string += "<tr><td><img src='includes/images/lessinformation.png' /></td><td valign=middle><a href='#' onclick='sizing_expand()'>Less information</a></td></tr>"
 	
 
+	// Directions
 	if (calendar_helper_isPlanned(dest.id))
-		content_string += "<tr><td><img src='includes/images/getdirections.png' /></td><td valign=middle><a href='#' onclick='directions_api_getDirections(\"" + cal_event_id +"\")'>Get Directions</a></td></tr>"
+		content_string += directions_api_getDirectionHTML(cal_event_id);
 
 	content_string += "</table>"
 	content_string += "</td></tr></table>";

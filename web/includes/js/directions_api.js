@@ -11,7 +11,9 @@ function directions_api_ready(){
 }
 
 
-function directions_api_getDirections(cal_event_id){	
+function directions_api_getDirectionHTML(cal_event_id){	
+	var str = "";
+	
 	calendar_events = $('#calendar').weekCalendar("serializeEvents");
 	print_api_sortEvents(calendar_events);
 	
@@ -41,27 +43,36 @@ function directions_api_getDirections(cal_event_id){
 			// if previous event is on previous day
 			if (previous_event!= null)
 				if (!print_api_dateEquals(target_event.start, previous_event.start))
-					previous_event = null;
-					
-					
+					previous_event = null;										
 					
 			// Providing directions based on previous and next events
 			if (previous_event == null && next_event == null)
-				aler(NO_EVENTS_FOR_DIRECTIONS_ERROR);
+				str = "";
 
 			if (previous_event == null && next_event != null){
-				showDirections(target_event.marker.getPosition(), next_event.marker.getPosition());
+				str += "<tr><td><img src='includes/images/compass.png' /></td><td valign=middle><a href='#' onclick='directions_api_getDirections(\"" + target_event.id +"\",\"" + next_event.id + "\")'>Get Directions</a></td></tr>"
+				//showDirections(target_event.marker.getPosition(), next_event.marker.getPosition());
 			}
 
 			if (previous_event != null && next_event == null){
-				showDirections(previous_event.marker.getPosition(), target_event.marker.getPosition());
+				str += "<tr><td><img src='includes/images/compass.png' /></td><td valign=middle><a href='#' onclick='directions_api_getDirections(\"" + previous_event.id +"\",\"" + target_event.id + "\")'>Get Directions</a></td></tr>"
+				//showDirections(previous_event.marker.getPosition(), target_event.marker.getPosition());
 			}
 
 			if (previous_event != null && next_event != null){
-				
+				str += "<tr><td><img src='includes/images/compass.png' /></td><td valign=middle><a href='#' onclick='directions_api_getDirections(\"" + target_event.id +"\",\"" + next_event.id + "\")'>Directions from here</a></td></tr>"
+				str += "<tr><td><img src='includes/images/compass.png' /></td><td valign=middle><a href='#' onclick='directions_api_getDirections(\"" + previous_event.id +"\",\"" + target_event.id + "\")'>Directions to here</a></td></tr>"				
 			}
+			
+			return str;
 		}
 	}
+}
+
+function directions_api_getDirections(cal_event_id1, cal_event_id2){	
+		var event1 = getCalendarEvent(cal_event_id1);
+		var event2 = getCalendarEvent(cal_event_id2);
+		showDirections(event1.marker.getPosition(), event2.marker.getPosition());
 }
 
 function showDirections(from,to) {
