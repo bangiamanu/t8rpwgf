@@ -19,9 +19,9 @@
 <link rel='stylesheet' type='text/css' href='includes/css/jquery-ui-1.8.16.custom.custom.css' />
 <!-- Link to index.js-->
 
-<script type='text/javascript' src='includes/js/jquery-1.6.2.min.js'></script>
+<script type='text/javascript' src='libs/jquery-1.4.4.min.js'></script>
 <script type="text/javascript" src="includes/js/index.js"></script>
-<script type='text/javascript' src='includes/js/jquery-ui-1.8.16.custom.min.js'></script>
+<script type='text/javascript' src='libs/jquery-ui-1.8.11.custom.min.js'></script>
 
 <!-- Google Analytics Script -->
 <script type="text/javascript">
