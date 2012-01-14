@@ -1,5 +1,6 @@
 // JavaScript Document
-var NO_EVENTS_FOR_DIRECTIONS_ERROR = "You don't have anything else planned on this day. Please add moer activities to get directions. Coming soon! Directions from your hotel!";
+var NO_EVENTS_FOR_DIRECTIONS_ERROR = "You don't have anything else planned on this day. Please add more activities to get directions. Coming soon! Directions from your hotel!";
+var DIRECTIONS_NOT_FOUND_ERROR = "Couldnt plot directions. Please email us at error@tripbrush.com with a screenshot. Apologies for the inconvenience."
 var directionsService;
 var directionsDisplay;
 
@@ -9,7 +10,6 @@ function directions_api_ready(){
 	directionsDisplay = new google.maps.DirectionsRenderer();
 	directionsDisplay.setMap(map);	
 }
-
 
 function directions_api_getDirectionHTML(cal_event_id){	
 	var str = "";
@@ -50,20 +50,17 @@ function directions_api_getDirectionHTML(cal_event_id){
 				str = "";
 
 			if (previous_event == null && next_event != null){
-				str += "<tr><td><img src='includes/images/compass.png' /></td><td valign=middle><a href='#' onclick='directions_api_getDirections(\"" + target_event.id +"\",\"" + next_event.id + "\")'>Get Directions</a></td></tr>"
-				//showDirections(target_event.marker.getPosition(), next_event.marker.getPosition());
+				str += "<tr><td><img src='includes/images/compass.png' /></td><td valign=middle><a href='#' onclick='directions_api_getDirections(\"" + target_event.id +"\",\"" + next_event.id + "\")'>Directions from here</a></td></tr>"
 			}
 
 			if (previous_event != null && next_event == null){
-				str += "<tr><td><img src='includes/images/compass.png' /></td><td valign=middle><a href='#' onclick='directions_api_getDirections(\"" + previous_event.id +"\",\"" + target_event.id + "\")'>Get Directions</a></td></tr>"
-				//showDirections(previous_event.marker.getPosition(), target_event.marker.getPosition());
+				str += "<tr><td><img src='includes/images/compass.png' /></td><td valign=middle><a href='#' onclick='directions_api_getDirections(\"" + previous_event.id +"\",\"" + target_event.id + "\")'>Directions to here</a></td></tr>"
 			}
 
 			if (previous_event != null && next_event != null){
 				str += "<tr><td><img src='includes/images/compass.png' /></td><td valign=middle><a href='#' onclick='directions_api_getDirections(\"" + target_event.id +"\",\"" + next_event.id + "\")'>Directions from here</a></td></tr>"
 				str += "<tr><td><img src='includes/images/compass.png' /></td><td valign=middle><a href='#' onclick='directions_api_getDirections(\"" + previous_event.id +"\",\"" + target_event.id + "\")'>Directions to here</a></td></tr>"				
 			}
-			
 			return str;
 		}
 	}
@@ -72,18 +69,9 @@ function directions_api_getDirectionHTML(cal_event_id){
 function directions_api_getDirections(cal_event_id1, cal_event_id2){	
 		var event1 = getCalendarEvent(cal_event_id1);
 		var event2 = getCalendarEvent(cal_event_id2);
-		showDirections(event1.marker.getPosition(), event2.marker.getPosition());
+		directions_cache_showDirections(event1.marker.getPosition(), event2.marker.getPosition());
+
+        calendar_and_map_api_closeCurrentInfoWindow();
 }
 
-function showDirections(from,to) {
-	var request = {
-		origin:from,
-	    destination:to,
-		travelMode: google.maps.DirectionsTravelMode.DRIVING
-	};
-	directionsService.route(request, function(result, status) {
-		if (status == google.maps.DirectionsStatus.OK) {
-			directionsDisplay.setDirections(result);
-		}
-	});
-} 
+

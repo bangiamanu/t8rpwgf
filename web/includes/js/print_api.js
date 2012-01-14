@@ -17,6 +17,7 @@ function print_api_printEvents(){
 							end_date_formatted: cal_event.end.formatDate('l, F jS'),
 							end_time_formatted: cal_event.end.formatDate('g:i a'),
 							title: cal_event.title,
+                            marker: cal_event.marker,
 							image: available_destination.image_file_name_large,
 							postcode: available_destination.postcode,
 							description: available_destination.description_short};
@@ -69,7 +70,6 @@ function print_api_printEvents(){
 	
 }
 
-
 // Sorts any array of events has based on .start parameter
 function print_api_sortEvents(array) {
   var x, y, holder;
@@ -84,7 +84,6 @@ function print_api_sortEvents(array) {
 	}
   }
 }
-
 
 // check if the dates are equal
 function print_api_dateEquals(date1, date2){

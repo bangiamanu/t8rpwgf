@@ -116,6 +116,12 @@ function calendar_and_map_api_updateCurrentInfoWindow(destination_id, marker){
 	current_infoWindow.setPosition(marker.position);	
 }
 
+// refresh current_infowindow for given destination id and marker
+function calendar_and_map_api_closeCurrentInfoWindow(){
+	if (current_infoWindow != null){
+		current_infoWindow.close();
+	}
+}
 
 // simply refreshes the current info window
 function calendar_and_map_api_refreshCurrentInfoWindow(){
