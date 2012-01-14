@@ -27,7 +27,7 @@ public class LoginService {
     }
 
     public static MResult logIn(String username,String password) {
-        MResult result = new MResult();//FacebookService.logIn(username, password);
+        MResult result = new MResult();
         Session session = Database.getSession();
         User user = (User)session.createCriteria(PojoConstant.USER_MODEL).add(Restrictions.eq("email",username)).add(Restrictions.eq("password",password)).uniqueResult();
         if (user==null) {

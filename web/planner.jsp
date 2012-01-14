@@ -1,3 +1,5 @@
+<%@ page import="uk.tripbrush.util.Constant"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -72,7 +74,7 @@
 		// using document.ready instead of window.onload
 		$(document).ready(function() {
 			// calling ready functions of APIs and other javascript files
-			calendar_and_map_api_ready();
+			if (!OFFLINE) calendar_and_map_api_ready();
 			sizing_ready();
 			backend_ready();
 			acct_management_ready();
@@ -87,6 +89,13 @@
 	</script>
 
 </head>
+
+<%
+    String destination = (String)session.getAttribute(Constant.SESSION_DESTINATION);
+    Integer howlong = (Integer)session.getAttribute(Constant.SESSION_DURATION);
+    String fromdate = (String)session.getAttribute(Constant.SESSION_FROM);
+%>
+
 
 
 <body>
@@ -139,6 +148,10 @@
 
           <form id="categoryform">
             <input type="hidden" id="selectedcategory" value=""/>
+            <input type="hidden" id="destination" value="<%=destination%>"/>
+            <input type="hidden" id="howlong" value="<%=howlong%>"/>
+            <input type="hidden" id="fromdate" value="<%=fromdate%>"/>
+
           </form>
 
         </div><!-- categorynamecolumn -->

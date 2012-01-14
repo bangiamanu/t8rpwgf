@@ -7,8 +7,7 @@ var TIMESLOT_LENGTH = 90;
 /********************** Maps and Calendar API **********************/
 
 function calendar_and_map_api_ready(){
-	initGoogleMaps();
-	
+	initGoogleMaps();	
 }
 
 // accepts destination id from available_destinations array and adds it to both calendar and map

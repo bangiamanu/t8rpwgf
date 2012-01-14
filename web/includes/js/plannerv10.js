@@ -27,6 +27,7 @@ var ADDRESS_NOT_FOUND = "Could not find the indicated address. Please make sure 
 var CALENDAR_EVENT_NOT_FOUND = "Couldnt find destination in calendar. Please contact support@tripbrush.com with a screenshot. Apologies for the inconvenience."
 var NO_TIMESLOTS_AVILABLE_ERROR = "No timeslots available. Please free up your calendar. If you believe this is in error, please contact support@tripbrush.com with a screenshot.";
 
+var OFFLINE = true;
 
 function getElement(name) {
     return document.getElementById(name);

@@ -1,17 +1,17 @@
 // JavaScript Document
 
 // available_destinations array holds events data that is used to populate calendar events
-var available_destinations = new Array();	
+//var available_destinations = new Array();	
 // todays year month and day to easily create date objects going forward
 var year = new Date().getFullYear();
 var month = new Date().getMonth();
 var day = new Date().getDate();
 
 // categories holds the categories of course :-)
-var categories = new Array();
+//var categories = new Array();
 
 //Ensure that the name attribute here matches the cateogry attribute in available_destinations
-function data_loader_loadCategories(){
+/*function data_loader_loadCategories(){
 	categories[0] = {
 		id: 0,
 		name: "art",
@@ -60,10 +60,10 @@ function data_loader_loadCategories(){
 		title: "Custom",
 		image_file_name: "includes/images/customnotepaper.png"
 	};
-}
+}*/
 
 	
-function data_loader_loadAvailableDestinations(){
+/*function data_loader_loadAvailableDestinations(){
 	/** 
 	available_destinations is the array that holds the events. structure is as below. 
 	- Ensure that file names have "<name>_smallco.jpg" for small color, "<name>_small.jpg" for non color and <name> for large files.
@@ -71,7 +71,7 @@ function data_loader_loadAvailableDestinations(){
 	- description_long should be less than 140 words
 	- category should be all lower case and be one of the names in categories array
 	**/
-	available_destinations[0] = {
+/*	available_destinations[0] = {
 				id:0,
 				category: "landmark",
 				title: "London eye",
@@ -194,4 +194,4 @@ function data_loader_loadAvailableDestinations(){
 				marker: null
 				};
 
-}
+}*/

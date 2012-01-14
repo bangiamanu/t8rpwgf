@@ -72,7 +72,8 @@
 		// using document.ready instead of window.onload
 		$(document).ready(function() {
 			// calling ready functions of APIs and other javascript files
-			calendar_and_map_api_ready();
+                        alert(OFFLINE);
+			if (!OFFLINE) calendar_and_map_api_ready();
 			sizing_ready();
 			backend_ready();
 			acct_management_ready();
