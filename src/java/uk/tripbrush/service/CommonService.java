@@ -6,10 +6,12 @@
 package uk.tripbrush.service;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Random;
-import org.hibernate.Criteria;
 import org.hibernate.classic.Session;
 import org.hibernate.criterion.Restrictions;
+import uk.tripbrush.model.core.Location;
 
 /**
  *
@@ -29,6 +31,28 @@ public class CommonService implements Serializable {
 
     public static final String REFERENCE = "reference";
 
+    public static SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    
+    public static Date getDate(String date) {
+        try {
+            return sdf.parse(date);
+        }
+        catch (Exception e) {
+            
+        }
+        return new Date();
+    }
+    
+    public static String getSDate(Date date) {
+        try {
+            return sdf.format(date);
+        }
+        catch (Exception e) {
+            
+        }
+        return date.toString();
+    }
+    
     public static String generateXNumbers(int x)
     {
         StringBuffer result = new StringBuffer();
@@ -81,4 +105,9 @@ public class CommonService implements Serializable {
         Session session = Database.getSession();
         session.save(object);
     }
+    
+    public static Location getLocation(String name) {
+        Session session = Database.getSession();
+        return (Location)session.createCriteria("uk.tripbrush.model.core.Location").add(Restrictions.eq("name", name)).uniqueResult();
+    }    
 }

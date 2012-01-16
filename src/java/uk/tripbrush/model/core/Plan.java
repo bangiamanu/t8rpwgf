@@ -26,6 +26,8 @@ public class Plan implements Serializable {
     private Calendar startdate;
 
     private Calendar enddate;
+    
+    private int length;
 
     private int view;
 
@@ -201,6 +203,20 @@ public class Plan implements Serializable {
      */
     public void setLocation(Location location) {
         this.location = location;
+    }
+
+    /**
+     * @return the length
+     */
+    public int getLength() {
+        return length;
+    }
+
+    /**
+     * @param length the length to set
+     */
+    public void setLength(int length) {
+        this.length = length;
     }
 
 

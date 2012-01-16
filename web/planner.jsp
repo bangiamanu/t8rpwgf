@@ -1,3 +1,7 @@
+<%@page import="uk.tripbrush.service.CommonService"%>
+<%@ page import="uk.tripbrush.util.Constant"%>
+<%@ page import="uk.tripbrush.model.core.User"%>
+<%@ page import="uk.tripbrush.model.core.Plan"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -79,6 +83,12 @@
                     acct_management_ready();
                     done_button_api_ready();
                     directions_api_ready();
+                    if ($("#showuser").val()!="true") {
+                        $("#signed_in").show();
+                    }
+                    else {
+                        $("#signed_out").show();
+                    }
             });
 
 
@@ -96,6 +106,10 @@
 
         <div id="toolbar">
             <img id="logo" src="includes/images/tripbrushlogo_inverted_small.png" alt="Logo" width="138" height="30" />
+<%
+    User user = (User)session.getAttribute(Constant.SESSION_USER);
+%>
+    <i
             <div id="loginactions">
 				<div id="signed_in" class="signed_in_or_out" style="display:none;">
 					<table cellpadding="0" cellspacing="3" height="40px" border="0px">
@@ -108,10 +122,12 @@
 						</tr>
 					</table>
 				</div>
-				<div id="signed_out" class="signed_in_or_out">
+
+                
+                <div id="signed_out" class="signed_in_or_out" style="display:none;">
 					<table cellpadding="0" cellspacing="3" height="40px" border="0px">
 						<tr>
-							<td>Welcome <div id="user_first_name"></div></td>
+							<td>Welcome <div id="user_first_name"><%=user.getName()%></div></td>
 							<td width="20px">&nbsp;</td>
 							<td class="saved_trips"><a href="javascript:acct_management_showSavedTrips()"><img src="includes/images/saved_trips_icon.png"/></a></td>
 							<td class="saved_trips"><a href="javascript:acct_management_showSavedTrips()">Saved trips</a></td>
@@ -136,7 +152,21 @@
 
 			<div id="categories_list"></div> <!-- this is populated by the populateCategories() function -->
 
+<%
+    Plan plan = (Plan)session.getAttribute(Constant.SESSION_PLAN);
+    int destination = plan.getLocation().getId();
+    Integer howlong = plan.getLength();
+    String fromdate = plan.getStartdateString();
+%>
 
+          <form id="categoryform">
+            <input type="hidden" id="selectedcategory" value=""/>
+            <input type="hidden" id="showuser" value="<%=(user!=null && user.getStatus()!=-1)%>"/>
+            <input type="hidden" id="destination" value="<%=destination%>"/>
+            <input type="hidden" id="howlong" value="<%=howlong%>"/>
+            <input type="hidden" id="fromdate" value="<%=fromdate%>"/>
+          </form>
+                        
           <form id="categoryform">
             <input type="hidden" id="selectedcategory" value=""/>
           </form>
@@ -214,16 +244,16 @@
         </div><!-- white_out -->
 
         <div id="sign_in" class="white_dialog">
-                <form name="sign_in" method="post" id="sign_in" onSubmit="backend_signIn()">
+                <form name="sign_in" method="post" id="sign_in" onSubmit="return backend_signIn()">
                         <p style="text-align:center; font-weight:bold; font-size:12px;">Log In</p><br/><br/>
                                         <table cellpadding="0" cellspacing="3" style="margin: 0px auto;">
                                                 <tr>
                                                         <td align="right">Email:</td>
-                                                        <td><input type=text name="email" id="email"/></td>
+                                                        <td><input type=text name="lemail" id="lemail"/></td>
                                                 </tr>
                                                 <tr>
                                                         <td align="right">Password:</td>
-                                                        <td><input type=text name="Password" id="password"/></td>
+                                                        <td><input type="password" name="lpassword" id="lpassword"/></td>
                                                 </tr>
                                                 <tr>
                                                         <td colspan="2" align="center">
@@ -251,8 +281,31 @@
                 </form>
         </div><!-- sign_in -->
 
+        <div id="verify" class="white_dialog">
+                <form name="verify" method="post" id="verify" onSubmit="return backend_verify()">
+                        <p style="text-align:center; font-weight:bold; font-size:12px;">Verify Account</p><br/><br/>
+                                        <table cellpadding="0" cellspacing="3" style="margin: 0px auto;">
+                                                <tr>
+                                                        <td align="right">Email:</td>
+                                                        <td><input type=text name="vemail" id="vemail"/></td>
+                                                </tr>
+                                                <tr>
+                                                        <td align="right">Code:</td>
+                                                        <td><input type=text name="vcode" id="vcode"/></td>
+                                                </tr>
+                                                <tr>
+                                                        <td colspan="2" align="center">
+                                                                <input type="submit" name="Submit" value="Submit" style="font-size:10px"/>
+                                                                <input type="button" name="Cancel" value="Cancel" style="font-size:10px" onClick="clearAllDialogs()"/>
+                                                        </td>
+                                                </tr>
+                                        </table>
+                </form>
+        </div><!-- verify -->        
+        
         <div id="sign_up" class="white_dialog">
-                <form name="sign_up" method="post" id="sign_up" onSubmit="backend_signUp()">
+                <form action="LoginAction" name="sign_up" method="post" id="sign_up" onSubmit="return backend_signUp()">
+                        <input type="hidden" name="command" value="NewUser"/>
                         <p style="text-align:center; font-weight:bold; font-size:12px;">Sign up</p><br/><br/>
                         <table cellpadding="0" cellspacing="3" style="margin: 0px auto;">
                                 <tr>
@@ -261,15 +314,15 @@
                                 </tr>
                                 <tr>
                                         <td align="right">Email*:</td>
-                                        <td><input type=text name="email" id="email"/></td>
+                                        <td><input type=text name="remail" id="remail"/></td>
                                 </tr>
                                 <tr>
                                         <td align="right">Password*:</td>
-                                        <td><input type=text name="Password" id="password"/></td>
+                                        <td><input type="password" name="rpassword" id="rpassword"/></td>
                                 </tr>
                                 <tr>
                                         <td align="right">Password Confirmation*:</td>
-                                        <td><input type=text name="Password1" id="password1"/></td>
+                                        <td><input type="password" name="rpassword1" id="rpassword1"/></td>
                                 </tr>
                                 <tr>
                                         <td colspan="2" align="center">
@@ -297,14 +350,14 @@
         </div><!-- signUp -->
 
         <div id="forgot_password" class="white_dialog">
-                <form name="forgot_password" method="post" id="forgot_password" onSubmit="backend_forgotPassword()">
+                <form name="forgot_password" method="post" id="forgot_password" onSubmit="return backend_forgotPassword()">
                         <p style="text-align:center; font-weight:bold; font-size:12px;">Forgotten Password</p><br/><br/>
                         <table cellpadding="0" cellspacing="3" style="margin: 0px auto;">
                                 <tr>
                                         <td align="center">Please enter the email used while creating an account and we will send you a temporary password<br/></td>
                                 </tr>
                                 <tr>
-                                        <td align="center">Email: <input type=text name="email" id="email"/></td>
+                                        <td align="center">Email: <input type=text name="femail" id="femail"/></td>
                                 </tr>
                                 <tr>
                                         <td align="center">
@@ -331,19 +384,19 @@
                         </tr>
                         <tr>
                                 <td>Old password</td>
-                                <td><input type="text" id="old_password" name="old_password" /></td>
+                                <td><input type="password" id="old_password" name="old_password" /></td>
                         </tr>
                         <tr>
                                 <td>New password</td>
-                                <td><input type="text" id="new_password" name="new_password" /></td>
+                                <td><input type="password" id="new_password" name="new_password" /></td>
                         </tr>
                         <tr>
                                 <td>New password (confirmation)</td>
-                                <td><input type="text" id="new_password1" name="new_password1" /></td>
+                                <td><input type="password" id="new_password1" name="new_password1" /></td>
                         </tr>
                         <tr>
                                 <td colspan="2" align="center">
-                                        <input type="submit" name="Submit" value="Submit" style="font-size:10px"/>
+                                        <input type="submit" name="Submit" value="Submit" style="font-size:10px" onClick="backend_changePasswords()"/>
                                         <input type="button" name="Cancel" value="Cancel" style="font-size:10px" onClick="clearAllDialogs()"/>
                                 </td>
                         </tr>
@@ -351,7 +404,7 @@
                                 <td>&nbsp;</td>
                                 <td>&nbsp;</td>
                         </tr>
-                        <tr>
+                        <!--tr>
                                 <td colspan="2"> <b>Change Name</b></td>
                         </tr>
                         <tr>
@@ -380,7 +433,7 @@
                                         <input type="submit" name="Submit" value="Submit" style="font-size:10px"/>
                                         <input type="button" name="Cancel" value="Cancel" style="font-size:10px" onClick="clearAllDialogs()"/>
                                 </td>
-                        </tr>
+                        </tr-->
                 </table>
         </div><!-- profile -->
 

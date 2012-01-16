@@ -101,6 +101,7 @@ public class UserService implements Serializable {
         user.setReference(userId);
         user.setPassword(CommonService.genererateReferenceNumber());
         user.setStatus(TEMP_USER);
+        user.setUsername("User " + userId);
         session.save(user);
         return user;
     }

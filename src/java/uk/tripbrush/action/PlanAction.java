@@ -35,7 +35,7 @@ public class PlanAction extends org.apache.struts.action.Action {
             return mapping.findForward("categories");
         }
         else if (CommandConstant.GET_ATTRACTIONS.equals(qform.getCommand())) {
-            List<Attraction> attractions = CalendarService.getAttractions(qform.getDestination(),qform.getFromdate(),qform.getHowlong());
+            List<Attraction> attractions = CalendarService.getAttractions(null);
             request.setAttribute(Constant.REQUEST_MESSAGE, attractions);
             return mapping.findForward("attractions");
         }

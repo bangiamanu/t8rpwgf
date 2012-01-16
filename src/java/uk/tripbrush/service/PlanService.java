@@ -6,6 +6,7 @@
 package uk.tripbrush.service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import uk.tripbrush.model.core.Plan;
 import uk.tripbrush.util.PojoConstant;
@@ -79,5 +80,22 @@ public class PlanService {
     public static void savePlan(Plan plan) {
         Session session = Database.getSession();
         session.saveOrUpdate(plan);
+    }
+    
+    public static Plan createNewPlan(String dest,String from,int length) {
+        Plan plan = new Plan();
+        plan.setLocation(CommonService.getLocation(dest));
+        plan.setEditable(true);
+        plan.setLength(length);
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(CommonService.getDate(from));
+        Calendar ecal = cal.getInstance();
+        ecal.setTime(cal.getTime());
+        ecal.add(Calendar.DAY_OF_MONTH, length);
+        String dateto = CommonService.getSDate(ecal.getTime());
+        plan.setTitle("Trip to " + dest + "(" + from + "-" + dateto + ")");     
+        plan.setStartdate(cal);
+        plan.setEnddate(ecal);
+        return plan;
     }
 }

@@ -26,6 +26,7 @@ public class LoginForm extends BaseForm {
     private String fromdate;
     private int howlong;
 
+    private String name;
     private String email;
     private String password;
     private String newpassword;
@@ -221,6 +222,20 @@ public class LoginForm extends BaseForm {
         if (!StringUtil.validateLength(password,StringUtil.MAX_TEXT_LENGTH)) {
             errors.add(CommandConstant.ERROR, new ActionMessage("error.slength", key));
         }
+    }
+
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
     }
 
 }

@@ -21,6 +21,8 @@ public class User implements Serializable {
     private String password;
     private int status;
 
+    private String name;
+    
     private int id;
     private String username;
     private String email;
@@ -151,5 +153,19 @@ public class User implements Serializable {
      */
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
     }
 }

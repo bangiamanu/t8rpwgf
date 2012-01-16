@@ -133,7 +133,7 @@ public class UploadService {
             if (attraction.getCategory()==null) {
                 continue;
             }
-            attraction.setLocation(CalendarService.getLocation(getRowValue(row,3)));
+            attraction.setLocation(CommonService.getLocation(getRowValue(row,3)));
             attraction.setName(getRowValue(row,2));
             attraction.setPostcode(getRowValue(row,5));
             attraction.setDescription_short(getRowValue(row,13));

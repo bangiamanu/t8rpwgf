@@ -18,5 +18,6 @@
     <property length="5000" name="description" type="java.lang.String"/>
     <property length="10" name="reference" type="java.lang.String"/>
     <property name="view" type="int"/>
+    <property name="length" type="int"/>
   </class>
 </hibernate-mapping>

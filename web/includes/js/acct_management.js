@@ -4,6 +4,12 @@ function acct_management_ready(){
 	add_close_buttons_to_dialogs();
 }
 
+function acct_management_verify(){
+	clearAllDialogs();
+	$("#white_out").fadeIn();	
+	setTimeout("$('#verify').fadeIn()",400);
+}
+
 function acct_management_signIn(){
 	clearAllDialogs();
 	$("#white_out").fadeIn();	
