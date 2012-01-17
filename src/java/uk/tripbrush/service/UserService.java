@@ -6,10 +6,12 @@
 package uk.tripbrush.service;
 
 import java.io.Serializable;
+import java.util.List;
 import uk.tripbrush.util.PojoConstant;
 import uk.tripbrush.view.MResult;
 import org.hibernate.classic.Session;
 import org.hibernate.criterion.Restrictions;
+import uk.tripbrush.model.core.Plan;
 import uk.tripbrush.model.core.User;
 
 /**
@@ -89,6 +91,17 @@ public class UserService implements Serializable {
         return (User)session.createCriteria(PojoConstant.USER_MODEL).add(Restrictions.eq("id",id)).uniqueResult();
     }
     
+    public static List<Plan> deleteTempUser(User suser,User user) {
+        Session session = Database.getSession();
+        for (Plan plan: suser.getPlans()) {
+            plan.setUser(user);
+            session.merge(plan);
+        }
+        List<Plan> plans = suser.getPlans();
+        session.delete(suser);
+        return plans;
+    }
+    
     public static User createTempUser() {
         User user = new User();
         Session session = Database.getSession();
@@ -101,7 +114,7 @@ public class UserService implements Serializable {
         user.setReference(userId);
         user.setPassword(CommonService.genererateReferenceNumber());
         user.setStatus(TEMP_USER);
-        user.setUsername("User " + userId);
+        user.setName("User " + userId);
         session.save(user);
         return user;
     }

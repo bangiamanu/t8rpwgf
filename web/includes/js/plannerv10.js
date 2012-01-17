@@ -49,6 +49,20 @@ function addEvent(destination_id){
 	calendar_and_map_api_selectEventOnCalendar(cal_event.id);
 	clearMapSelection();	
 	calendar_and_map_api_selectEventOnMap(cal_event.id);
+        
+        var params = "command=AddEvent&fromTime=" + cal_event.start.formatDate("d/m/Y H:i") + "&toTime=" + cal_event.end.formatDate("d/m/Y H:i")  +"&attractionId="+available_destinations[destination_id].aid;
+        
+        $.ajax({
+            type: "POST",
+            url: "PlanAction.do",
+            cache: false,
+            data: params,
+            success: function(xml) {
+                $(xml).find("result").each(function() {
+                    cal_event.eid = $(this).text();
+                });
+            }
+        });
 	
 	// grey out destination and clear list
 	list_api_greyOutDestination(destination_id);
@@ -70,6 +84,17 @@ function deleteEvent(cal_event_id){
 	// and remove it from calendar and map
 	calendar_and_map_api_removeEventFromCalendarAndMap(cal_event_id);
 	
+            var params = "command=DeleteEvent&id=" + cal_event.eid;
+
+            alert(params);
+
+            $.ajax({
+                type: "POST",
+                url: "PlanAction.do",
+                cache: false,
+                data: params
+            });        
+        
 	// clear map and list
 	list_api_clearListSelection();
 	clearInfoWindow();
@@ -264,5 +289,13 @@ function startTutorial(){
 	showing_steps = true;
 	current_step = "step1";
 	refreshSteps();
+}
+
+function URLDecode(psEncodeString)
+{
+  // Create a regular expression to search all +s in the string
+  var lsRegExp = /\+/g;
+  // Return the decoded string
+  return unescape(String(psEncodeString).replace(lsRegExp, " "));
 }
 

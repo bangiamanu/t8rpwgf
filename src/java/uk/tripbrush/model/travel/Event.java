@@ -18,6 +18,8 @@ public class Event implements Serializable {
 
     /** default constructor */
     public Event() {
+        startdate = Calendar.getInstance();
+        enddate = Calendar.getInstance();
     }
 
     /**

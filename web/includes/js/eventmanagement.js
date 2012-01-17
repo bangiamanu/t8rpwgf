@@ -33,10 +33,11 @@
 				},
 				eventRender : function(calEvent, $event) {
 					if (calEvent.id !=null){
-						calendar_events[calEvent.id] = calEvent;
-						calEvent.event_dom_handler = $event;
-						checkEvent(calEvent, $event);
-						set_event_backgrounds();
+                                            alert("HI");
+                                            calendar_events[calEvent.id] = calEvent;
+                                            calEvent.event_dom_handler = $event;
+                                            checkEvent(calEvent, $event);
+                                            set_event_backgrounds();
 					}
 				},
 				eventNew : function(calEvent, $event) {
@@ -46,11 +47,13 @@
 				eventDrop : function(calEvent, $event) {
 				},
 				eventResize : function(calEvent, $event) {
+                                        alert("HI");
 					calendar_events[calEvent.id] = calEvent;
 					checkEvent(calEvent, $event);
 					set_event_backgrounds();
 				},
 				eventClick : function(calEvent, $event) {
+                                    
 					select_event_on_calendar(calEvent.id);
 					select_event_on_map(calEvent.id);
 				},
@@ -149,6 +152,8 @@
 		// remove it from calendar and map
 		remove_event_from_calendar_and_map(cal_event_id);
 		
+
+
 		//refreshing so add buttons become remove buttons
 		//select_destination_from_list(destination_id);
 	}

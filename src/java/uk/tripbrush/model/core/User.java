@@ -10,6 +10,7 @@
 package uk.tripbrush.model.core;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,15 +25,20 @@ public class User implements Serializable {
     private String name;
     
     private int id;
-    private String username;
     private String email;
     private String reference;
     private String sessionID;
 
     private List<Plan> plans;
     
+    public User(User tusr) {
+        setStatus(tusr.getStatus());
+        setId(tusr.getId());
+    }
+    
     /** Creates a new instance of User */
     public User() {
+        plans = new ArrayList<Plan>();
     }
 
     /**
@@ -141,19 +147,6 @@ public class User implements Serializable {
         this.sessionID = sessionID;
     }
 
-    /**
-     * @return the username
-     */
-    public String getUsername() {
-        return username;
-    }
-
-    /**
-     * @param username the username to set
-     */
-    public void setUsername(String username) {
-        this.username = username;
-    }
 
     /**
      * @return the name

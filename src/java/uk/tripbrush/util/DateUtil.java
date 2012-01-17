@@ -26,6 +26,14 @@ public class DateUtil {
     public static final String START_DAY = "00:00";
     public static final String END_DAY = "23:59";
 
+    public static Date parseDateTime(String input) throws ParseException {
+        return sdf.parse(input);
+    }
+
+    public static String formateDateTime(Date input) throws ParseException {
+        return sdf.format(input);
+    }    
+    
     public static String getTime(Calendar cal) {
         return sdf_time.format(cal.getTime());
     }

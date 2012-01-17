@@ -12,6 +12,7 @@ import java.util.Random;
 import org.hibernate.classic.Session;
 import org.hibernate.criterion.Restrictions;
 import uk.tripbrush.model.core.Location;
+import uk.tripbrush.model.travel.Attraction;
 
 /**
  *
@@ -109,5 +110,10 @@ public class CommonService implements Serializable {
     public static Location getLocation(String name) {
         Session session = Database.getSession();
         return (Location)session.createCriteria("uk.tripbrush.model.core.Location").add(Restrictions.eq("name", name)).uniqueResult();
-    }    
+    }
+    
+    public static Attraction getAttraction(int id) {
+        Session session = Database.getSession();
+        return (Attraction)session.createCriteria("uk.tripbrush.model.travel.Attraction").add(Restrictions.eq("id", id)).uniqueResult();
+    }
 }

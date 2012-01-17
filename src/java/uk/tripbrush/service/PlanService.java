@@ -35,6 +35,7 @@ public class PlanService {
         plan.setReference(CommonService.genererateReferenceNumber(PojoConstant.PLAN_MODEL));
         plan.setUser(user);
         session.save(plan);
+        user.getPlans().add(plan);
     }
 
     public static MResult deletePlan(User user,int id) {
@@ -63,7 +64,7 @@ public class PlanService {
         }
         else {
             result.setCode(MResult.RESULT_NOTOK);
-            result.setMessage("delete.error");
+            result.setMessage("plan.error");
         }
         plan.setEvents(EventService.getEvents(plan));
         return result;

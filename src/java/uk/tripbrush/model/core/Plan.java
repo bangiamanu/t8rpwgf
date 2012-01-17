@@ -219,5 +219,20 @@ public class Plan implements Serializable {
         this.length = length;
     }
 
-
+    public Event deleteEvent(int id) {
+        Event event = getEvent(id);
+        if (event!=null) {
+            getEvents().remove(event);
+        }
+        return event;
+    }
+    
+    public Event getEvent(int id) {
+        for (Event event: getEvents()) {
+            if (event.getId()==id) {
+                return event;
+            }
+        }
+        return null;
+    }
 }

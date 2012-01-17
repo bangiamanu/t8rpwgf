@@ -11,14 +11,14 @@ function calendar_and_map_api_ready(){
 	
 }
 
-// accepts destination id from available_destinations array and adds it to both calendar and map
-function calendar_and_map_api_addEventToCalendarAndMap(destination_id){
+function calendar_and_map_api_addEventToCalendarAndMapWithTime(destination_id,open_slot){
 		event_to_add = available_destinations[destination_id];
 		var open_slot = findFirstOpenSlot(destination_id);
 		
 		// creating the calendar event
 		cal_destination_id = "C" + destination_id;		
-		var cal_event =  {	id:cal_destination_id, 
+		var cal_event =  {id:cal_destination_id, 
+     
 							start: open_slot.start, 
 							end: open_slot.end,
 							title:event_to_add.title,
@@ -45,6 +45,13 @@ function calendar_and_map_api_addEventToCalendarAndMap(destination_id){
 		
 		//Changing pointer in calendar_events to permanent marker
 		cal_event.marker = perm_marker;
+}
+
+// accepts destination id from available_destinations array and adds it to both calendar and map
+function calendar_and_map_api_addEventToCalendarAndMap(destination_id){
+		
+		var open_slot = findFirstOpenSlot(destination_id);
+                calendar_and_map_api_addEventToCalendarAndMapWithTime(destination_id, open_slot)
 }
 
 // accepts cal_event_id id from calendar_events array and removes it fron both calendar and map

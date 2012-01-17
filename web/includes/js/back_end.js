@@ -13,8 +13,8 @@ var calendar_start_date = new Date();
 
 function backend_ready(){
 	backend_loadCategories();
+        checkin();
 	//backend_loadAvailableDestinations();
-	backend_populateSavedTrips();
 	
 	days_to_show = $("#howlong").val(); // replace this function with backend code
         var startDateField = $("#fromdate").val().split("/");
@@ -90,7 +90,7 @@ function loadAvailableDestinationsData(xml) {
         $(this).find("link").each(function() {
             var name= $(this).attr("name");
             var url= $(this).attr("url");
-            links[linkcounter] = { name: name, url: url };
+            links[linkcounter] = {name: name, url: url};
             linkcounter++;
         });
 
@@ -134,22 +134,37 @@ function loadAvailableDestinationsData(xml) {
     calendar_helper_populateCalendar();
 }
 
-
 // populates the available_destinations array - called on document.ready
 function backend_loadAvailableDestinations(){
 	loadAvailableDestinations(); // replace this function with backend code
 }
 
+function checkin() {
+    var params = "command=GetUser";
+    $.ajax({
+        type: "POST",
+        url: "LoginAction.do",
+        cache: false,
+        data: params,
+        success: processCheckin
+    }); 
+    return false;     
+}
+
+function processCheckin(xml) {
+    $.xmlDOM( xml ).find("result").each(function() {
+        var command = $(this).text();
+        if (command!="") {
+            $("#user_first_name").html(command);
+            $("#cname").html(command);
+            $(".signed_in_or_out").toggle();
+            backend_populateSavedTrips();
+        }
+    });    
+}
+
 // called when user clicks signin
 function backend_signIn(){
-    if ($("#lemail").val()=='') {
-        alert("Please enter an email");
-        return false;
-    }
-    if ($("#lpassword").val()=='') {
-        alert("Please enter a password");
-        return false;
-    }
     var params = "command=Login&email="+$("#lemail").val()+"&password="+$("#lpassword").val();
     $.ajax({
         type: "POST",
@@ -161,34 +176,59 @@ function backend_signIn(){
     return false;    
 }
 
+function processErrorMessages(div,xml) {
+    var errors = "";
+    var messages = "";
+    $.xmlDOM( xml ).find("error").each(function() {
+        errors=errors+$(this).text()+"<br/>";
+    });
+    $.xmlDOM( xml ).find("message").each(function() {
+        messages=messages+$(this).text()+"<br/>";
+    });
+    $("#"+div+"error").html(errors);
+    $("#"+div+"message").html(messages);
+    return errors=="";
+}
+
 function processLogin(xml) {
-    if (true) {
-	$(".signed_in_or_out").toggle(); // this changes the toolbar from signed out to signed in and vice versa.
-	backend_populateSavedTrips();        
-    }
-    else {
-        //show errors
+    var errors = "";
+    var messages = "";
+    var div = "login";
+    $.xmlDOM( xml ).find("error").each(function() {
+        errors=errors+$(this).text()+"<br/>";
+    });
+    $.xmlDOM( xml ).find("message").each(function() {
+        messages=messages+$(this).text()+"<br/>";
+    });
+    $.xmlDOM( xml ).find("result").each(function() {
+        var command = $(this).text();
+        if (command=="verify") {
+            div = "verify";
+            $("#"+div+"error").html(errors);
+            $("#"+div+"message").html(messages);
+            $("#vemail").val($("#lemail").val());
+            acct_management_verify(false);
+        }
+        else {
+            $("#user_first_name").html(command);
+            $("#cname").html(command);
+        }
+    });
+    $("#"+div+"error").html(errors);
+    $("#"+div+"message").html(messages);
+    if (errors!=null) {
+ 	$(".signed_in_or_out").toggle(); // this changes the toolbar from signed out to signed in and vice versa.
+        clearAllDialogs();
+        backend_populateSavedTrips();          
     }
 }
 
 // called when user clicks signup
 function backend_signUp(){
-    if ($("#remail").val()=='') {
-        alert("Please enter an email");
-        return false;
-    }
-    if ($("#rpassword").val()=='') {
-        alert("Please enter a password");
-        return false;
-    }
-    if ($("#rpassword").val()!=$("#rpassword1").val()) {
-        alert("Password should be the same");
-        return false;
-    }
-    var params = "command=NewUser&name="+$("#user_first_name").val()+"&email="+$("#remail").val()+"&password="+$("#rpassword").val();
+    var params = "command=NewUser&name="+$("#rname").val()+"&email="+$("#remail").val()+"&newpassword="+$("#rpassword").val()+"&newpassword1="+$("#rpassword1").val();
     $.ajax({
-        type: "POST",
         url: "LoginAction.do",
+        type: "POST",
         cache: false,
         data: params,
         success: processSignup
@@ -197,24 +237,14 @@ function backend_signUp(){
 }
 
 function processSignup(xml) {
-    if (true) {
+    if (processErrorMessages('register',xml)) {
         $("#vemail").val($("#remail").val());
-        acct_management_verify();
-    }
-    else {
-        //show errors
+        acct_management_verify(true);
     }
 }
 
 function backend_verify(){
-    if ($("#vemail").val()=='') {
-        alert("Please enter an email");
-        return false;
-    }
-    if ($("#vcode").val()=='') {
-        alert("Please enter the code provided in the email");
-        return false;
-    }    var params = "command=VerifyUser&email="+$("#vemail").val()+"&code="+$("#vcode").val();
+    var params = "command=VerifyUser&email="+$("#vemail").val()+"&code="+$("#vcode").val();
     $.ajax({
         type: "POST",
         url: "LoginAction.do",
@@ -226,20 +256,13 @@ function backend_verify(){
 }
 
 function processVerify(xml) {
-    if (true) {
-        //show message about successful verify
-        //complete login
+    if (processErrorMessages('verify',xml)) {
+        clearAllDialogs();
+        checkin();
     }
-    else {
-        //show errors
-    }    
 }
 
 function backend_forgotPassword(){
-    if ($("#femail").val()=='') {
-        alert("Please enter an email");
-        return false;
-    }
     var params = "command=ForgotUser&email="+$("#femail").val();
     $.ajax({
         type: "POST",
@@ -252,31 +275,16 @@ function backend_forgotPassword(){
 }
 
 function processForgot(xml) {
-    if (true) {
+    if (processErrorMessages('forgot',xml)) {
         //show message
         $("#lemail").val($("#femail").val());
         $("#lpassword").val("");
         acct_management_signIn();
-    }
-    else {
-        //show errors
-    }    
+    }  
 }
 
 function backend_changePasswords() {
-    if ($("#old_password").val()=='') {
-        alert("Please enter your old password");
-        return false;
-    }
-    if ($("#new_password").val()=='') {
-        alert("Please enter a new password");
-        return false;
-    }
-    if ($("#new_password").val()!=$("#new_password1").val()) {
-        alert("New Password should be the same");
-        return false;
-    }
-    var params = "command=ChangePassword&password="+$("#old_password").val()+"&newpassword="+$("#new_password").val();
+    var params = "command=ChangePassword&password="+$("#old_password").val()+"&newpassword="+$("#new_password").val()+"&newpassword1="+$("#new_password1").val();
     $.ajax({
         type: "POST",
         url: "LoginAction.do",
@@ -288,30 +296,61 @@ function backend_changePasswords() {
 }
 
 function processChange(xml) {
-    if (true) {
+    if (processErrorMessages('profile',xml)) {
         //show message about password changed
     }
-    else {
-        //show errors
+}
+
+function backend_changeName() {
+    var params = "command=ChangeName&name="+$("#cname").val();
+    $.ajax({
+        type: "POST",
+        url: "LoginAction.do",
+        cache: false,
+        data: params,
+        success: processChange
+    }); 
+    return false;      
+}
+
+function processChange(xml) {
+    if (processErrorMessages('changen',xml)) {
+        //show message about password changed
     }
 }
 
 // called when user clicks signin and is supposed to populate the saved_trips array
 function backend_populateSavedTrips(){
-	// populate the saved_trips array
-	
-	saved_trips[0] = {name:"Untitled1", city:"London", start_date: new Date(), end_date: new Date()};
-	saved_trips[1] = {name:"Untitled2", city:"Barcelona", start_date: new Date(), end_date: new Date()};
-	saved_trips[2] = {name:"Untitled3", city:"Prague", start_date: new Date(), end_date: new Date()};
-	
-	acct_management_createSavedTripsBox();
+    
+    // populate the saved_trips array
+    saved_trips = new Array();
+
+    var params = "command=GetPlans";
+    $.ajax({
+        type: "POST",
+        url: "PlanAction.do",
+        cache: false,
+        data: params,
+        success: processPlans
+    }); 
+}
+
+function processPlans(xml) {
+    counter = 0;
+    $(xml).find("plan").each(function() {
+        var startDateField = $(this).attr("fromdate").split("/");
+        var endDateField = $(this).attr("enddate").split("/");
+        saved_trips[counter] = {id: $(this).attr("id"), name:$(this).attr("name"), city:$(this).attr("location"), start_date: new Date(startDateField[2],startDateField[1]-1,startDateField[0]), end_date: new Date(endDateField[2],endDateField[1]-1,endDateField[0])};
+        counter++;
+    });
+    acct_management_createSavedTripsBox();
 }
 
 function backend_logOut(){
     var params = "command=Logout";
     $.ajax({
         type: "POST",
-        url: "QueryAction.do",
+        url: "LoginAction.do",
         cache: false,
         data: params,
         success: processLogout
@@ -320,4 +359,47 @@ function backend_logOut(){
 
 function processLogout(xml) {
     $(".signed_in_or_out").toggle();
+    $("#user_first_name").html("");
+    $("#cname").html("");
+}
+
+function log(message) {
+    var params = "command=Log&message="+encodeURI(message);
+    command(params);
+}
+
+(function(a){if(window.DOMParser==undefined&&window.ActiveXObject){DOMParser=function(){};DOMParser.prototype.parseFromString=function(c){var b=new ActiveXObject("Microsoft.XMLDOM");b.async="false";b.loadXML(c);return b}}a.xmlDOM=function(b,h){try{var d=(new DOMParser()).parseFromString(b,"text/xml");if(a.isXMLDoc(d)){var c=a("parsererror",d);if(c.length==1){throw ("Error: "+a(d).text())}}else{throw ("Unable to parse XML")}}catch(f){var g=(f.name==undefined?f:f.name+": "+f.message);if(a.isFunction(h)){h(g)}else{a(document).trigger("xmlParseError",[g])}return a([])}return a(d)}})(jQuery);
+
+$(document).bind('xmlParseError', function(event, error) {
+    log('A parse error occurred! ' + error);
+});
+
+function URLDecode(psEncodeString)
+{
+  // Create a regular expression to search all +s in the string
+  var lsRegExp = /\+/g;
+  // Return the decoded string
+  return unescape(String(psEncodeString).replace(lsRegExp, " "));
+}
+
+function loadTrip(id) {
+    var params = "command=GetPlan&id="+id;
+    $.ajax({
+        type: "POST",
+        url: "PlanAction.do",
+        cache: false,
+        data: params,
+        success: processLoadPlan
+    });
+}
+
+function processLoadPlan(xml) {
+    alert(xml);
+    $(xml).find("event").each(function() {
+        var startDateField = $(this).attr("fromdate").split("/");
+        var endDateField = $(this).attr("enddate").split("/");
+        
+        var timeslot = {start: new Date(startDateField[2],startDateField[1]-1,startDateField[0]) , end: new Date(endDateField[2],endDateField[1]-1,endDateField[0])};
+        calendar_and_map_api_addEventToCalendarAndMapWithTime($(this).attr("id"),timeslot);        
+    });    
 }
