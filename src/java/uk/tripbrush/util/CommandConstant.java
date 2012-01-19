@@ -13,6 +13,9 @@ import java.io.Serializable;
  */
 public class CommandConstant implements Serializable {
 
+    public static final String FB_LOGIN="FBLogin";
+    public static final String FB_LOGOUT="FBLogout";
+    
     public static final String VALIDATE_PASSWORD="validate";
     public static final String CONFIRM_PASSWORD="confirm";
     public static final String LOAD_CATEGORY="loadCategory";
@@ -34,6 +37,7 @@ public class CommandConstant implements Serializable {
     public static final String ADD_EVENT="AddEvent";
     public static final String UPDATE_EVENT="UpdateEvent";
     public static final String DELETE_EVENT="DeleteEvent";
+    public static final String EMAIL_PLAN="EmailPlan";
     
     public static final String RELOAD="reload";
     public static final String EMAIL="email";

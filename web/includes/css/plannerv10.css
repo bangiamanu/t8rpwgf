@@ -395,7 +395,7 @@ p{
 	margin-right:auto;
 }
 
-#sign_in, #verify, #sign_up, #forgot_password, #saved_trips, #profile{
+#sign_in, #verify, #emailevents, #sign_up, #forgot_password, #saved_trips, #profile{
 	top: 30%;
 	width: 400px;
 }

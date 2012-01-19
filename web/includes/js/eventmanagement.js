@@ -33,7 +33,6 @@
 				},
 				eventRender : function(calEvent, $event) {
 					if (calEvent.id !=null){
-                                            alert("HI");
                                             calendar_events[calEvent.id] = calEvent;
                                             calEvent.event_dom_handler = $event;
                                             checkEvent(calEvent, $event);
@@ -47,8 +46,7 @@
 				eventDrop : function(calEvent, $event) {
 				},
 				eventResize : function(calEvent, $event) {
-                                        alert("HI");
-					calendar_events[calEvent.id] = calEvent;
+                                  	calendar_events[calEvent.id] = calEvent;
 					checkEvent(calEvent, $event);
 					set_event_backgrounds();
 				},

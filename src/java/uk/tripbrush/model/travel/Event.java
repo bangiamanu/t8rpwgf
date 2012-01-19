@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Calendar;
 import java.util.List;
 import uk.tripbrush.model.core.Plan;
+import uk.tripbrush.util.DateUtil;
 
 /** @author Hibernate CodeGenerator */
 public class Event implements Serializable {
@@ -123,5 +124,9 @@ public class Event implements Serializable {
      */
     public void setTimeslotId(int timeslotId) {
         this.timeslotId = timeslotId;
+    }
+    
+    public String getTime() {
+        return DateUtil.getTime(startdate)+"-"+DateUtil.getTime(enddate);
     }
 }

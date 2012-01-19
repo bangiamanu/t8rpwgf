@@ -44,7 +44,7 @@ public class LoginAction extends org.apache.struts.action.Action {
                 passkey = passkey.replaceAll(" ","").toLowerCase();
             }
             if ("takemeaway".equals(passkey)) {
-                request.setAttribute(Constant.REQUEST_MESSAGE,"OK"  );
+                request.setAttribute(Constant.REQUEST_MESSAGE,"OK");
                 request.getSession().setAttribute(Constant.SESSION_ACCESS,"AAA");
             }
             else {
@@ -67,6 +67,30 @@ public class LoginAction extends org.apache.struts.action.Action {
                 request.getSession().setAttribute(Constant.SESSION_USER,user);
                 return mapping.findForward("success");
             }
+        }
+        else if (CommandConstant.FB_LOGIN.equals(qform.getCommand())) {
+            String code = qform.getCode();
+            MResult result = LoginService.logInFacebook(null,null,code);
+            if (result.getCode()==MResult.RESULT_OK) {
+                User user = (User)result.getObject();
+                if (user!=null) {
+                    request.setAttribute(Constant.REQUEST_MESSAGE, user.getName());
+                    PlanService.loadPlans(user);
+                    User suser = (User)request.getSession().getAttribute(Constant.SESSION_USER);
+                    if (suser!=null && suser.getStatus()==UserService.TEMP_USER) {
+                        user.getPlans().addAll(UserService.deleteTempUser(suser,user));
+                    }
+                    request.getSession().setAttribute(Constant.SESSION_USER, user);
+                }
+            }
+        }
+        else if (CommandConstant.FB_LOGOUT.equals(qform.getCommand())) {
+            User user = (User)request.getSession().getAttribute(Constant.SESSION_USER);
+            if (user!=null) {
+                LoginService.logOut(user);
+            }
+            request.getSession().setAttribute(Constant.SESSION_USER, null);
+            request.getSession().setAttribute(Constant.SESSION_PLAN, null);               
         }
         else {
             if (errors.isEmpty()) {
@@ -103,7 +127,6 @@ public class LoginAction extends org.apache.struts.action.Action {
                                 request.setAttribute(Constant.REQUEST_MESSAGE, "verify");
                             }
                             else {
-                                user.setEmail(username);
                                 request.setAttribute(Constant.REQUEST_MESSAGE, user.getName());
                                 PlanService.loadPlans(user);
                                 User suser = (User)request.getSession().getAttribute(Constant.SESSION_USER);

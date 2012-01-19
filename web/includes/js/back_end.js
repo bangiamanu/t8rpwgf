@@ -39,7 +39,7 @@ function backend_loadCategories(){
 function loadCategoryData(xml) {
 
     counter = 0;
-    $(xml).find("category").each(function() {
+    $.xmlDOM( xml ).find("category").each(function() {
         var id = $(this).attr("id");
         var name= $(this).find("name").text();
         var title = $(this).find("title").text();
@@ -70,11 +70,10 @@ function loadAvailableDestinations(){
 
 function loadAvailableDestinationsData(xml) {
     counter = 0;
-    $(xml).find("attraction").each(function() {
+    $.xmlDOM( xml ).find("attraction").each(function() {
 
 
-        var id = $(this).attr("id");
-        var aid = $(this).attr("aid");
+        var id = $(this).attr("aid");
         var category= $(this).find("category").text();
         var title= $(this).find("title").text();
         var description_short= $(this).find("description_short").text();
@@ -114,8 +113,8 @@ function loadAvailableDestinationsData(xml) {
             opencounter++;
         });
 
+
         available_destinations[id] = {
-            aid: aid,
             id:id,
             category: category,
             title: title,
@@ -211,12 +210,13 @@ function processLogin(xml) {
         }
         else {
             $("#user_first_name").html(command);
+            $("#loggedin").val("true");
             $("#cname").html(command);
         }
     });
     $("#"+div+"error").html(errors);
     $("#"+div+"message").html(messages);
-    if (errors!=null) {
+    if (errors=="") {
  	$(".signed_in_or_out").toggle(); // this changes the toolbar from signed out to signed in and vice versa.
         clearAllDialogs();
         backend_populateSavedTrips();          
@@ -337,7 +337,7 @@ function backend_populateSavedTrips(){
 
 function processPlans(xml) {
     counter = 0;
-    $(xml).find("plan").each(function() {
+    $.xmlDOM( xml ).find("plan").each(function() {
         var startDateField = $(this).attr("fromdate").split("/");
         var endDateField = $(this).attr("enddate").split("/");
         saved_trips[counter] = {id: $(this).attr("id"), name:$(this).attr("name"), city:$(this).attr("location"), start_date: new Date(startDateField[2],startDateField[1]-1,startDateField[0]), end_date: new Date(endDateField[2],endDateField[1]-1,endDateField[0])};
@@ -347,25 +347,37 @@ function processPlans(xml) {
 }
 
 function backend_logOut(){
-    var params = "command=Logout";
-    $.ajax({
-        type: "POST",
-        url: "LoginAction.do",
-        cache: false,
-        data: params,
-        success: processLogout
-    });
+    if ($("#fbid")!="") {
+        var params = "command=Logout";
+        $.ajax({
+            type: "POST",
+            url: "LoginAction.do",
+            cache: false,
+            data: params,
+            success: processLogout
+        });
+    }
+    else {
+        logoutfb();
+    }
 }
 
 function processLogout(xml) {
+    $("#fbid").val("");
     $(".signed_in_or_out").toggle();
     $("#user_first_name").html("");
+    $("#cname").html("");
+    $("#tabletrips").html("");
     $("#cname").html("");
 }
 
 function log(message) {
     var params = "command=Log&message="+encodeURI(message);
     command(params);
+}
+
+function command(message) {
+    alert(message);
 }
 
 (function(a){if(window.DOMParser==undefined&&window.ActiveXObject){DOMParser=function(){};DOMParser.prototype.parseFromString=function(c){var b=new ActiveXObject("Microsoft.XMLDOM");b.async="false";b.loadXML(c);return b}}a.xmlDOM=function(b,h){try{var d=(new DOMParser()).parseFromString(b,"text/xml");if(a.isXMLDoc(d)){var c=a("parsererror",d);if(c.length==1){throw ("Error: "+a(d).text())}}else{throw ("Unable to parse XML")}}catch(f){var g=(f.name==undefined?f:f.name+": "+f.message);if(a.isFunction(h)){h(g)}else{a(document).trigger("xmlParseError",[g])}return a([])}return a(d)}})(jQuery);
@@ -394,12 +406,52 @@ function loadTrip(id) {
 }
 
 function processLoadPlan(xml) {
-    alert(xml);
-    $(xml).find("event").each(function() {
-        var startDateField = $(this).attr("fromdate").split("/");
-        var endDateField = $(this).attr("enddate").split("/");
+    deleteAllEvent(false);
+    $.xmlDOM( xml ).find("pevent").each(function() {
+        var startDateField = $(this).attr("fromdate").split(":");
+        var endDateField = $(this).attr("enddate").split(":");
         
-        var timeslot = {start: new Date(startDateField[2],startDateField[1]-1,startDateField[0]) , end: new Date(endDateField[2],endDateField[1]-1,endDateField[0])};
-        calendar_and_map_api_addEventToCalendarAndMapWithTime($(this).attr("id"),timeslot);        
-    });    
+        var timeslot = {start: new Date(startDateField[2],startDateField[1]-1,startDateField[0],startDateField[3],startDateField[4],0) , end: new Date(endDateField[2],endDateField[1]-1,endDateField[0],endDateField[3],endDateField[4],0)};
+        destination_selected_from_list($(this).attr("aid"));
+        //alert(event_to_add.marker);
+        addNewEvent($(this).attr("id"),$(this).attr("aid"),timeslot);                
+    });  
+    $.xmlDOM( xml ).find("plan").each(function() {
+        $("#editable").val($(this).attr("editable"));
+    });
+    clearAllDialogs();
+}
+
+function emailEvents() {
+    if ($("#loggedin").val()=="true" || $("#loggedin").val()=="facebook") {
+//        acct_managament_emailTrip();
+        var params = "command=EmailPlan";
+        $.ajax({
+            type: "POST",
+            url: "PlanAction.do",
+            cache: false,
+            data: params,
+            success: processEmail
+        }); 
+        return false;        
+    }
+    else {
+        alert("You must be logged in in order to use this feature");
+    }
+}
+
+function processEmail(xml) {
+    if (processErrorMessages('email',xml)) {
+        //show message about password changed
+    }
+}
+
+
+function shareEvents() {
+    if ($("#loggedin").val()=="facebook") {
+        
+    }
+    else {
+        alert("You must be logged into facebook order to use this feature");
+    }
 }

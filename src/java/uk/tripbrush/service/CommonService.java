@@ -20,6 +20,8 @@ import uk.tripbrush.model.travel.Attraction;
  */
 public class CommonService implements Serializable {
 
+    public static final String ROOT = "/Users/sseetal/Dropbox/Life Made Easy Ltd/email/";
+    
     private static Random rdm = new Random();
     private static final int PREFIX_START = 65;
     private static final int PREFIX_LETTERS = 26;

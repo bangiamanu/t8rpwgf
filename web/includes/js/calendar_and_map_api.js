@@ -11,15 +11,14 @@ function calendar_and_map_api_ready(){
 	
 }
 
-function calendar_and_map_api_addEventToCalendarAndMapWithTime(destination_id,open_slot){
+function calendar_and_map_api_addEventToCalendarAndMap(db_id,destination_id,open_slot){
 		event_to_add = available_destinations[destination_id];
-		var open_slot = findFirstOpenSlot(destination_id);
 		
-		// creating the calendar event
+            	// creating the calendar event
 		cal_destination_id = "C" + destination_id;		
-		var cal_event =  {id:cal_destination_id, 
-     
-							start: open_slot.start, 
+		var cal_event =  {eid: db_id,
+                    id:cal_destination_id, 
+     					start: open_slot.start, 
 							end: open_slot.end,
 							title:event_to_add.title,
 							available_destination_id: destination_id,
@@ -45,13 +44,6 @@ function calendar_and_map_api_addEventToCalendarAndMapWithTime(destination_id,op
 		
 		//Changing pointer in calendar_events to permanent marker
 		cal_event.marker = perm_marker;
-}
-
-// accepts destination id from available_destinations array and adds it to both calendar and map
-function calendar_and_map_api_addEventToCalendarAndMap(destination_id){
-		
-		var open_slot = findFirstOpenSlot(destination_id);
-                calendar_and_map_api_addEventToCalendarAndMapWithTime(destination_id, open_slot)
 }
 
 // accepts cal_event_id id from calendar_events array and removes it fron both calendar and map
@@ -200,7 +192,7 @@ function getInfoWindow(destination_id){
 	// add or remove to calendar
 	if (calendar_helper_isPlanned(dest.id)){
 		cal_event_id = getCalendarEventId(dest.id);
-		content_string += "<tr><td><img src='includes/images/removefromitinerary.png' /></td><td valign=middle><a href='#' onclick='deleteEvent(\"" + cal_event_id +"\")'>Remove</a></td></tr>"				
+		content_string += "<tr><td><img src='includes/images/removefromitinerary.png' /></td><td valign=middle><a href='#' onclick='deleteEvent(\"" + cal_event_id +"\",true)'>Remove</a></td></tr>"				
 	}
 	else{
 		content_string += "<tr><td><img src='includes/images/addtoitinerary.png' /></td><td valign=middle><a href='#' onclick='addEvent(" + dest.id +")'>Add to itinerary</a></td></tr>"				
@@ -306,5 +298,13 @@ function isClash(timeslot, calendar_event){
 // adds minutes to date
 function addMinutes(date, minutes){
 	return new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes() + minutes);
+}
+
+function deleteAllEvent(db) {
+     length = calendar_events.length;
+	for (i=0;i<length;i++){
+		var cal_event = calendar_events[0];
+                deleteEvent(cal_event.id,db);
+	}    
 }
 

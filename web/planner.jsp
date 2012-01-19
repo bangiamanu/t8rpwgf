@@ -167,6 +167,9 @@
             <input type="hidden" id="destination" value="<%=destination%>"/>
             <input type="hidden" id="howlong" value="<%=howlong%>"/>
             <input type="hidden" id="fromdate" value="<%=fromdate%>"/>
+            <input type="hidden" id="loggedin" value="false"/>
+            <input type="hidden" id="editable" value="true"/>
+            <input type="hidden" id="fbid" value=""/>
           </form>
                         
           <form id="categoryform">
@@ -223,15 +226,15 @@
 					</tr>
 					<tr>
 						<td align="center"><img src="includes/images/email_icon.png" width="28" height="28" /></td>
-						<td>Email</td>
+						<td><a href="javascript:emailEvents()">Email</a></td>
 					</tr>
-					<tr>
+					<!--tr>
 						<td align="center"><img src="includes/images/save_icon.png" width="24" height="28" /></td>
 						<td>Save</td>
-					</tr>
+					</tr-->
 					<tr>
-						<td align="center"><img src="includes/images/facebook_icon.png" width="24" height="28" /></td>
-						<td>Share on facebook</td>
+						<td align="center"><img src="includes/images/facebook_icon.png" width="24" height="28" /></a></td>
+						<td><a href="javascript:shareEvents()">Share on facebook</a></td>
 					</tr>
 				</table>
 			</div>
@@ -457,6 +460,13 @@
                 </table>
         </div><!-- profile -->
 
+        <div id="emailevents" class="white_dialog"><!--Email Events-->
+            <div id="emailmessage"></div>
+            <div id="emailerror"></div>
+            <div id='emailclose'><img src='includes/images/close.png' id='close_image' onClick='clearAllDialogs()'/></div>
+            We are now sending a copy of the plan to your email.
+        </div>        
+        
     </div><!-- container -->
 
     <!-- **************** guideboxes **************** -->

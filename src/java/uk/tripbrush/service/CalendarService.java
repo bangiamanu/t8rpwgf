@@ -9,8 +9,14 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+
 import java.util.HashMap;
 import java.util.List;
+import net.fortuna.ical4j.model.component.VEvent;
+
+import net.fortuna.ical4j.model.property.CalScale;
+import net.fortuna.ical4j.model.property.ProdId;
+import net.fortuna.ical4j.model.property.Version;
 import org.hibernate.Criteria;
 import uk.tripbrush.model.travel.Attraction;
 import uk.tripbrush.model.travel.Category;
@@ -120,7 +126,7 @@ public class CalendarService implements Serializable {
         }
         return result;
     }
-
+    
     public static void main(String[] args) {
         System.out.println("DDD");
     }

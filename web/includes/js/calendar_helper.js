@@ -24,7 +24,6 @@ function calendar_helper_populateCalendar(){
 		height: function() {return window.innerHeight - 0.45*window.innerHeight - 80},
 		eventRender : function(calEvent, $event) {
 			if (calEvent.id !=null){
-                            console.log(calEvent.eid);
                            updateEvent(calEvent.eid,calEvent.start,calEvent.end);
 				//calendar_events[calEvent.id] = calEvent; //TODO
 				calEvent.event_dom_handler = $event;
@@ -40,7 +39,6 @@ function calendar_helper_populateCalendar(){
 			calEvent.event_dom_handler = $event;
 		},
 		eventResize : function(calEvent, $event) {
-                     console.log(calEvent.eid);
                         updateEvent(calEvent.eid,calEvent.start,calEvent.end);
 			//calendar_events[calEvent.id] = calEvent; //TODO
 			checkEvent(calEvent, $event);
@@ -74,13 +72,15 @@ function calendar_helper_populateCalendar(){
 }
 
 function updateEvent(id,start,end) {
-    var params = "command=UpdateEvent&fromTime=" + start.formatDate("d/m/Y H:i") + "&toTime=" + end.formatDate("d/m/Y H:i")+"&id="+id;
-    $.ajax({
-        type: "POST",
-        url: "PlanAction.do",
-        cache: false,
-        data: params
-    });    
+    if ($("#editable").val()=="true") {
+        var params = "command=UpdateEvent&fromTime=" + start.formatDate("d:m:Y:H:i") + "&toTime=" + end.formatDate("d:m:Y:H:i")+"&id="+id;
+        $.ajax({
+            type: "POST",
+            url: "PlanAction.do",
+            cache: false,
+            data: params
+        });    
+    }
 }
 
 function calendar_helper_setEventBackgrounds(){

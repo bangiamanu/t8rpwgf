@@ -7,16 +7,19 @@ package uk.tripbrush.action;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.struts.action.ActionErrors;
 import uk.tripbrush.util.CommandConstant;
 import uk.tripbrush.util.Constant;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMessage;
 import uk.tripbrush.form.PlanForm;
 import uk.tripbrush.model.core.Plan;
 import uk.tripbrush.model.core.User;
 import uk.tripbrush.model.travel.Event;
 import uk.tripbrush.service.CommonService;
+import uk.tripbrush.service.EmailService;
 import uk.tripbrush.service.EventService;
 import uk.tripbrush.service.PlanService;
 import uk.tripbrush.util.DateUtil;
@@ -82,6 +85,15 @@ public class PlanAction extends org.apache.struts.action.Action {
                 EventService.deleteEvent(event.getId());
             }
             
+        }
+        else if (CommandConstant.EMAIL_PLAN.equals(pform.getCommand())) {
+            Plan plan = (Plan)request.getSession().getAttribute(Constant.SESSION_PLAN);
+            PlanService.sendPlan(plan);
+            ActionErrors errors = new ActionErrors();
+            errors.add(CommandConstant.MESSAGE, new ActionMessage("email.ok"));
+            if (!errors.isEmpty()) {
+                this.saveMessages(request, errors);
+            }            
         }
         return mapping.findForward(Constant.MAPPING_MESSAGE);
     }

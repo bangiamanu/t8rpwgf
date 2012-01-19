@@ -41,8 +41,13 @@ function clearAllDialogs(){
 
 // adds event as denoted by destination_id 
 function addEvent(destination_id){
+    var timeslot = findFirstOpenSlot(destination_id);
+    addNewEvent(-1,destination_id,timeslot);
+}
+
+function addNewEvent(db,destination_id,timeslot){
 	// add it to calendar and map
-	calendar_and_map_api_addEventToCalendarAndMap(destination_id);
+	calendar_and_map_api_addEventToCalendarAndMap(db,destination_id,timeslot);
 
 	// select it on calendar. remove temp from map and add permanent
 	var cal_event_id = getCalendarEventId(destination_id);
@@ -50,19 +55,21 @@ function addEvent(destination_id){
 	clearMapSelection();	
 	calendar_and_map_api_selectEventOnMap(cal_event.id);
         
-        var params = "command=AddEvent&fromTime=" + cal_event.start.formatDate("d/m/Y H:i") + "&toTime=" + cal_event.end.formatDate("d/m/Y H:i")  +"&attractionId="+available_destinations[destination_id].aid;
-        
-        $.ajax({
-            type: "POST",
-            url: "PlanAction.do",
-            cache: false,
-            data: params,
-            success: function(xml) {
-                $(xml).find("result").each(function() {
-                    cal_event.eid = $(this).text();
-                });
-            }
-        });
+        if (db==-1) {        
+            var params = "command=AddEvent&fromTime=" + cal_event.start.formatDate("d:m:Y:H:i") + "&toTime=" + cal_event.end.formatDate("d:m:Y:H:i")  +"&attractionId="+available_destinations[destination_id].id;
+
+            $.ajax({
+                type: "POST",
+                url: "PlanAction.do",
+                cache: false,
+                data: params,
+                success: function(xml) {
+                    $(xml).find("result").each(function() {
+                        cal_event.eid = $(this).text();
+                    });
+                }
+            });
+        }
 	
 	// grey out destination and clear list
 	list_api_greyOutDestination(destination_id);
@@ -76,7 +83,7 @@ function addEvent(destination_id){
 }
 
 // deletes event as denoted by cal_event_id 
-function deleteEvent(cal_event_id){
+function deleteEvent(cal_event_id,db){
 	// ungrey destination on list
 	cal_event = getCalendarEvent(cal_event_id);
 	list_api_unGreyDestination(cal_event.available_destination_id);
@@ -84,9 +91,8 @@ function deleteEvent(cal_event_id){
 	// and remove it from calendar and map
 	calendar_and_map_api_removeEventFromCalendarAndMap(cal_event_id);
 	
+        if (db) {
             var params = "command=DeleteEvent&id=" + cal_event.eid;
-
-            alert(params);
 
             $.ajax({
                 type: "POST",
@@ -94,6 +100,7 @@ function deleteEvent(cal_event_id){
                 cache: false,
                 data: params
             });        
+        }
         
 	// clear map and list
 	list_api_clearListSelection();
@@ -184,7 +191,7 @@ function deleteEvent(cal_event_id){
 function populateDestinations(category){
 	var destinations_list = getElement("destinations_list");
 	var str = "";
-	for (var i=0; i<available_destinations.length;i++){
+	for (var i in available_destinations){
 		evnt = available_destinations[i];
 		if (evnt.category.toString() == category.toString() || category.toString() == "all"){
 				str += "<li id='" + evnt.id + "' onmouseover='list_api_highlightDestination(" + evnt.id +")' onmouseout='list_api_removeDestinationHighlight(" + evnt.id + ")' onclick='destination_selected_from_list(" + evnt.id +")'>";
