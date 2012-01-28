@@ -47,6 +47,9 @@ public class QueryAction extends org.apache.struts.action.Action {
             }
             request.setAttribute(Constant.REQUEST_MESSAGE,"OK");
         }
+        else if (CommandConstant.LOG.equals(qform.getCommand())) {
+            System.out.println(qform.getMessage());
+        }
         return mapping.findForward(Constant.MAPPING_MESSAGE);
     }
 }

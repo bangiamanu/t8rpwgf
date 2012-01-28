@@ -38,8 +38,10 @@ public class CommandConstant implements Serializable {
     public static final String UPDATE_EVENT="UpdateEvent";
     public static final String DELETE_EVENT="DeleteEvent";
     public static final String EMAIL_PLAN="EmailPlan";
+    public static final String GET_USER_BYPLANKEY ="GetUserByPlanKey";
     
     public static final String RELOAD="reload";
+    public static final String LOG="Log";
     public static final String EMAIL="email";
     
     public static final String ERROR ="error";

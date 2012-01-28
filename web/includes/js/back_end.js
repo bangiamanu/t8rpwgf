@@ -75,9 +75,9 @@ function loadAvailableDestinationsData(xml) {
 
         var id = $(this).attr("aid");
         var category= $(this).find("category").text();
-        var title= $(this).find("title").text();
-        var description_short= $(this).find("description_short").text();
-        var description_long= $(this).find("description_long").text();
+        var title= URLDecode($(this).find("title").text());
+        var description_short= URLDecode($(this).find("description_short").text());
+        var description_long= URLDecode($(this).find("description_long").text());
         var image_file_name_small= $(this).find("image_file_name_small").text();
         var image_file_name_large= $(this).find("image_file_name_large").text();
         var wikipedia_url= $(this).find("wikipedia_url").text();
@@ -377,7 +377,12 @@ function log(message) {
 }
 
 function command(message) {
-    alert(message);
+    $.ajax({
+        url: "QueryAction.do",
+        type: "POST",
+        cache: false,
+        data: message
+    }); 
 }
 
 (function(a){if(window.DOMParser==undefined&&window.ActiveXObject){DOMParser=function(){};DOMParser.prototype.parseFromString=function(c){var b=new ActiveXObject("Microsoft.XMLDOM");b.async="false";b.loadXML(c);return b}}a.xmlDOM=function(b,h){try{var d=(new DOMParser()).parseFromString(b,"text/xml");if(a.isXMLDoc(d)){var c=a("parsererror",d);if(c.length==1){throw ("Error: "+a(d).text())}}else{throw ("Unable to parse XML")}}catch(f){var g=(f.name==undefined?f:f.name+": "+f.message);if(a.isFunction(h)){h(g)}else{a(document).trigger("xmlParseError",[g])}return a([])}return a(d)}})(jQuery);
@@ -407,6 +412,9 @@ function loadTrip(id) {
 
 function processLoadPlan(xml) {
     deleteAllEvent(false);
+    $.xmlDOM( xml ).find("planx").each(function() {
+        $("#editable").val($(this).attr("editable"));
+    });
     $.xmlDOM( xml ).find("pevent").each(function() {
         var startDateField = $(this).attr("fromdate").split(":");
         var endDateField = $(this).attr("enddate").split(":");
@@ -416,23 +424,25 @@ function processLoadPlan(xml) {
         //alert(event_to_add.marker);
         addNewEvent($(this).attr("id"),$(this).attr("aid"),timeslot);                
     });  
-    $.xmlDOM( xml ).find("plan").each(function() {
-        $("#editable").val($(this).attr("editable"));
-    });
     clearAllDialogs();
 }
 
 function emailEvents() {
     if ($("#loggedin").val()=="true" || $("#loggedin").val()=="facebook") {
-//        acct_managament_emailTrip();
-        var params = "command=EmailPlan";
-        $.ajax({
-            type: "POST",
-            url: "PlanAction.do",
-            cache: false,
-            data: params,
-            success: processEmail
-        }); 
+        if (emptycalendar) {
+            alert("You cannot email an empty calendar");
+        }
+        else {
+            acct_managament_emailTrip();
+            var params = "command=EmailPlan";
+            $.ajax({
+                type: "POST",
+                url: "PlanAction.do",
+                cache: false,
+                data: params,
+                success: processEmail
+            }); 
+        }
         return false;        
     }
     else {
@@ -449,7 +459,13 @@ function processEmail(xml) {
 
 function shareEvents() {
     if ($("#loggedin").val()=="facebook") {
-        
+        if (emptycalendar) {
+            alert("You cannot share an empty calendar");
+        }        
+        else {
+            plankey = $("#plankey").val();
+            postToFacebook("",$("#user_first_name").val() +" would like to share his plan going to " + $("#destinationname").val(),"http://www.tripbrush.com/ShareAction.do?keypass=" + plankey);
+        }
     }
     else {
         alert("You must be logged into facebook order to use this feature");

@@ -78,6 +78,23 @@ public class PlanService {
         return result;
     }
 
+    public static MResult getPlan(String keypass) {
+        MResult result = new MResult();
+        Session session = Database.getSession();
+        Plan plan = (Plan) session.createCriteria(PojoConstant.PLAN_MODEL).add(Restrictions.eq("reference", keypass)).uniqueResult();
+        if (plan != null) {
+            result.setObject(plan);
+            plan.setEvents(session.createCriteria(PojoConstant.EVENT_MODEL).add(Restrictions.eq("plan", plan)).list());
+            result.setCode(MResult.RESULT_OK);
+        } else {
+            result.setCode(MResult.RESULT_NOTOK);
+            result.setMessage("plan.error");
+        }
+        plan.setEvents(EventService.getEvents(plan));
+        return result;
+    }
+    
+    
     public static MResult updatePlan(Plan plan) {
         MResult result = new MResult();
         result.setCode(MResult.RESULT_OK);

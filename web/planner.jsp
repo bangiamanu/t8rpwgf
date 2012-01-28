@@ -19,6 +19,7 @@
     
     
     <!-- Javascript -->
+    <script type="application/javascript" src="includes/js/facebook.js"></script> <!-- Standard JS -->
     <script type="application/javascript" src="includes/js/plannerv10.js"></script> <!-- Standard JS -->
     <script type='text/javascript' src="includes/js/data_loader.js"></script> <!-- Event Data-->
     <script type='text/javascript' src="includes/js/calendar_helper.js"></script> <!-- Calendar Helper JS -->
@@ -65,6 +66,12 @@
 		 PHP formats: http://uk3.php.net/manual/en/function.date.php -->
     <script type='text/javascript' src="libs/formatdate.js"></script> <!-- Calendar JS -->
 
+<%
+    Plan plan = (Plan)session.getAttribute(Constant.SESSION_PLAN);
+    User user = (User)session.getAttribute(Constant.SESSION_USER);
+    if (plan!=null) {
+%>  
+    
     <script type="text/javascript">
             /********************** Window onload and resize code **********************/
 
@@ -91,6 +98,14 @@
                     else {
                         $("#signed_out").show();
                     }
+                    loadFacebook();
+                    <%
+                        if (user!=null) out.println("$('#user_first_name').val('" + user.getName() + "');");
+                        if (plan.isVerify()) {
+                            String result = (String) request.getAttribute(Constant.REQUEST_MESSAGE);
+                            out.println("$('#ofbid').val('" + result + "');");
+                        }
+                    %>
             });
 
 
@@ -103,15 +118,10 @@
 
 
 <body>
-
-    <div id="container">
-
+    <div id="container">   
+        <div id="fb-root"></div>
         <div id="toolbar">
             <img id="logo" src="includes/images/tripbrushlogo_inverted_small.png" alt="Logo" width="138" height="30" />
-<%
-    User user = (User)session.getAttribute(Constant.SESSION_USER);
-%>
-    <i
             <div id="loginactions">
 				<div id="signed_in" class="signed_in_or_out" style="display:none;">
 					<table cellpadding="0" cellspacing="3" height="40px" border="0px">
@@ -129,7 +139,7 @@
                 <div id="signed_out" class="signed_in_or_out" style="display:none;">
 					<table cellpadding="0" cellspacing="3" height="40px" border="0px">
 						<tr>
-							<td>Welcome <div id="user_first_name"><%=user.getName()%></div></td>
+							<td>Welcome <div id="user_first_name"></div></td>
 							<td width="20px">&nbsp;</td>
 							<td class="saved_trips"><a href="javascript:acct_management_showSavedTrips()"><img src="includes/images/saved_trips_icon.png"/></a></td>
 							<td class="saved_trips"><a href="javascript:acct_management_showSavedTrips()">Saved trips</a></td>
@@ -155,21 +165,25 @@
 			<div id="categories_list"></div> <!-- this is populated by the populateCategories() function -->
 
 <%
-    Plan plan = (Plan)session.getAttribute(Constant.SESSION_PLAN);
     int destination = plan.getLocation().getId();
     Integer howlong = plan.getLength();
     String fromdate = plan.getStartdateString();
+    String plankey = plan.getReference();
 %>
 
           <form id="categoryform">
             <input type="hidden" id="selectedcategory" value=""/>
             <input type="hidden" id="showuser" value="<%=(user!=null && user.getStatus()!=-1)%>"/>
             <input type="hidden" id="destination" value="<%=destination%>"/>
+            <input type="hidden" id="destinationname" value="<%=plan.getLocation().getName()%>"/>
             <input type="hidden" id="howlong" value="<%=howlong%>"/>
             <input type="hidden" id="fromdate" value="<%=fromdate%>"/>
             <input type="hidden" id="loggedin" value="false"/>
             <input type="hidden" id="editable" value="true"/>
             <input type="hidden" id="fbid" value=""/>
+            <input type="hidden" id="ofbid" value=""/>
+            <input type="hidden" id="plankey" value="<%=plankey%>"/>
+            <input type="hidden" id="validatePlan" value="<%=plan.isVerify()%>"/>
           </form>
                         
           <form id="categoryform">
@@ -279,7 +293,7 @@
                                                         <td colspan="2" align="center">&nbsp;  </td>
                                                 </tr>
                                                 <tr>
-                                                        <td colspan="2" align="center"><img src="includes/images/sign_in_with_facebook.png" /></td>
+                                                        <td colspan="2" align="center"><a href="javascript:loginfb()"><img src="includes/images/sign_in_with_facebook.png" /></a></td>
                                                 </tr>
                                         </table>
                                         <br/><br/>
@@ -506,6 +520,11 @@
         <p style="padding-bottom:2px;color:#36c" align="center">Happy Planning!</p>
         <p style="font-size:10px"><a href="javascript:endTutorial()">Close</a></p
     ></div>
-
+<%
+    }
+   else {
+    out.println("Invalid Plan");
+   }
+%>
 </body>
 </html>

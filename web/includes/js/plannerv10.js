@@ -28,6 +28,8 @@ var CALENDAR_EVENT_NOT_FOUND = "Couldnt find destination in calendar. Please con
 var NO_TIMESLOTS_AVILABLE_ERROR = "No timeslots available. Please free up your calendar. If you believe this is in error, please contact support@tripbrush.com with a screenshot.";
 
 
+var emptycalendar = true;
+
 function getElement(name) {
     return document.getElementById(name);
 }
@@ -43,9 +45,11 @@ function clearAllDialogs(){
 function addEvent(destination_id){
     var timeslot = findFirstOpenSlot(destination_id);
     addNewEvent(-1,destination_id,timeslot);
+    emptycalendar = false;
 }
 
 function addNewEvent(db,destination_id,timeslot){
+    emptycalendar = false;
 	// add it to calendar and map
 	calendar_and_map_api_addEventToCalendarAndMap(db,destination_id,timeslot);
 
@@ -304,5 +308,13 @@ function URLDecode(psEncodeString)
   var lsRegExp = /\+/g;
   // Return the decoded string
   return unescape(String(psEncodeString).replace(lsRegExp, " "));
+}
+
+function getUrlVars() {
+    var vars = {};
+    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+        vars[key] = value;
+    });
+    return vars;
 }
 

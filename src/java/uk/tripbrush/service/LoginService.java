@@ -33,16 +33,13 @@ public class LoginService {
             user = new User();
             user.setEmail(email);
             user.setName(name);
-            user.setReference(code);
-            session.save(user);
-            result.setCode(MResult.RESULT_OK);
         }
-        else {
-            user.setSessionID(CommonService.generateXcharacters(8));
-            session.saveOrUpdate(user);
-            result.setCode(MResult.RESULT_OK);
-            result.setObject(user);
-        }
+        user.setReference(code);
+        user.setSessionID(CommonService.generateXcharacters(8));
+        session.save(user);
+        session.saveOrUpdate(user);
+        result.setCode(MResult.RESULT_OK);
+        result.setObject(user);
         return result;        
     }
     

@@ -34,6 +34,8 @@ public class Plan implements Serializable {
     private List<Event> events;
 
     private Location location;
+    
+    private boolean verify;
 
 
     public Plan() {
@@ -234,5 +236,19 @@ public class Plan implements Serializable {
             }
         }
         return null;
+    }
+
+    /**
+     * @return the verify
+     */
+    public boolean isVerify() {
+        return verify;
+    }
+
+    /**
+     * @param verify the verify to set
+     */
+    public void setVerify(boolean verify) {
+        this.verify = verify;
     }
 }

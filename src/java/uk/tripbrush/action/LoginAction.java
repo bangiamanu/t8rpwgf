@@ -70,7 +70,7 @@ public class LoginAction extends org.apache.struts.action.Action {
         }
         else if (CommandConstant.FB_LOGIN.equals(qform.getCommand())) {
             String code = qform.getCode();
-            MResult result = LoginService.logInFacebook(null,null,code);
+            MResult result = LoginService.logInFacebook(qform.getName(),qform.getEmail(),code);
             if (result.getCode()==MResult.RESULT_OK) {
                 User user = (User)result.getObject();
                 if (user!=null) {

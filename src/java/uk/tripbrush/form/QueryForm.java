@@ -21,6 +21,7 @@ public class QueryForm extends BaseForm {
     private FormFile file;
     
     private String destination;
+    private String message;
 
 
     /**
@@ -78,6 +79,20 @@ public class QueryForm extends BaseForm {
      */
     public void setHowlong(int howlong) {
         this.howlong = howlong;
+    }
+
+    /**
+     * @return the message
+     */
+    public String getMessage() {
+        return message;
+    }
+
+    /**
+     * @param message the message to set
+     */
+    public void setMessage(String message) {
+        this.message = message;
     }
 
 }
