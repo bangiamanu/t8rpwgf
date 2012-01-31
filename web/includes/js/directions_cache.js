@@ -2,14 +2,22 @@
 /* A simple array containing the following hash
  *     {origin:google.maps.latLng,
         destination:google.maps.latLng,
-        time:   {walking:string,
-                driving:string,
-                public_transport:string},
+        time:   {walking:google.maps.Duration,
+                driving:google.maps.Duration,
+                public_transport:google.maps.Duration},
         directions:google.maps.DirectionsResult}
 
  */
 var directions_cache = new Array();
+var MAX_WALKING_MINUTES = 20;
 
+/**
+ * shows directions on the map
+ * Accepts
+ * origin: google.maps.latLng
+ * destination: google.maps.latLng
+ *
+ */
 function directions_cache_showDirections(origin, destination){
     var cache_directions = getDirectionsFromCache(origin, destination);
     if (cache_directions != null){
@@ -36,13 +44,21 @@ function directions_cache_showDirections(origin, destination){
     }
 }
 
-function directions_cache_updateWalkingTimeText(origin, destination, div_handle){
+
+/*
+ * Gets the walking time between origin and destination and calls functionToCall
+ * origin: google.maps.latLng
+ * destination: google.maps.latLng
+ * functionToCall(google.maps.Duration): function to call after walking time is determined
+ */
+function getWalkingTime(origin, destination, functionToCall){
     var cache_walking_time = getTimeFromCache(origin, destination, google.maps.TravelMode.WALKING);
     if (cache_walking_time != null){
         // if already in cache
-       alert(cache_walking_time);
+       functionToCall(cache_walking_time);
     }
    else{
+       // if not in cache
         var service = new google.maps.DistanceMatrixService();
         service.getDistanceMatrix(
           {
@@ -55,8 +71,8 @@ function directions_cache_updateWalkingTimeText(origin, destination, div_handle)
 
         function callback(response, status) {
               if (status == google.maps.DistanceMatrixStatus.OK) {
-                addTimeToCache(origin, destination, google.maps.TravelMode.WALKING, response.rows[0].elements[0].duration.text)
-                alert(response.rows[0].elements[0].duration.text);
+                addTimeToCache(origin, destination, google.maps.TravelMode.WALKING, response.rows[0].elements[0].duration)
+                functionToCall(response.rows[0].elements[0].duration);
               }
               else{
                   alert(DIRECTIONS_NOT_FOUND_ERROR + " (Errorcode - " + status + ")");
@@ -64,6 +80,43 @@ function directions_cache_updateWalkingTimeText(origin, destination, div_handle)
         }
     }
 }
+
+/*
+ * Gets the driving time between origin and destination and calls functionToCall
+ * origin: google.maps.latLng
+ * destination: google.maps.latLng
+ * functionToCall(google.maps.Duration): function to call after walking time is determined
+ */
+function getDrivingTime(origin, destination, functionToCall){
+    var cache_driving_time = getTimeFromCache(origin, destination, google.maps.TravelMode.DRIVING);
+    if (cache_driving_time != null){
+        // if already in cache
+       functionToCall(cache_driving_time);
+    }
+   else{
+       // if not in cache
+        var service = new google.maps.DistanceMatrixService();
+        service.getDistanceMatrix(
+          {
+            origins: [origin],
+            destinations: [destination],
+            travelMode: google.maps.TravelMode.DRIVING,
+            avoidHighways: false,
+            avoidTolls: false
+          }, callback);
+
+        function callback(response, status) {
+              if (status == google.maps.DistanceMatrixStatus.OK) {
+                addTimeToCache(origin, destination, google.maps.TravelMode.DRIVING, response.rows[0].elements[0].duration)
+                functionToCall(response.rows[0].elements[0].duration);
+              }
+              else{
+                  alert(DIRECTIONS_NOT_FOUND_ERROR + " (Errorcode - " + status + ")");
+              }
+        }
+    }
+}
+
 
 /*********************** Private functions *****************************/
 
@@ -94,7 +147,7 @@ function getDirectionsFromCache(origin, destination){
 function getTimeFromCache(origin, destination, type){
     for (var i in directions_cache){
         var cache_entry = directions_cache[i];
-        if (origin.equals(cache_entry.origin) && destination.equals(cache_entry.destination))
+        if (origin.equals(cache_entry.origin) && destination.equals(cache_entry.destination)){
             if (type == google.maps.TravelMode.WALKING){
                 if (cache_entry.time.walking != null)
                     return cache_entry.time.walking
@@ -103,6 +156,7 @@ function getTimeFromCache(origin, destination, type){
                 if (cache_entry.time.walking != null)
                     return cache_entry.time.driving
             }
+        }
     }
     return null;
 }
@@ -140,18 +194,18 @@ function addDirectionsToCache(origin, destination, directions){
  * origin is google.maps.LatLng
  * destination is google.maps.LatLng
  * type is google.maps.TravelMode
- * time is string with time value
+ * duration is google.maps.Duration
  */
-function addTimeToCache(origin, destination, type, time){
+function addTimeToCache(origin, destination, type, duration){
     // if the origin destination pair exists then update it
     if (origin !=null && destination != null){
         for (var i in directions_cache){
             var cache_entry = directions_cache[i];
             if (origin.equals(cache_entry.origin) && destination.equals(cache_entry.destination)){
                 if (type == google.maps.TravelMode.WALKING)
-                    cache_entry.time.walking = time;
+                    cache_entry.time.walking = duration;
                 if (type == google.maps.TravelMode.DRIVING)
-                    cache_entry.time.driving = time;
+                    cache_entry.time.driving = duration;
                 return;
             }
         }
@@ -162,7 +216,7 @@ function addTimeToCache(origin, destination, type, time){
         directions_cache.push(
             {origin:origin,
             destination:destination,
-            time:   {walking:time,
+            time:   {walking:duration,
                     driving:null,
                     public_transport:null},
             directions:null}
@@ -173,7 +227,7 @@ function addTimeToCache(origin, destination, type, time){
             {origin:origin,
             destination:destination,
             time:   {walking:null,
-                    driving:time,
+                    driving:duration,
                     public_transport:null},
             directions:directions}
         );

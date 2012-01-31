@@ -13,12 +13,12 @@ function calendar_and_map_api_ready(){
 
 // accepts destination id from available_destinations array and adds it to both calendar and map
 function calendar_and_map_api_addEventToCalendarAndMap(destination_id){
-		event_to_add = available_destinations[destination_id];
+		var event_to_add = available_destinations[destination_id];
 		var open_slot = findFirstOpenSlot(destination_id);
 		
 		// creating the calendar event
-		cal_destination_id = "C" + destination_id;		
-		var cal_event =  {	id:cal_destination_id, 
+		var cal_event_id = "C" + destination_id;
+		var cal_event =  {id:cal_event_id,
 							start: open_slot.start, 
 							end: open_slot.end,
 							title:event_to_add.title,
@@ -52,7 +52,7 @@ function calendar_and_map_api_removeEventFromCalendarAndMap(cal_event_id){
 	if (cal_event_id != null)
 	{
 		calendar_events = $('#calendar').weekCalendar("serializeEvents");			
-		cal_event = getCalendarEvent(cal_event_id);
+		cal_event = calendar_helper_getCalendarEvent(cal_event_id);
 
 		// delete permanent marker from the map
 		cal_event.marker.setMap(null);
@@ -105,7 +105,6 @@ function calendar_and_map_api_addTemporaryEventToMap(destination_id){
 	});
 }
 
-
 // refresh current_infowindow for given destination id and marker
 function calendar_and_map_api_updateCurrentInfoWindow(destination_id, marker){
 	if (current_infoWindow != null){
@@ -141,23 +140,22 @@ function calendar_and_map_api_refreshCurrentInfoWindow(){
 	}
 }
 
-
 // accepts an id from the array calendar_events and selects that event on the calendar
 function calendar_and_map_api_selectEventOnCalendar(cal_event_id){
 	selected_calendar_event_id = cal_event_id;
-	calendar_helper_setEventBackgrounds();
+    calendar_helper_refreshEvents();
 }
 
 // accepts an id from the array calendar_events and selects it on the map
 function calendar_and_map_api_selectEventOnMap(cal_event_id){
-	var cal_event = getCalendarEvent(cal_event_id);
+	var cal_event = calendar_helper_getCalendarEvent(cal_event_id);
 	calendar_and_map_api_updateCurrentInfoWindow(cal_event.available_destination_id, cal_event.marker);	
 }
 
 // clears calendar selection
 function calendar_and_map_api_clearCalendarSelection(){
 	selected_calendar_event_id = "";
-	calendar_helper_setEventBackgrounds();	
+    calendar_helper_refreshEvents();
 }
 
 
@@ -192,7 +190,7 @@ function getInfoWindow(destination_id){
 	
 	// add or remove to calendar
 	if (calendar_helper_isPlanned(dest.id)){
-		cal_event_id = getCalendarEventId(dest.id);
+		cal_event_id = calendar_helper_getCalendarEventId(dest.id);
 		content_string += "<tr><td><img src='includes/images/removefromitinerary.png' /></td><td valign=middle><a href='#' onclick='deleteEvent(\"" + cal_event_id +"\")'>Remove</a></td></tr>"				
 	}
 	else{
@@ -220,26 +218,6 @@ function getInfoWindow(destination_id){
 	return infowindow;		
 }
 
-// converts an id in the available_destinations array to the calendar_event id
-function getCalendarEventId(destination_id){
-	for (var i in calendar_events){
-		cal_event = calendar_events[i]
-		if (cal_event.available_destination_id == destination_id){
-			return cal_event.id;
-		}
-	}
-	alert(CALENDAR_EVENT_NOT_FOUND );
-}
-
-// returns the calendar_event object from the calendar_event_id (necessary because ids are strings and may not correspond to the sequential numerical id in the array
-function getCalendarEvent(cal_event_id)
-{
-	for (var i in calendar_events){
-		if (calendar_events[i].id == cal_event_id)	
-			return calendar_events[i];
-	}
-	alert(CALENDAR_EVENT_NOT_FOUND );
-}
 
 /*********************** Private - not (shouldn't be) used outside this js *******************************/
 

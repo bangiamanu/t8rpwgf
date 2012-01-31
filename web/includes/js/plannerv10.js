@@ -45,7 +45,8 @@ function addEvent(destination_id){
 	calendar_and_map_api_addEventToCalendarAndMap(destination_id);
 
 	// select it on calendar. remove temp from map and add permanent
-	var cal_event_id = getCalendarEventId(destination_id);
+	var cal_event_id = calendar_helper_getCalendarEventId(destination_id);
+    var cal_event = calendar_helper_getCalendarEvent(cal_event_id);
 	calendar_and_map_api_selectEventOnCalendar(cal_event.id);
 	clearMapSelection();	
 	calendar_and_map_api_selectEventOnMap(cal_event.id);
@@ -64,7 +65,7 @@ function addEvent(destination_id){
 // deletes event as denoted by cal_event_id 
 function deleteEvent(cal_event_id){
 	// ungrey destination on list
-	cal_event = getCalendarEvent(cal_event_id);
+	cal_event = calendar_helper_getCalendarEvent(cal_event_id);
 	list_api_unGreyDestination(cal_event.available_destination_id);
 
 	// and remove it from calendar and map
@@ -91,7 +92,7 @@ function deleteEvent(cal_event_id){
 			var cal_event_id;
 
 			try{
-				cal_event_id = getCalendarEventId(destination_id);
+				cal_event_id = calendar_helper_getCalendarEventId(destination_id);
 			}
 			catch(err){
 				alert(REMOVE_EVENT_ERROR);
