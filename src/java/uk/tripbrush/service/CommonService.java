@@ -20,7 +20,9 @@ import uk.tripbrush.model.travel.Attraction;
  */
 public class CommonService implements Serializable {
 
-    public static final String ROOT = "/Users/sseetal/Dropbox/Life Made Easy Ltd/email/";
+    //public static final String ROOT = "/Users/sseetal/Dropbox/Life Made Easy Ltd/email/";
+    
+    public static final String ROOT1 = "/home/kingston/deploy/tripbrush/";
     
     private static Random rdm = new Random();
     private static final int PREFIX_START = 65;
@@ -118,4 +120,6 @@ public class CommonService implements Serializable {
         Session session = Database.getSession();
         return (Attraction)session.createCriteria("uk.tripbrush.model.travel.Attraction").add(Restrictions.eq("id", id)).uniqueResult();
     }
+    
+
 }

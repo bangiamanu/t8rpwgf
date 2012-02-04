@@ -145,7 +145,7 @@ public class PlanService {
             calendar.getProperties().add(CalScale.GREGORIAN);
             StringBuffer bodyb = new StringBuffer();
 
-            String filename = CommonService.ROOT + "calendar" + plan.getId() + ".ics";
+            String filename = CommonService.ROOT1 + "calendar" + plan.getId() + ".ics";
             UidGenerator ug = new UidGenerator("1");
             bodyb.append("<table>");
             bodyb.append("<tr><th>Attraction</th><th>Time</th><th>Location</th></tr>");
