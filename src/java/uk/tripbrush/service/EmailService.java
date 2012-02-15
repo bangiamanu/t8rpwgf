@@ -157,7 +157,7 @@ public class EmailService {
         String results = "";
         try {
 
-            BufferedReader bf = new BufferedReader(new FileReader(CommonService.ROOT + type));
+            BufferedReader bf = new BufferedReader(new FileReader(CommonService.ROOT1 + type));
             StringBuffer body = new StringBuffer();
             String input = "";
             while (true) {
