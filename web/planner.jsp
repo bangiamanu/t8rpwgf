@@ -1,3 +1,7 @@
+<%@page import="uk.tripbrush.service.CommonService"%>
+<%@ page import="uk.tripbrush.util.Constant"%>
+<%@ page import="uk.tripbrush.model.core.User"%>
+<%@ page import="uk.tripbrush.model.core.Plan"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,7 +11,15 @@
     <!-- Stylesheet -->
     <link rel="stylesheet" href="includes/css/plannerv10.css" />
 
+    <!-- JQuery calendar JS -->
+    <script type='text/javascript' src='libs/jquery-1.4.4.min.js'></script>
+    <script type='text/javascript' src='libs/jquery-ui-1.8.11.custom.min.js'></script>
+    <script type="text/javascript" src="libs/date.js"></script>
+    <script type='text/javascript' src='libs/jquery.weekcalendar.js'></script>
+    
+    
     <!-- Javascript -->
+    <script type="application/javascript" src="includes/js/facebook.js"></script> <!-- Standard JS -->
     <script type="application/javascript" src="includes/js/plannerv10.js"></script> <!-- Standard JS -->
     <script type='text/javascript' src="includes/js/data_loader.js"></script> <!-- Event Data-->
     <script type='text/javascript' src="includes/js/calendar_helper.js"></script> <!-- Calendar Helper JS -->
@@ -42,11 +54,6 @@
     <link rel="stylesheet" type="text/css" href="includes/css/skins/default.css" />
     <link rel="stylesheet" type="text/css" href="includes/css/skins/gcalendar.css" />
 
-    <!-- JQuery calendar JS -->
-    <script type='text/javascript' src='libs/jquery-1.4.4.min.js'></script>
-    <script type='text/javascript' src='libs/jquery-ui-1.8.11.custom.min.js'></script>
-    <script type="text/javascript" src="libs/date.js"></script>
-    <script type='text/javascript' src='libs/jquery.weekcalendar.js'></script>
 
 
     <!-- Google Maps Javascripts -->
@@ -59,6 +66,12 @@
 		 PHP formats: http://uk3.php.net/manual/en/function.date.php -->
     <script type='text/javascript' src="libs/formatdate.js"></script> <!-- Calendar JS -->
 
+<%
+    Plan plan = (Plan)session.getAttribute(Constant.SESSION_PLAN);
+    User user = (User)session.getAttribute(Constant.SESSION_USER);
+    if (plan!=null) {
+%>  
+    
     <script type="text/javascript">
             /********************** Window onload and resize code **********************/
 
@@ -79,6 +92,20 @@
                     acct_management_ready();
                     done_button_api_ready();
                     directions_api_ready();
+                    if ($("#showuser").val()!="true") {
+                        $("#signed_in").show();
+                    }
+                    else {
+                        $("#signed_out").show();
+                    }
+                    loadFacebook();
+                    <%
+                        if (user!=null) out.println("$('#user_first_name').val('" + user.getName() + "');");
+                        if (plan.isVerify()) {
+                            String result = (String) request.getAttribute(Constant.REQUEST_MESSAGE);
+                            out.println("$('#ofbid').val('" + result + "');");
+                        }
+                    %>
             });
 
 
@@ -91,9 +118,8 @@
 
 
 <body>
-
-    <div id="container">
-
+    <div id="container">   
+        <div id="fb-root"></div>
         <div id="toolbar">
             <img id="logo" src="includes/images/tripbrushlogo_inverted_small.png" alt="Logo" width="138" height="30" />
             <div id="loginactions">
@@ -108,7 +134,9 @@
 						</tr>
 					</table>
 				</div>
-				<div id="signed_out" class="signed_in_or_out">
+
+                
+                <div id="signed_out" class="signed_in_or_out" style="display:none;">
 					<table cellpadding="0" cellspacing="3" height="40px" border="0px">
 						<tr>
 							<td>Welcome <div id="user_first_name"></div></td>
@@ -136,7 +164,28 @@
 
 			<div id="categories_list"></div> <!-- this is populated by the populateCategories() function -->
 
+<%
+    int destination = plan.getLocation().getId();
+    Integer howlong = plan.getLength();
+    String fromdate = plan.getStartdateString();
+    String plankey = plan.getReference();
+%>
 
+          <form id="categoryform">
+            <input type="hidden" id="selectedcategory" value=""/>
+            <input type="hidden" id="showuser" value="<%=(user!=null && user.getStatus()!=-1)%>"/>
+            <input type="hidden" id="destination" value="<%=destination%>"/>
+            <input type="hidden" id="destinationname" value="<%=plan.getLocation().getName()%>"/>
+            <input type="hidden" id="howlong" value="<%=howlong%>"/>
+            <input type="hidden" id="fromdate" value="<%=fromdate%>"/>
+            <input type="hidden" id="loggedin" value="false"/>
+            <input type="hidden" id="editable" value="true"/>
+            <input type="hidden" id="fbid" value=""/>
+            <input type="hidden" id="ofbid" value=""/>
+            <input type="hidden" id="plankey" value="<%=plankey%>"/>
+            <input type="hidden" id="validatePlan" value="<%=plan.isVerify()%>"/>
+          </form>
+                        
           <form id="categoryform">
             <input type="hidden" id="selectedcategory" value=""/>
           </form>
@@ -191,15 +240,15 @@
 					</tr>
 					<tr>
 						<td align="center"><img src="includes/images/email_icon.png" width="28" height="28" /></td>
-						<td>Email</td>
+						<td><a href="javascript:emailEvents()">Email</a></td>
 					</tr>
-					<tr>
+					<!--tr>
 						<td align="center"><img src="includes/images/save_icon.png" width="24" height="28" /></td>
 						<td>Save</td>
-					</tr>
+					</tr-->
 					<tr>
-						<td align="center"><img src="includes/images/facebook_icon.png" width="24" height="28" /></td>
-						<td>Share on facebook</td>
+						<td align="center"><img src="includes/images/facebook_icon.png" width="24" height="28" /></a></td>
+						<td><a href="javascript:shareEvents()">Share on facebook</a></td>
 					</tr>
 				</table>
 			</div>
@@ -214,16 +263,19 @@
         </div><!-- white_out -->
 
         <div id="sign_in" class="white_dialog">
-                <form name="sign_in" method="post" id="sign_in" onSubmit="backend_signIn()">
+            <div id="loginmessage"></div>
+            <div id="loginerror"></div>
+            <div id='loginclose'><img src='includes/images/close.png' id='close_image' onClick='clearAllDialogs()'/></div>
+                <form name="sign_in" method="post" id="sign_in" onSubmit="return backend_signIn()">
                         <p style="text-align:center; font-weight:bold; font-size:12px;">Log In</p><br/><br/>
                                         <table cellpadding="0" cellspacing="3" style="margin: 0px auto;">
                                                 <tr>
                                                         <td align="right">Email:</td>
-                                                        <td><input type=text name="email" id="email"/></td>
+                                                        <td><input type=text name="lemail" id="lemail"/></td>
                                                 </tr>
                                                 <tr>
                                                         <td align="right">Password:</td>
-                                                        <td><input type=text name="Password" id="password"/></td>
+                                                        <td><input type="password" name="lpassword" id="lpassword"/></td>
                                                 </tr>
                                                 <tr>
                                                         <td colspan="2" align="center">
@@ -241,7 +293,7 @@
                                                         <td colspan="2" align="center">&nbsp;  </td>
                                                 </tr>
                                                 <tr>
-                                                        <td colspan="2" align="center"><img src="includes/images/sign_in_with_facebook.png" /></td>
+                                                        <td colspan="2" align="center"><a href="javascript:loginfb()"><img src="includes/images/sign_in_with_facebook.png" /></a></td>
                                                 </tr>
                                         </table>
                                         <br/><br/>
@@ -251,25 +303,54 @@
                 </form>
         </div><!-- sign_in -->
 
+        <div id="verify" class="white_dialog">
+            <div id='verifyclose'><img src='includes/images/close.png' id='close_image' onClick='clearAllDialogs()'/></div>
+            <div id="verifymessage"></div>
+            <div id="verifyerror"></div>
+            <form name="verify" method="post" id="verify" onSubmit="return backend_verify()">
+                        <p style="text-align:center; font-weight:bold; font-size:12px;">Verify Account</p><br/><br/>
+                        <div> An email has been sent with a code. Please enter the code</div>                
+                        <table cellpadding="0" cellspacing="3" style="margin: 0px auto;">
+                                                <tr>
+                                                        <td align="right">Email:</td>
+                                                        <td><input type=text name="vemail" id="vemail"/></td>
+                                                </tr>
+                                                <tr>
+                                                        <td align="right">Code:</td>
+                                                        <td><input type=text name="vcode" id="vcode"/></td>
+                                                </tr>
+                                                <tr>
+                                                        <td colspan="2" align="center">
+                                                                <input type="submit" name="Submit" value="Submit" style="font-size:10px"/>
+                                                        </td>
+                                                </tr>
+                                        </table>
+                </form>
+        </div><!-- verify -->        
+        
         <div id="sign_up" class="white_dialog">
-                <form name="sign_up" method="post" id="sign_up" onSubmit="backend_signUp()">
+            <div id='registerclose'><img src='includes/images/close.png' id='close_image' onClick='clearAllDialogs()'/></div>
+            <div id="registermessage"></div>
+            <div id="registererror"></div>            
+                <form action="LoginAction.do" name="sign_up" method="post" id="sign_up" onSubmit="return backend_signUp()">
+                        <input type="hidden" name="command" value="NewUser"/>
                         <p style="text-align:center; font-weight:bold; font-size:12px;">Sign up</p><br/><br/>
                         <table cellpadding="0" cellspacing="3" style="margin: 0px auto;">
                                 <tr>
                                         <td align="right">Name:</td>
-                                        <td><input type=text name="user_first_name" id="user_first_name"/></td>
+                                        <td><input type=text name="rname" id="rname"/></td>
                                 </tr>
                                 <tr>
                                         <td align="right">Email*:</td>
-                                        <td><input type=text name="email" id="email"/></td>
+                                        <td><input type=text name="remail" id="remail"/></td>
                                 </tr>
                                 <tr>
                                         <td align="right">Password*:</td>
-                                        <td><input type=text name="Password" id="password"/></td>
+                                        <td><input type="password" name="rpassword" id="rpassword"/></td>
                                 </tr>
                                 <tr>
                                         <td align="right">Password Confirmation*:</td>
-                                        <td><input type=text name="Password1" id="password1"/></td>
+                                        <td><input type="password" name="rpassword1" id="rpassword1"/></td>
                                 </tr>
                                 <tr>
                                         <td colspan="2" align="center">
@@ -297,14 +378,17 @@
         </div><!-- signUp -->
 
         <div id="forgot_password" class="white_dialog">
-                <form name="forgot_password" method="post" id="forgot_password" onSubmit="backend_forgotPassword()">
+            <div id='forgotclose'><img src='includes/images/close.png' id='close_image' onClick='clearAllDialogs()'/></div>
+            <div id="forgotmessage"></div>
+            <div id="forgoterror"></div>    
+            <form name="forgot_password" method="post" id="forgot_password" onSubmit="return backend_forgotPassword()">
                         <p style="text-align:center; font-weight:bold; font-size:12px;">Forgotten Password</p><br/><br/>
                         <table cellpadding="0" cellspacing="3" style="margin: 0px auto;">
                                 <tr>
                                         <td align="center">Please enter the email used while creating an account and we will send you a temporary password<br/></td>
                                 </tr>
                                 <tr>
-                                        <td align="center">Email: <input type=text name="email" id="email"/></td>
+                                        <td align="center">Email: <input type=text name="femail" id="femail"/></td>
                                 </tr>
                                 <tr>
                                         <td align="center">
@@ -321,29 +405,35 @@
         </div><!-- forgot_password -->
 
         <div id="saved_trips" class="white_dialog">
-
+            <div id='forgotclose'><img src='includes/images/close.png' id='close_image' onClick='clearAllDialogs()'/></div>
+            <div id="tabletrips">
+                
+            </div>
         </div><!-- saved_trips -->
 
         <div id="profile" class="white_dialog">
+            <div id='profileclose'><img src='includes/images/close.png' id='close_image' onClick='clearAllDialogs()'/></div>
+            <div id="profilemessage"></div>
+            <div id="profileerror"></div>             
                 <table>
                         <tr>
                                 <td colspan="2"> <b>Change password</b></td>
                         </tr>
                         <tr>
                                 <td>Old password</td>
-                                <td><input type="text" id="old_password" name="old_password" /></td>
+                                <td><input type="password" id="old_password" name="old_password" /></td>
                         </tr>
                         <tr>
                                 <td>New password</td>
-                                <td><input type="text" id="new_password" name="new_password" /></td>
+                                <td><input type="password" id="new_password" name="new_password" /></td>
                         </tr>
                         <tr>
                                 <td>New password (confirmation)</td>
-                                <td><input type="text" id="new_password1" name="new_password1" /></td>
+                                <td><input type="password" id="new_password1" name="new_password1" /></td>
                         </tr>
                         <tr>
                                 <td colspan="2" align="center">
-                                        <input type="submit" name="Submit" value="Submit" style="font-size:10px"/>
+                                        <input type="submit" name="Submit" value="Submit" style="font-size:10px" onClick="backend_changePasswords()"/>
                                         <input type="button" name="Cancel" value="Cancel" style="font-size:10px" onClick="clearAllDialogs()"/>
                                 </td>
                         </tr>
@@ -356,15 +446,15 @@
                         </tr>
                         <tr>
                                 <td>Name</td>
-                                <td><input type="text" id="user_first_name" name="user_first_name" /></td>
+                                <td><input type="text" id="cname" name="cname" /></td>
                         </tr>
                         <tr>
                                 <td colspan="2" align="center">
-                                        <input type="submit" name="Submit" value="Submit" style="font-size:10px"/>
+                                        <input type="submit" name="Submit" value="Submit" style="font-size:10px" onClick="backend_changeName()"/>
                                         <input type="button" name="Cancel" value="Cancel" style="font-size:10px" onClick="clearAllDialogs()"/>
                                 </td>
                         </tr>
-                        <tr>
+                        <!--tr>
                                 <td>&nbsp;</td>
                                 <td>&nbsp;</td>
                         </tr>
@@ -380,10 +470,17 @@
                                         <input type="submit" name="Submit" value="Submit" style="font-size:10px"/>
                                         <input type="button" name="Cancel" value="Cancel" style="font-size:10px" onClick="clearAllDialogs()"/>
                                 </td>
-                        </tr>
+                        </tr-->
                 </table>
         </div><!-- profile -->
 
+        <div id="emailevents" class="white_dialog"><!--Email Events-->
+            <div id="emailmessage"></div>
+            <div id="emailerror"></div>
+            <div id='emailclose'><img src='includes/images/close.png' id='close_image' onClick='clearAllDialogs()'/></div>
+            We are now sending a copy of the plan to your email.
+        </div>        
+        
     </div><!-- container -->
 
     <!-- **************** guideboxes **************** -->
@@ -423,6 +520,11 @@
         <p style="padding-bottom:2px;color:#36c" align="center">Happy Planning!</p>
         <p style="font-size:10px"><a href="javascript:endTutorial()">Close</a></p
     ></div>
-
+<%
+    }
+   else {
+    out.println("Invalid Plan");
+   }
+%>
 </body>
 </html>

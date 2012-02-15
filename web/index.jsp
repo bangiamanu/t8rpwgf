@@ -16,7 +16,7 @@
 
 <!-- Link to index.css -->
 <link rel="stylesheet" type="text/css" href="includes/css/index.css" />
-<link rel='stylesheet' type='text/css' href='includes/css/jquery-ui-1.8.16.custom.custom.css' />
+<link rel='stylesheet' type='text/css' href='includes/css/jquery-ui-1.8.16.custom.css' />
 <!-- Link to index.js-->
 
 <script type='text/javascript' src='libs/jquery-1.4.4.min.js'></script>

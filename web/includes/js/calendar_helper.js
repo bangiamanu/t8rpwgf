@@ -27,6 +27,8 @@ function calendar_helper_populateCalendar(){
 		height: function() {return window.innerHeight - 0.45*window.innerHeight - 80},
 		eventRender : function(calEvent, $event) {
 			if (calEvent.id !=null){
+                updateEvent(calEvent.eid,calEvent.start,calEvent.end);
+				//calendar_events[calEvent.id] = calEvent; //TODO
 				calEvent.event_dom_handler = $event;
 				setIsValid(calEvent);
                 //calendar_helper_setTitleAndBackground(calEvent);
@@ -45,6 +47,8 @@ function calendar_helper_populateCalendar(){
 		eventResize : function(calEvent, $event) {
 			setIsValid(calEvent);
             calendar_helper_refreshEvents();
+            updateEvent(calEvent.eid,calEvent.start,calEvent.end);
+			//calendar_events[calEvent.id] = calEvent; //TODO
 		},
 		eventClick : function(calEvent, $event) {
 			destination_selected_from_calendar(calEvent.id);
@@ -74,9 +78,18 @@ function calendar_helper_populateCalendar(){
 
 }
 
-/*
-  * sets the background to grey if error free, red if outside opening hours, yellow if travel time is an issue, and blue if highlighted
- */
+function updateEvent(id,start,end) {
+    if ($("#editable").val()=="true") {
+        var params = "command=UpdateEvent&fromTime=" + start.formatDate("d:m:Y:H:i") + "&toTime=" + end.formatDate("d:m:Y:H:i")+"&id="+id;
+        $.ajax({
+            type: "POST",
+            url: "PlanAction.do",
+            cache: false,
+            data: params
+        });    
+    }
+}
+
 function calendar_helper_refreshEvents(){
 	calendar_events = $('#calendar').weekCalendar("serializeEvents");
     calendar_helper_sortEvents(calendar_events);

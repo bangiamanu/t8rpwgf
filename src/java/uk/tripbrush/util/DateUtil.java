@@ -16,7 +16,7 @@ import java.util.Date;
  */
 public class DateUtil {
 
-    private static SimpleDateFormat sdf_st = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+    private static SimpleDateFormat sdf_slash = new SimpleDateFormat("dd:MM:yyyy:HH:mm");
 
     private static SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
     private static SimpleDateFormat sdf_day = new SimpleDateFormat("dd/MM/yyyy");
@@ -26,6 +26,14 @@ public class DateUtil {
     public static final String START_DAY = "00:00";
     public static final String END_DAY = "23:59";
 
+    public static Date parseDateTime(String input) throws ParseException {
+        return sdf_slash.parse(input);
+    }
+
+    public static String formateDateTime(Date input) throws ParseException {
+        return sdf_slash.format(input);
+    }    
+    
     public static String getTime(Calendar cal) {
         return sdf_time.format(cal.getTime());
     }
@@ -33,7 +41,7 @@ public class DateUtil {
     public static String getDay(Calendar cal) {
         return sdf_day.format(cal.getTime());
     }
-
+    
 
     public static void setDay(Calendar cal,String date) {
         try {

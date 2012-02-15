@@ -2,6 +2,7 @@
 <%@ page import="uk.tripbrush.util.Constant"%>
 <%@ page import="uk.tripbrush.model.travel.*"%>
 <%@ page import="uk.tripbrush.view.*"%>
+<%@ page import="java.net.URLEncoder"%>
 <%@ page import="java.util.*"%>
 <result>
 <%
@@ -10,14 +11,14 @@
     for (Attraction c: result) {
         out.println("<attraction id=\"" + (counter++) + "\" aid=\"" + c.getId() + "\">");
         out.println("<category>" + c.getCategory().getName() + "</category>");                        
-        out.println("<title>" + c.getName() + "</title>");
+        out.println("<title>" + URLEncoder.encode(c.getName()) + "</title>");
         if (c.getDescription_short().length()>100) {
-            out.println("<description_short>" + c.getDescription_short().substring(0,100) + "...</description_short>");
+            out.println("<description_short>" + URLEncoder.encode(c.getDescription_short().substring(0,100)) + "...</description_short>");
         }
         else {
-            out.println("<description_short>" + c.getDescription_short() + "</description_short>");
+            out.println("<description_short>" + URLEncoder.encode(c.getDescription_short()) + "</description_short>");
         }
-        out.println("<description_long>" + c.getDescription() + "</description_long>");
+        out.println("<description_long>" + URLEncoder.encode(c.getDescription()) + "</description_long>");
         out.println("<image_file_name_small>" + c.getImageFileName_small() + "</image_file_name_small>");
         out.println("<image_file_name_large>" + c.getImageFileName() + "</image_file_name_large>");
         out.println("<postcode>" + c.getPostcode() + "</postcode>");
