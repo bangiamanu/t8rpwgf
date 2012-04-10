@@ -124,6 +124,7 @@ function loadAvailableDestinationsData(xml) {
             image_file_name_large: "includes/images/data/" +image_file_name_large,
             wikipedia_url: wikipedia_url,
             marker: null,
+            is_grey: false,
             other_links: links,
             opening_hours: openingtimes,
             postcode: postcode

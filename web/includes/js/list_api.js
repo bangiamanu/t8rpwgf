@@ -37,8 +37,8 @@ function list_api_removeDestinationHighlight(destination_id){
 //onclick
 // Takes an HTMl div as an inpout with the same id as one in available_destinations array
 function list_api_selectDestinationOnList(destination_id){
-	clickeddestination = available_destinations[destination_id];
-	last_selected_destination = getElement(current_destination_id);
+	var clickeddestination = available_destinations[destination_id];
+	var last_selected_destination = getElement(current_destination_id);
 	
 	if (clickeddestination != null)
 		if (current_destination_id != clickeddestination.id){
@@ -63,30 +63,37 @@ function list_api_selectDestinationOnList(destination_id){
 // clears list selection
 function list_api_clearListSelection(){
 	if (current_destination_id != null){
-		selected_destination_id = current_destination_id;
-		current_destination_id = null;	
-		list_api_removeDestinationHighlight(selected_destination_id );
+            var selected_destination_id = current_destination_id;
+            current_destination_id = null;	
+            list_api_removeDestinationHighlight(selected_destination_id );
 
 
-		// remove previous more links
-		$(".more_link").remove()
+            // remove previous more links
+            $(".more_link").remove()
 	}
 }
 
 
 // Accepts the destination_id of the destination to grey out.
 function list_api_greyOutDestination(destination_id){
-	destination = getElement(destination_id);
-	$("#" + destination_id).css("background-color","#ddd");
-	$("#" + destination_id).css("color","#555");
+    // set destination as grey in available_destinations
+    available_destinations[destination_id].is_grey = true;
+
+    // change destination element.
+    var destination = getElement(destination_id);
+    $("#" + destination_id).css("background-color","#ddd");
+    $("#" + destination_id).css("color","#555");
 }
 
 
 // Accepts the destination_id of the destination to remove grey out
 function list_api_unGreyDestination(destination_id){
-	destination = getElement(destination_id);
-	$("#" + destination_id).css("background-color","#fff");
-	$("#" + destination_id).css("color","#000");
+    // set destination as grey in available_destinations
+    available_destinations[destination_id].is_grey = false;
+
+    var destination = getElement(destination_id);
+    $("#" + destination_id).css("background-color","#fff");
+    $("#" + destination_id).css("color","#000");
 }
 
 
