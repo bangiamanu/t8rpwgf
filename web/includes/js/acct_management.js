@@ -26,6 +26,8 @@ function acct_management_signIn(){
         $("#lpassword").val("");
         clearMessages('login');
 	clearAllDialogs();
+        
+        //test
 	$("#white_out").fadeIn();	
 	setTimeout("$('#sign_in').fadeIn()",400);
 }
@@ -88,6 +90,11 @@ function acct_managament_emailTrip() {
     clearAllDialogs();
     $("#white_out").fadeIn();	
     setTimeout("$('#emailevents').fadeIn()",400);    
+}
+
+function clearAllDialogs(){
+    $(".white_dialog").fadeOut();
+    $("#white_out").fadeOut();
 }
 
 /*************************** private functions (shouldnt be called outside this file) **********************************/

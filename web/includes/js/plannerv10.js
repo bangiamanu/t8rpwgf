@@ -4,11 +4,6 @@ function getElement(name) {
 }
 
 
-function clearAllDialogs(){
-    $(".white_dialog").fadeOut();
-    $("#white_out").fadeOut();
-}
-
 
 // adds event as denoted by destination_id 
 function addEvent(destination_id){
