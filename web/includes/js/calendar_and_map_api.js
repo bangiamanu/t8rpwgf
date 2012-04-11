@@ -262,15 +262,15 @@ function findFirstOpenSlot(destination_id){
 
 // returns true if timeslot clashes with calendar event
 function isClash(timeslot, calendar_event){
-    ts = timeslot.start;
-    te = timeslot.end;
-    cs = calendar_event.start;
-    ce = calendar_event.end;
+    var ts = timeslot.start;
+    var te = timeslot.end;
+    var cs = calendar_event.start;
+    var ce = calendar_event.end;
 
-    if ((ts < ce && te >= ce) || (ts <= cs && te > cs))
+    if ((ts < ce && te >= ce) || (ts <= cs && te > cs) || (ts >= cs && te <= ce) ||(ts <= cs && te >= ce) )
         return true;
 
-    return false;		
+return false;		
 }
 
 // adds minutes to date

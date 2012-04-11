@@ -5,8 +5,8 @@ function getElement(name) {
 
 
 function clearAllDialogs(){
-	$(".white_dialog").fadeOut();
-	$("#white_out").fadeOut();
+    $(".white_dialog").fadeOut();
+    $("#white_out").fadeOut();
 }
 
 
