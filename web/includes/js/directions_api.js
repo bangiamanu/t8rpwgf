@@ -1,8 +1,4 @@
 // JavaScript Document
-var NO_EVENTS_FOR_DIRECTIONS_ERROR = "You don't have anything else planned on this day. Please add more activities to get directions. Coming soon! Directions from your hotel!";
-var DIRECTIONS_NOT_FOUND_ERROR = "Couldnt plot directions. Please email us at error@tripbrush.com with a screenshot. Apologies for the inconvenience."
-var directionsService;
-var directionsDisplay;
 
 
 function directions_api_ready(){

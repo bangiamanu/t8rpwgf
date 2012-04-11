@@ -1,14 +1,5 @@
 // JavaScript Document
 	
-// Constants
-var TIMESLOTS_PER_HOUR = 2;
-	
-var dayofweek = new Date().getDay();
-
-// calendar_events array holds events that are saved on the calendar. 
-// this is linked to the internal calendar array and is automagically updated by the JQuery component
-var calendar_events = new Array();
-var selected_calendar_event_id = "";
 
 /*
  * Initializes the calendar with default settings

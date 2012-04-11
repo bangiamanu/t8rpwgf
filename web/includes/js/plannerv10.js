@@ -1,34 +1,3 @@
-// map variables
-var map;
-var geocoder;
-var directionsService;
-var london_lat;
-var directionsDisplay;
-var zoom_level = 13;
-
-// temp marker that is changed everytime the selection is made
-var current_marker;
-
-// stores the active infowindow as there can be only one at a time
-var current_infoWindow;
-
-// current_destination_id is used for highlights. its the HTML id="" tag that also corrosponds to the id in the avialable_destinations array. usually a getElement() is called on the current_destination_id
-var current_destination_id = null;
-
-// showing_steps sets if overall guides are being shown
-// individual showsteps are switches for individual steps
-var showing_steps = false;
-var current_step = "step1";
-
-// CONSTANTS
-var SMALL_IMAGE_SIZE = 62;
-var REMOVE_EVENT_ERROR = "Couldnt find event on the map. Please contact support@tripbrush.com with a screenshot. Apologies for the inconvenience."
-var ADDRESS_NOT_FOUND = "Could not find the indicated address. Please make sure you are connected to the internet. If you are connected, please contact support@tripbrush.com with a screenshot. Apologies for the inconvenience."
-var CALENDAR_EVENT_NOT_FOUND = "Couldnt find destination in calendar. Please contact support@tripbrush.com with a screenshot. Apologies for the inconvenience."
-var NO_TIMESLOTS_AVILABLE_ERROR = "No timeslots available. Please free up your calendar. If you believe this is in error, please contact support@tripbrush.com with a screenshot.";
-
-
-var emptycalendar = true;
 
 function getElement(name) {
     return document.getElementById(name);
