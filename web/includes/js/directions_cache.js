@@ -9,7 +9,6 @@
 
  */
 var directions_cache = new Array();
-var MAX_WALKING_MINUTES = 20;
 
 /**
  * shows directions on the map

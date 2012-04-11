@@ -164,6 +164,8 @@ function event_selected_from_map(evnt){
 function destination_selected_from_calendar(cal_event_id){
         calendar_and_map_api_selectEventOnCalendar(cal_event_id);
         calendar_and_map_api_selectEventOnMap(cal_event_id);
+        
+        var cal_event = calendar_helper_getCalendarEvent(cal_event_id);
         list_api_selectDestinationOnList(cal_event.available_destination_id);
 }
 

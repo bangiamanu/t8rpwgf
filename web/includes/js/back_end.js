@@ -10,6 +10,7 @@ Places to update code
 var saved_trips = new Array(); // contains previously saved trips
 var days_to_show = 0; // length of calendar
 var calendar_start_date = new Date();
+var MAX_WALKING_MINUTES = 20; // if the walk is longer than this, the calendar defaults to drive
 
 function backend_ready(){
 	backend_loadCategories();

@@ -6,13 +6,13 @@ var directionsDisplay;
 
 
 function directions_api_ready(){
-	directionsService = new google.maps.DirectionsService();
-	directionsDisplay = new google.maps.DirectionsRenderer();
-	directionsDisplay.setMap(map);	
+    directionsService = new google.maps.DirectionsService();
+    directionsDisplay = new google.maps.DirectionsRenderer();
+    directionsDisplay.setMap(map);	
 }
 
 function directions_api_getDirectionHTML(cal_event_id){	
-	var str = "";
+    var str = "";
 	
     // setting previous and next events based on the current selected event
     var target_event = calendar_helper_getCalendarEvent(cal_event_id);
@@ -44,11 +44,11 @@ function directions_api_getDirectionHTML(cal_event_id){
  * Closes current infowindow
  */
 function directions_api_getDirections(cal_event_id1, cal_event_id2){	
-		var event1 = calendar_helper_getCalendarEvent(cal_event_id1);
-		var event2 = calendar_helper_getCalendarEvent(cal_event_id2);
-		directions_cache_showDirections(event1.marker.getPosition(), event2.marker.getPosition());
+    var event1 = calendar_helper_getCalendarEvent(cal_event_id1);
+    var event2 = calendar_helper_getCalendarEvent(cal_event_id2);
+    directions_cache_showDirections(event1.marker.getPosition(), event2.marker.getPosition());
 
-        calendar_and_map_api_closeCurrentInfoWindow();
+    calendar_and_map_api_closeCurrentInfoWindow();
 }
 
 /*
@@ -59,7 +59,7 @@ function directions_api_addTravelTimeToTitle(cal_event){
     var previous_event = calendar_helper_getPreviousEvent(cal_event.id)
     var title = "";
 
-    if (previous_event != null){
+    if (previous_event != null && previous_event.marker != null && cal_event != null && cal_event.marker != null){
         getWalkingTime(previous_event.marker.getPosition(), cal_event.marker.getPosition(), function (duration){
             if (duration.value < MAX_WALKING_MINUTES * 60){
                 title = available_destinations[cal_event.available_destination_id].title +
@@ -79,5 +79,3 @@ function directions_api_addTravelTimeToTitle(cal_event){
         calendar_helper_updateCalEventTitleAndBackground(cal_event, available_destinations[cal_event.available_destination_id].title);
     }
 }
-
-

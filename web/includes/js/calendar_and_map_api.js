@@ -28,9 +28,6 @@ function calendar_and_map_api_addEventToCalendarAndMap(db_id,destination_id,open
 							is_valid: true};
 
 
-		//Adding to calendar 
-		$('#calendar').weekCalendar("updateEvent", cal_event);
-		calendar_events = $('#calendar').weekCalendar("serializeEvents");	
 
 		// Creating a new permanent marker (cloning current_marker and adding new icon)
 		var perm_marker = new google.maps.Marker({
@@ -45,6 +42,11 @@ function calendar_and_map_api_addEventToCalendarAndMap(db_id,destination_id,open
 		
 		//Changing pointer in calendar_events to permanent marker
 		cal_event.marker = perm_marker;
+
+		//Adding to calendar 
+                // This needs to be last because the marker needs to be set (so the calendar can calculate distance)
+		$('#calendar').weekCalendar("updateEvent", cal_event);
+		calendar_events = $('#calendar').weekCalendar("serializeEvents");	
 }
 
 // accepts cal_event_id id from calendar_events array and removes it fron both calendar and map
