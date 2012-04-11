@@ -14,7 +14,6 @@ var selected_calendar_event_id = "";
  * Initializes the calendar with default settings
  */
 function calendar_helper_populateCalendar(){
-
 	// Event listeners for calendar and intiialize calendar
 	$('#calendar').weekCalendar({
 		timeslotsPerHour: TIMESLOTS_PER_HOUR,
@@ -27,18 +26,20 @@ function calendar_helper_populateCalendar(){
 		height: function() {return window.innerHeight - 0.45*window.innerHeight - 80},
 		eventRender : function(calEvent, $event) {
                     console.log(calEvent.title + " Render");
-                    if (calEvent.id !=null){
-                        // update the database
-                        updateEvent(calEvent.eid,calEvent.start,calEvent.end);
-                        
-                        calEvent.event_dom_handler = $event;
-                        //setIsValid(calEvent);
-                    }
 		},
 		eventAfterRender : function(calEvent, $event) {
                     console.log(calEvent.title + " After Render");
 
+                    // Update the database
+                    if (calEvent.id !=null){
+                        updateEvent(calEvent.eid,calEvent.start,calEvent.end);
+                    }
+                    
+                    // Set event params
                     setIsValid(calEvent);                    
+                    calEvent.event_dom_handler = $event;
+                    
+                    // Update backgrounds of all events
                     calendar_helper_refreshEvents();
                 },
 		eventNew : function(calEvent, $event) {
@@ -48,8 +49,9 @@ function calendar_helper_populateCalendar(){
 		eventDrop : function(calEvent, $event) {
                     console.log(calEvent.title + " Drop");
                     
-                    //$event is not the dom handler but the calevent itsself
-                    //calEvent.event_dom_handler = $event;
+                    // $event is not the dom handler but the calevent itsself 
+                    // and there are 2 events of the same type on the calendar right now
+                    // making this a pretty useless event
 		},
 		eventResize : function(calEvent, $event) {
                     console.log(calEvent.title + " Resize");
@@ -60,8 +62,10 @@ function calendar_helper_populateCalendar(){
 		},
 		eventClick : function(calEvent, $event) {
                     console.log(calEvent.title + " Click");
-
+                    
                     destination_selected_from_calendar(calEvent.id);
+
+                    // After render is not called after click so refreshing backgrounds
                     calendar_helper_refreshEvents();
 		},
 		eventMouseover : function(calEvent, $event) {
