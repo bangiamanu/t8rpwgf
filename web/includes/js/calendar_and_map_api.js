@@ -8,7 +8,51 @@ function calendar_and_map_api_ready(){
     initGoogleMaps();	
 }
 
+/*
+ * Adds an event on the calendar and map
+ * Doesnt assume that geocoding is done as the add method does
+ * 
+ * db_id: databse id
+ * destination_id: id from the available_destinations array
+ * timeslot: timeslot object with start and end as javascript dates
+ */
+function calendar_and_map_api_loadEvent(db_id, destination_id, timeslot){
+    
+    var destination_to_load = available_destinations[destination_id];
 
+    // geocode the address and store it in available_destinations
+    // NOTE that this is an async call. Cannot immediately use marker
+    // the async function adds it to calendar and map
+    geocoder.geocode( {
+        'address': destination_to_load.postcode +",UK"
+        }, function(results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                
+                // Create marker
+                var new_marker = new google.maps.Marker({
+                    map: map,
+                    position: results[0].geometry.location
+                });
+
+
+                // store market (in case its added permanently)
+                destination_to_load.marker = new_marker;
+                
+                // add to map and calendar
+                calendar_and_map_api_addEventToCalendarAndMap(db_id, destination_id, timeslot)
+        }
+        else{
+            alert(LOAD_ADDRESS_ERROR);
+        }
+    });
+}
+
+
+/*
+ * adds an event to calendar and map
+ * NOTE: assumes that available_destinations[destination_id].marker exists
+ * If it doesnt, call loadEvent
+ */
 function calendar_and_map_api_addEventToCalendarAndMap(db_id,destination_id,open_slot){
     var event_to_add = available_destinations[destination_id];
 
@@ -76,7 +120,7 @@ function calendar_and_map_api_addTemporaryEventToMap(destination_id){
         'address': temporary_destination.postcode +",UK"
     }, function(results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
-            myLatlng = results[0].geometry.location;
+            var myLatlng = results[0].geometry.location;
             if (current_marker!=null) {
                 current_marker.setMap(null);
             }
@@ -85,7 +129,7 @@ function calendar_and_map_api_addTemporaryEventToMap(destination_id){
             current_marker = new google.maps.Marker({
                 map: map,
                 position: myLatlng
-            });				
+            });
 
             // center and zoom map
             //map.setCenter(current_marker.position);

@@ -61,6 +61,9 @@ var TIMESLOT_LENGTH;
 var NO_EVENTS_FOR_DIRECTIONS_ERROR = "You don't have anything else planned on this day. Please add more activities to get directions. Coming soon! Directions from your hotel!";
 var DIRECTIONS_NOT_FOUND_ERROR = "Couldnt plot directions. Please email us at error@tripbrush.com with a screenshot. Apologies for the inconvenience."
 
+
+var LOAD_ADDRESS_ERROR = "An error occurred while loading an event. It seems that the address cannot be found. Please email us at error@tripbrush.com with a screenshot. Apologies for the inconvenience."
+
 function global_variables_ready(){
     console.log("Global variables initialised")
     
