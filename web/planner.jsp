@@ -19,6 +19,7 @@
     
     
     <!-- Javascript -->
+    <script type='text/javascript' src="includes/js/global_variables.js"></script> <!-- Global variables used by files-->
     <script type="application/javascript" src="includes/js/facebook.js"></script> <!-- Standard JS -->
     <script type="application/javascript" src="includes/js/plannerv10.js"></script> <!-- Standard JS -->
     <script type='text/javascript' src="includes/js/data_loader.js"></script> <!-- Event Data-->
@@ -86,6 +87,7 @@
             // using document.ready instead of window.onload
             $(document).ready(function() {
                     // calling ready functions of APIs and other javascript files
+                    global_variables_ready();
                     calendar_and_map_api_ready();
                     sizing_ready();
                     backend_ready();

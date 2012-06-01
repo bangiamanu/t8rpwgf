@@ -49,6 +49,7 @@ public class PlanAction extends org.apache.struts.action.Action {
             MResult result = PlanService.getPlan(user, pform.getId());
             if (result.getCode()==MResult.RESULT_OK) {
                 Plan plan = (Plan)result.getObject();
+                plan.setEditable(true);
                 request.getSession().setAttribute(Constant.SESSION_PLAN, plan);
                 return mapping.findForward("pland");
             }

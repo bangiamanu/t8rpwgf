@@ -4,34 +4,34 @@
 
 //onmouseover
 function list_api_highlightDestination(destination_id){
-	var destination = getElement(destination_id);
-	destination.style.backgroundImage="url(includes/images/destinationhighlight.jpg)";
-	var filename = $("#" + destination_id + " > img").attr("src");
-	var filename_length = filename.length;
-		
-	var imagename = filename.substring(0,filename_length - 4);
-	var imageextension = filename.substring(filename_length - 6, filename_length);
-	
-	if (imageextension != "co.jpg"){	
-		$("#" + destination_id + " > img").attr("src", imagename + "co.jpg");
-	}
+    var destination = getElement(destination_id);
+    destination.style.backgroundImage="url(includes/images/destinationhighlight.jpg)";
+    var filename = $("#" + destination_id + " > img").attr("src");
+    var filename_length = filename.length;
+
+    var imagename = filename.substring(0,filename_length - 4);
+    var imageextension = filename.substring(filename_length - 6, filename_length);
+
+    if (imageextension != "co.jpg"){	
+        $("#" + destination_id + " > img").attr("src", imagename + "co.jpg");
+    }
 }
 
 //onmouseout
 function list_api_removeDestinationHighlight(destination_id){
-	var destination = getElement(destination_id);
-	if (current_destination_id != destination.id){
-		destination.style.backgroundImage = null;
-		var filename = $("#" + destination_id + " > img").attr("src");
-		var filename_length = filename.length;
-	
-		var imagename = filename.substring(0,filename_length - 4);
-		var imageextension = filename.substring(filename_length - 6, filename_length);
-			
-		if (imageextension == "co.jpg"){	
-			$("#" + destination_id + " > img").attr("src", imagename.substring(0, imagename.length-2) + ".jpg");
-		}	
-	}
+    var destination = getElement(destination_id);
+    if (current_destination_id != destination.id){
+        destination.style.backgroundImage = null;
+        var filename = $("#" + destination_id + " > img").attr("src");
+        var filename_length = filename.length;
+
+        var imagename = filename.substring(0,filename_length - 4);
+        var imageextension = filename.substring(filename_length - 6, filename_length);
+
+        if (imageextension == "co.jpg"){	
+            $("#" + destination_id + " > img").attr("src", imagename.substring(0, imagename.length-2) + ".jpg");
+        }	
+    }
 }
 
 //onclick
