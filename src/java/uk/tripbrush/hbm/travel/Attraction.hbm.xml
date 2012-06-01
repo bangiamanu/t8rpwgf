@@ -21,5 +21,7 @@
     <property length="255" name="url" type="java.lang.String"/>
     <property length="255" name="wikiurl" type="java.lang.String"/>
     <property length="1000" name="otherlinks" type="java.lang.String"/>
+    <property length="1000" name="address" type="java.lang.String"/>
+    <property length="20" name="phone" type="java.lang.String"/>
   </class>
 </hibernate-mapping>

@@ -14,6 +14,7 @@ import uk.tripbrush.util.Constant;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import uk.tripbrush.model.core.Plan;
 import uk.tripbrush.model.travel.Attraction;
 import uk.tripbrush.model.travel.Category;
 import uk.tripbrush.service.CalendarService;
@@ -35,7 +36,8 @@ public class QueryAction extends org.apache.struts.action.Action {
             return mapping.findForward("categories");
         }
         else if (CommandConstant.GET_ATTRACTIONS.equals(qform.getCommand())) {
-            List<Attraction> attractions = CalendarService.getAttractions(qform.getDestination(),qform.getFromdate(),qform.getHowlong());
+            Plan plan = (Plan)request.getSession().getAttribute(Constant.SESSION_PLAN);
+            List<Attraction> attractions = CalendarService.getAttractions(plan);
             request.setAttribute(Constant.REQUEST_MESSAGE, attractions);
             return mapping.findForward("attractions");
         }
@@ -44,6 +46,9 @@ public class QueryAction extends org.apache.struts.action.Action {
                 UploadService.process(qform.getFile().getInputStream());
             }
             request.setAttribute(Constant.REQUEST_MESSAGE,"OK");
+        }
+        else if (CommandConstant.LOG.equals(qform.getCommand())) {
+            System.out.println(qform.getMessage());
         }
         return mapping.findForward(Constant.MAPPING_MESSAGE);
     }

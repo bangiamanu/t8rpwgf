@@ -2,11 +2,11 @@ package uk.tripbrush.model.travel;
 
 import java.io.Serializable;
 import java.util.Calendar;
-import java.util.List;
 import uk.tripbrush.model.core.Plan;
+import uk.tripbrush.util.DateUtil;
 
 /** @author Hibernate CodeGenerator */
-public class Event implements Serializable {
+public class Event implements Serializable, Comparable<Event> {
 
     private int id;
     private Calendar startdate;
@@ -18,6 +18,8 @@ public class Event implements Serializable {
 
     /** default constructor */
     public Event() {
+        startdate = Calendar.getInstance();
+        enddate = Calendar.getInstance();
     }
 
     /**
@@ -121,5 +123,31 @@ public class Event implements Serializable {
      */
     public void setTimeslotId(int timeslotId) {
         this.timeslotId = timeslotId;
+    }
+    
+    public String getTime() {
+        return DateUtil.getTime(startdate)+"-"+DateUtil.getTime(enddate);
+    }
+    
+    public int getNumberSlots() {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(startdate.getTime());
+        int result = 0;
+        while (true) {
+            cal.add(Calendar.MINUTE, 15);
+            if (cal.equals(enddate) || cal.after(enddate)) {
+                break;
+            }
+            result++;
+        }
+        return result+1;
+    }
+
+    public int compareTo(Event t) {
+        return startdate.compareTo(t.getStartdate());
+    }
+    
+    public String getDuration() {
+        return DateUtil.getFullTime(startdate)+" to "+DateUtil.getFullTime(enddate);
     }
 }

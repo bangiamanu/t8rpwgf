@@ -1,5 +1,6 @@
 package uk.tripbrush.model.core;
 
+import edu.emory.mathcs.backport.java.util.Collections;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -26,12 +27,16 @@ public class Plan implements Serializable {
     private Calendar startdate;
 
     private Calendar enddate;
+    
+    private int length;
 
     private int view;
 
     private List<Event> events;
 
     private Location location;
+    
+    private boolean verify;
 
 
     public Plan() {
@@ -182,6 +187,19 @@ public class Plan implements Serializable {
         return events;
     }
 
+    public List<Event> getEvents(Calendar cal) {
+        List<Event> result = new ArrayList<Event>();
+        for (Event event: events) {
+            if (DateUtil.sameday(event.getStartdate(),cal)) {
+                result.add(event);
+            }
+        }
+        Collections.sort(result);
+        return result;
+    }  
+    
+    
+    
     /**
      * @param events the events to set
      */
@@ -203,5 +221,48 @@ public class Plan implements Serializable {
         this.location = location;
     }
 
+    /**
+     * @return the length
+     */
+    public int getLength() {
+        return length;
+    }
 
+    /**
+     * @param length the length to set
+     */
+    public void setLength(int length) {
+        this.length = length;
+    }
+
+    public Event deleteEvent(int id) {
+        Event event = getEvent(id);
+        if (event!=null) {
+            getEvents().remove(event);
+        }
+        return event;
+    }
+    
+    public Event getEvent(int id) {
+        for (Event event: getEvents()) {
+            if (event.getId()==id) {
+                return event;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * @return the verify
+     */
+    public boolean isVerify() {
+        return verify;
+    }
+
+    /**
+     * @param verify the verify to set
+     */
+    public void setVerify(boolean verify) {
+        this.verify = verify;
+    }
 }

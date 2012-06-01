@@ -16,10 +16,12 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.util.MessageResources;
+import uk.tripbrush.model.core.Plan;
 import uk.tripbrush.model.core.User;
 import uk.tripbrush.service.LoginService;
 import uk.tripbrush.service.PlanService;
 import uk.tripbrush.service.UserService;
+import uk.tripbrush.util.StringUtil;
 import uk.tripbrush.view.MResult;
 
 /**
@@ -42,11 +44,11 @@ public class LoginAction extends org.apache.struts.action.Action {
                 passkey = passkey.replaceAll(" ","").toLowerCase();
             }
             if ("takemeaway".equals(passkey)) {
-                request.setAttribute(Constant.REQUEST_MESSAGE,"OK"  );
+                request.setAttribute(Constant.REQUEST_MESSAGE,"OK");
                 request.getSession().setAttribute(Constant.SESSION_ACCESS,"AAA");
             }
             else {
-                request.setAttribute(Constant.REQUEST_MESSAGE,"NOTOK"  );
+                request.setAttribute(Constant.REQUEST_MESSAGE,"NOTOK");
             }
         }
         else if (CommandConstant.CONFIRM_PASSWORD.equals(qform.getCommand())) {
@@ -55,23 +57,56 @@ public class LoginAction extends org.apache.struts.action.Action {
                 return mapping.findForward("index");
             }
             else {
-                request.getSession().setAttribute(Constant.SESSION_DESTINATION,qform.getDestination());
-                request.getSession().setAttribute(Constant.SESSION_DURATION,qform.getHowlong());
-                request.getSession().setAttribute(Constant.SESSION_FROM,qform.getFromdate());
+                User user = (User)request.getSession().getAttribute(Constant.SESSION_USER);
+                if (user==null) {
+                    user = UserService.createTempUser();
+                }
+                Plan plan = PlanService.createNewPlan(qform.getDestination(),qform.getFromdate(),qform.getHowlong());
+                PlanService.createPlan(user, plan);
+                request.getSession().setAttribute(Constant.SESSION_PLAN,plan);
+                request.getSession().setAttribute(Constant.SESSION_USER,user);
                 return mapping.findForward("success");
             }
         }
+        else if (CommandConstant.FB_LOGIN.equals(qform.getCommand())) {
+            String code = qform.getCode();
+            MResult result = LoginService.logInFacebook(qform.getName(),qform.getEmail(),code);
+            if (result.getCode()==MResult.RESULT_OK) {
+                User user = (User)result.getObject();
+                if (user!=null) {
+                    request.setAttribute(Constant.REQUEST_MESSAGE, user.getName());
+                    PlanService.loadPlans(user);
+                    User suser = (User)request.getSession().getAttribute(Constant.SESSION_USER);
+                    if (suser!=null && suser.getStatus()==UserService.TEMP_USER) {
+                        user.getPlans().addAll(UserService.deleteTempUser(suser,user));
+                    }
+                    request.getSession().setAttribute(Constant.SESSION_USER, user);
+                }
+            }
+        }
+        else if (CommandConstant.FB_LOGOUT.equals(qform.getCommand())) {
+            User user = (User)request.getSession().getAttribute(Constant.SESSION_USER);
+            if (user!=null) {
+                LoginService.logOut(user);
+            }
+            request.getSession().setAttribute(Constant.SESSION_USER, null);
+            request.getSession().setAttribute(Constant.SESSION_PLAN, null);               
+        }
         else {
             if (errors.isEmpty()) {
-
-                if (CommandConstant.LOGOUT_USER.equals(qform.getCommand())) {
+                if (CommandConstant.GET_USER.equals(qform.getCommand())) {
+                    User user = (User)request.getSession().getAttribute(Constant.SESSION_USER);
+                    if (user!=null && user.getStatus()!=UserService.TEMP_USER) {
+                        request.setAttribute(Constant.REQUEST_MESSAGE, user.getName());
+                    }
+                }
+                else if (CommandConstant.LOGOUT_USER.equals(qform.getCommand())) {
                     User user = (User)request.getSession().getAttribute(Constant.SESSION_USER);
                     if (user!=null) {
                         LoginService.logOut(user);
                     }
                     request.getSession().setAttribute(Constant.SESSION_USER, null);
                     request.getSession().setAttribute(Constant.SESSION_PLAN, null);                    
-                    mapping.findForward("success");
                 }
                 else if (CommandConstant.LOGIN_USER.equals(qform.getCommand())) {
                     String username = qform.getEmail();
@@ -92,8 +127,12 @@ public class LoginAction extends org.apache.struts.action.Action {
                                 request.setAttribute(Constant.REQUEST_MESSAGE, "verify");
                             }
                             else {
-                                user.setEmail(username);
+                                request.setAttribute(Constant.REQUEST_MESSAGE, user.getName());
                                 PlanService.loadPlans(user);
+                                User suser = (User)request.getSession().getAttribute(Constant.SESSION_USER);
+                                if (suser!=null && suser.getStatus()==UserService.TEMP_USER) {
+                                    user.getPlans().addAll(UserService.deleteTempUser(suser,user));
+                                }
                                 request.getSession().setAttribute(Constant.SESSION_USER, user);
                             }
                         }
@@ -128,7 +167,20 @@ public class LoginAction extends org.apache.struts.action.Action {
                 else if (CommandConstant.NEW_USER.equals(qform.getCommand())) {
                     String email = qform.getEmail();
                     String npassword = qform.getNewpassword();
-                    User user = new User();
+                    User user = null;
+                    User suser = (User)request.getSession().getAttribute(Constant.SESSION_USER);
+                    if (suser!=null && suser.getStatus()==UserService.TEMP_USER) {
+                        user = new User(suser);
+                    }
+                    else {
+                        user = new User();
+                    }
+                    if (StringUtil.isEmpty(qform.getName())) {
+                        user.setName("User");
+                    }
+                    else {
+                        user.setName(qform.getName());
+                    }
                     user.setEmail(email);
                     user.setPassword(npassword);
                     MResult result = UserService.newUser(user);

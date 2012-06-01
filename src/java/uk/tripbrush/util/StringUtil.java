@@ -19,7 +19,10 @@ public class StringUtil {
     }
 
     public static boolean validateLength(String input, int length) {
-        return null!=input && input.length()<length;
+        if (input!=null) {
+            return input.length()<length;
+        }
+        return true;
     }
 
     public static boolean isEmpty(String input) {

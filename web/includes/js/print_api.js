@@ -17,6 +17,7 @@ function print_api_printEvents(){
 							end_date_formatted: cal_event.end.formatDate('l, F jS'),
 							end_time_formatted: cal_event.end.formatDate('g:i a'),
 							title: cal_event.title,
+                            marker: cal_event.marker,
 							image: available_destination.image_file_name_large,
 							postcode: available_destination.postcode,
 							description: available_destination.description_short};
@@ -26,7 +27,7 @@ function print_api_printEvents(){
 	
 	
 	//Sort that array of events by start date
-	print_api_sortEvents(print_events);
+	calendar_helper_sortEvents(print_events);
 	
 	//print that array of events
 	var printWindow=window.open('','Print','width=800');
@@ -70,28 +71,4 @@ function print_api_printEvents(){
 }
 
 
-// Sorts any array of events has based on .start parameter
-function print_api_sortEvents(array) {
-  var x, y, holder;
-  // The Bubble Sort method.
-  for(x = 0; x < array.length; x++) {
-	for(y = 0; y < (array.length-1); y++) {
-	  if(array[y].start > array[y+1].start) {
-		holder = array[y+1];
-		array[y+1] = array[y];
-		array[y] = holder;
-	  }
-	}
-  }
-}
-
-
-// check if the dates are equal
-function print_api_dateEquals(date1, date2){
-	if (date1.getFullYear() == date2.getFullYear())
-		if (date1.getMonth() == date2.getMonth())
-			if (date1.getDate() == date2.getDate())
-				return true;
-	return false;
-}
 	

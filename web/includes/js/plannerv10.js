@@ -27,7 +27,8 @@ var ADDRESS_NOT_FOUND = "Could not find the indicated address. Please make sure 
 var CALENDAR_EVENT_NOT_FOUND = "Couldnt find destination in calendar. Please contact support@tripbrush.com with a screenshot. Apologies for the inconvenience."
 var NO_TIMESLOTS_AVILABLE_ERROR = "No timeslots available. Please free up your calendar. If you believe this is in error, please contact support@tripbrush.com with a screenshot.";
 
-var OFFLINE = true;
+
+var emptycalendar = true;
 
 function getElement(name) {
     return document.getElementById(name);
@@ -42,35 +43,68 @@ function clearAllDialogs(){
 
 // adds event as denoted by destination_id 
 function addEvent(destination_id){
-	// add it to calendar and map
-	calendar_and_map_api_addEventToCalendarAndMap(destination_id);
+    var timeslot = findFirstOpenSlot(destination_id);
+    addNewEvent(-1,destination_id,timeslot);
+    emptycalendar = false;
+}
 
-	// select it on calendar. remove temp from map and add permanent
-	var cal_event_id = getCalendarEventId(destination_id);
-	calendar_and_map_api_selectEventOnCalendar(cal_event.id);
-	clearMapSelection();	
-	calendar_and_map_api_selectEventOnMap(cal_event.id);
+// db: database id
+// timeslot is javascript timeslot
+function addNewEvent(db,destination_id,timeslot){
+    emptycalendar = false;
+    
+    // add it to calendar and map
+    calendar_and_map_api_addEventToCalendarAndMap(db,destination_id,timeslot);
+
+    // select it on calendar. remove temp from map and add permanent
+    var cal_event_id = calendar_helper_getCalendarEventId(destination_id);
+    var cal_event = calendar_helper_getCalendarEvent(cal_event_id);
+    calendar_and_map_api_selectEventOnCalendar(cal_event.id);
+    clearMapSelection();	
+    calendar_and_map_api_selectEventOnMap(cal_event.id);
+
+    // If new object, its added to the database
+    if (db==-1) {
+        var params = "command=AddEvent&fromTime=" + cal_event.start.formatDate("d:m:Y:H:i") + "&toTime=" + cal_event.end.formatDate("d:m:Y:H:i")  +"&attractionId="+available_destinations[destination_id].id;
+
+        $.ajax({
+            type: "POST",
+            url: "PlanAction.do",
+            cache: false,
+            data: params,
+            success: function(xml) {
+                $(xml).find("result").each(function() {
+                    cal_event.eid = $(this).text();
+                });
+            }
+        });
+    }
 	
-	// grey out destination and clear list
-	list_api_greyOutDestination(destination_id);
-	list_api_clearListSelection();
-	
-	// Move onto next guide
-	if (showing_steps && current_step == "step3"){
-		current_step = "step4";
-		refreshSteps();
-	}
+    // grey out destination and clear list
+    list_api_greyOutDestination(destination_id);
+    list_api_clearListSelection();
 }
 
 // deletes event as denoted by cal_event_id 
-function deleteEvent(cal_event_id){
+function deleteEvent(cal_event_id,db){
 	// ungrey destination on list
-	cal_event = getCalendarEvent(cal_event_id);
+	cal_event = calendar_helper_getCalendarEvent(cal_event_id);
 	list_api_unGreyDestination(cal_event.available_destination_id);
 
 	// and remove it from calendar and map
 	calendar_and_map_api_removeEventFromCalendarAndMap(cal_event_id);
 	
+        if (db) {
+            var params = "command=DeleteEvent&id=" + cal_event.eid;
+
+            $.ajax({
+                type: "POST",
+                url: "PlanAction.do",
+                cache: false,
+                data: params
+            });        
+        }
+        
 	// clear map and list
 	list_api_clearListSelection();
 	clearInfoWindow();
@@ -85,92 +119,96 @@ function deleteEvent(cal_event_id){
   - add destination to map
   - updates details panel
 */
-	function destination_selected_from_list(destination_id){
-		list_api_selectDestinationOnList(destination_id);		
+function destination_selected_from_list(destination_id){
+        list_api_selectDestinationOnList(destination_id);		
 
-		if (calendar_helper_isPlanned(destination_id)){
-			var cal_event_id;
+        if (calendar_helper_isPlanned(destination_id)){
+                var cal_event_id;
 
-			try{
-				cal_event_id = getCalendarEventId(destination_id);
-			}
-			catch(err){
-				alert(REMOVE_EVENT_ERROR);
-			}
-						
-			calendar_and_map_api_selectEventOnCalendar(cal_event_id);
-			calendar_and_map_api_selectEventOnMap(cal_event_id);
-		}
-		else{
-			calendar_and_map_api_addTemporaryEventToMap(destination_id);
-			calendar_and_map_api_clearCalendarSelection();
-		}
-	}
+                try{
+                        cal_event_id = calendar_helper_getCalendarEventId(destination_id);
+                }
+                catch(err){
+                        alert(REMOVE_EVENT_ERROR);
+                }
 
-	/* 
-		a selection was made on the map (i.e., a marker was selected)
-	*/
-	function event_selected_from_map(evnt){
-		// As we only get the latLng object from the event, we have to find the calendar event.		
-		for (var i in calendar_events){
-			var cal_event = calendar_events[i];
-			if (cal_event.marker.position.equals(evnt.latLng)){
-				calendar_and_map_api_selectEventOnCalendar(cal_event.id);
-				calendar_and_map_api_selectEventOnMap(cal_event.id);
-				list_api_selectDestinationOnList(cal_event.available_destination_id);
-				return;
-			}
-		}
-		alert (CALENDAR_EVENT_NOT_FOUND);
-	}
+                calendar_and_map_api_selectEventOnCalendar(cal_event_id);
+                calendar_and_map_api_selectEventOnMap(cal_event_id);
+        }
+        else{
+                calendar_and_map_api_addTemporaryEventToMap(destination_id);
+                calendar_and_map_api_clearCalendarSelection();
+        }
+}
 
-	/* 
-		a selection was made on the calendar (i.e., an event was selected)
-	*/
-	function destination_selected_from_calendar(cal_event_id){
-		calendar_and_map_api_selectEventOnCalendar(cal_event_id);
-		calendar_and_map_api_selectEventOnMap(cal_event_id);
-		list_api_selectDestinationOnList(cal_event.available_destination_id);
-	}
+/* 
+        a selection was made on the map (i.e., a marker was selected)
+*/
+function event_selected_from_map(evnt){
+        // As we only get the latLng object from the event, we have to find the calendar event.		
+        for (var i in calendar_events){
+                var cal_event = calendar_events[i];
+                if (cal_event.marker.position.equals(evnt.latLng)){
+                        calendar_and_map_api_selectEventOnCalendar(cal_event.id);
+                        calendar_and_map_api_selectEventOnMap(cal_event.id);
+                        list_api_selectDestinationOnList(cal_event.available_destination_id);
+                        return;
+                }
+        }
+        alert (CALENDAR_EVENT_NOT_FOUND);
+}
+
+/* 
+        a selection was made on the calendar (i.e., an event was selected)
+*/
+function destination_selected_from_calendar(cal_event_id){
+        calendar_and_map_api_selectEventOnCalendar(cal_event_id);
+        calendar_and_map_api_selectEventOnMap(cal_event_id);
+        list_api_selectDestinationOnList(cal_event.available_destination_id);
+}
 
 
-	/* 
-		the temporary marker was selected on the map 
-	*/
-	function temporary_event_selected_from_map(evnt){
-		// As we only get the latLng object from the event, we have to find the calendar event.		
-		for (var i in available_destinations){
-			var available_destination = available_destinations[i];
-			if (available_destination.marker != null){
-				if (available_destination.marker.position.equals(evnt.latLng)){	
-					calendar_and_map_api_updateCurrentInfoWindow(available_destinations[i].id, current_marker);
-					calendar_and_map_api_clearCalendarSelection();
-					list_api_selectDestinationOnList(available_destinations[i].id);
-					return;
-				}
-			}
-		}
-		alert (CALENDAR_EVENT_NOT_FOUND);
-	}
+/* 
+        the temporary marker was selected on the map 
+*/
+function temporary_event_selected_from_map(evnt){
+        // As we only get the latLng object from the event, we have to find the calendar event.		
+        for (var i in available_destinations){
+                var available_destination = available_destinations[i];
+                if (available_destination.marker != null){
+                        if (available_destination.marker.position.equals(evnt.latLng)){	
+                                calendar_and_map_api_updateCurrentInfoWindow(available_destinations[i].id, current_marker);
+                                calendar_and_map_api_clearCalendarSelection();
+                                list_api_selectDestinationOnList(available_destinations[i].id);
+                                return;
+                        }
+                }
+        }
+        alert (CALENDAR_EVENT_NOT_FOUND);
+}
 
 
 
 /********************** Population code **********************/
 // Accepts catgory as string (e.g., "theatre") and populates the destinations list based on that category
 function populateDestinations(category){
-	var destinations_list = getElement("destinations_list");
-	var str = "";
-	for (var i=0; i<available_destinations.length;i++){
-		evnt = available_destinations[i];
-		if (evnt.category.toString() == category.toString() || category.toString() == "all"){
-				str += "<li id='" + evnt.id + "' onmouseover='list_api_highlightDestination(" + evnt.id +")' onmouseout='list_api_removeDestinationHighlight(" + evnt.id + ")' onclick='destination_selected_from_list(" + evnt.id +")'>";
-				str += "<p class='destinationtitle'>"+ evnt.title +"</p>";
-				str += "<img src='" + evnt.image_file_name_small +"' width='" + SMALL_IMAGE_SIZE + "' height='" + SMALL_IMAGE_SIZE + "' />";
-				str += "<p class='destinationdescription'>" + evnt.description_short + " "
-				str += "</li>";
-		}
-	}
-	destinations_list.innerHTML  = str;	
+    var destinations_list = getElement("destinations_list");
+    var str = "";
+    for (var i in available_destinations){
+        evnt = available_destinations[i];
+        if (evnt.category.toString() == category.toString() || category.toString() == "all"){
+            str += "<li id='" + evnt.id + "' onmouseover='list_api_highlightDestination(" + evnt.id +")' onmouseout='list_api_removeDestinationHighlight(" + evnt.id + ")' onclick='destination_selected_from_list(" + evnt.id +")'";
+            if (evnt.is_grey){
+                str += "style='background-color: #ddd; color: #555;'";
+            }
+            str += ">";
+            str += "<p class='destinationtitle'>"+ evnt.title +"</p>";
+            str += "<img src='" + evnt.image_file_name_small +"' width='" + SMALL_IMAGE_SIZE + "' height='" + SMALL_IMAGE_SIZE + "' />";
+            str += "<p class='destinationdescription'>" + evnt.description_short + " "
+            str += "</li>";
+        }
+    }
+    destinations_list.innerHTML  = str;	
 }
 
 function populateCategories(){
@@ -265,5 +303,21 @@ function startTutorial(){
 	showing_steps = true;
 	current_step = "step1";
 	refreshSteps();
+}
+
+function URLDecode(psEncodeString)
+{
+  // Create a regular expression to search all +s in the string
+  var lsRegExp = /\+/g;
+  // Return the decoded string
+  return unescape(String(psEncodeString).replace(lsRegExp, " "));
+}
+
+function getUrlVars() {
+    var vars = {};
+    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+        vars[key] = value;
+    });
+    return vars;
 }
 
