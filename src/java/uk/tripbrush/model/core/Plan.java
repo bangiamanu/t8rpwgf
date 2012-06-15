@@ -1,9 +1,9 @@
 package uk.tripbrush.model.core;
 
-import edu.emory.mathcs.backport.java.util.Collections;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 import uk.tripbrush.model.travel.Event;
 import uk.tripbrush.util.DateUtil;
