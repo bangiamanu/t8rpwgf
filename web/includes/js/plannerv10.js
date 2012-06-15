@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 // map variables
 var map;
 var geocoder;
@@ -586,4 +586,3 @@ function getUrlVars() {
     return vars;
 }
 
->>>>>>> 5c6435335bb208e4c9b9011ebb4817ec06480a6b
