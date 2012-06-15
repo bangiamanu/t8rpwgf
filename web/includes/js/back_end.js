@@ -10,17 +10,19 @@ Places to update code
 var saved_trips = new Array(); // contains previously saved trips
 var days_to_show = 0; // length of calendar
 var calendar_start_date = new Date();
+var MAX_WALKING_MINUTES = 20; // if the walk is longer than this, the calendar defaults to drive
 
 function backend_ready(){
-	backend_loadCategories();
-        checkin();
-	//backend_loadAvailableDestinations();
-	
-	days_to_show = $("#howlong").val(); // replace this function with backend code
-        var startDateField = $("#fromdate").val().split("/");
-        calendar_start_date = new Date(startDateField[2],startDateField[1]-1,startDateField[0]);
+    backend_loadCategories();
+    checkin();
+    //backend_loadAvailableDestinations();
 
-	calendar_helper_populateCalendar();	
+    days_to_show = $("#howlong").val(); // replace this function with backend code
+    var startDateField = $("#fromdate").val().split("/");
+    calendar_start_date = new Date(startDateField[2],startDateField[1]-1,startDateField[0]);
+    //TODO MAX_WALKING_MINUTES = 20;
+    
+    calendar_helper_populateCalendar();	
 }
 
 // populates the categories array - called on document.ready
@@ -413,20 +415,56 @@ function loadTrip(id) {
 }
 
 function processLoadPlan(xml) {
+    
     deleteAllEvent(false);
     $.xmlDOM( xml ).find("planx").each(function() {
         $("#editable").val($(this).attr("editable"));
     });
-    $.xmlDOM( xml ).find("pevent").each(function() {
+
+    $.xmlDOM( xml ).find("pevent").each(function() {        
+        // build timeslot
         var startDateField = $(this).attr("fromdate").split(":");
         var endDateField = $(this).attr("enddate").split(":");
-        
         var timeslot = {start: new Date(startDateField[2],startDateField[1]-1,startDateField[0],startDateField[3],startDateField[4],0) , end: new Date(endDateField[2],endDateField[1]-1,endDateField[0],endDateField[3],endDateField[4],0)};
-        destination_selected_from_list($(this).attr("aid"));
+        
+        // load it on the UI
+        calendar_and_map_api_loadEvent($(this).attr("id"),$(this).attr("aid"),timeslot);
+        //destination_selected_from_list($(this).attr("aid"));
         //alert(event_to_add.marker);
-        addNewEvent($(this).attr("id"),$(this).attr("aid"),timeslot);                
-    });  
+        //addNewEvent($(this).attr("id"),$(this).attr("aid"),timeslot);                
+    });
+    
     clearAllDialogs();
+}
+
+function backend_add_event_to_database(cal_event){
+        var destination_id = cal_event.available_destination_id;
+        
+        // TODO see if you can change the code in the next statement in the end to make it simpler
+        var params = "command=AddEvent&fromTime=" + cal_event.start.formatDate("d:m:Y:H:i") + "&toTime=" + cal_event.end.formatDate("d:m:Y:H:i")  +"&attractionId="+available_destinations[destination_id].id;
+
+        $.ajax({
+            type: "POST",
+            url: "PlanAction.do",
+            cache: false,
+            data: params,
+            success: function(xml) {
+                $(xml).find("result").each(function() {
+                    cal_event.eid = $(this).text();
+                });
+            }
+        });
+}
+
+function backend_delete_event_from_database(cal_event){
+    var params = "command=DeleteEvent&id=" + cal_event.eid;
+
+    $.ajax({
+        type: "POST",
+        url: "PlanAction.do",
+        cache: false,
+        data: params
+    });
 }
 
 function emailEvents() {
@@ -449,6 +487,7 @@ function emailEvents() {
     }
     else {
         alert("You must be logged in in order to use this feature");
+        return false;
     }
 }
 

@@ -100,4 +100,3 @@ function clearAllDialogs(){
 function add_close_buttons_to_dialogs(){
     $(".white_dialog").prepend("<div id='close'><img src='includes/images/close.png' id='close_image' onClick='clearAllDialogs()'/></div>");
 }
-
