@@ -40,6 +40,10 @@ function calendar_and_map_api_loadEvent(db_id, destination_id, timeslot){
                 
                 // add to map and calendar
                 calendar_and_map_api_addEventToCalendarAndMap(db_id, destination_id, timeslot)
+                
+                // grey out destination and clear list
+                list_api_greyOutDestination(destination_id);
+                list_api_clearListSelection();
         }
         else{
             alert(LOAD_ADDRESS_ERROR);
@@ -95,7 +99,7 @@ function calendar_and_map_api_removeEventFromCalendarAndMap(cal_event_id){
     if (cal_event_id != null)
     {
         calendar_events = $('#calendar').weekCalendar("serializeEvents");			
-        cal_event = calendar_helper_getCalendarEvent(cal_event_id);
+        var cal_event = calendar_helper_getCalendarEvent(cal_event_id);
 
         // delete permanent marker from the map
         cal_event.marker.setMap(null);
@@ -322,7 +326,7 @@ function addMinutes(date, minutes){
     return new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes() + minutes);
 }
 
-function deleteAllEvent(db) {
+function deleteAllEvents(db) {
     length = calendar_events.length;
     for (i=0;i<length;i++){
         var cal_event = calendar_events[0];

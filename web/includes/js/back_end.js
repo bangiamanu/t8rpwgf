@@ -416,7 +416,7 @@ function loadTrip(id) {
 
 function processLoadPlan(xml) {
     
-    deleteAllEvent(false);
+    deleteAllEvents(false);
     $.xmlDOM( xml ).find("planx").each(function() {
         $("#editable").val($(this).attr("editable"));
     });
