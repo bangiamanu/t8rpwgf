@@ -395,11 +395,18 @@ p{
 	margin-right:auto;
 }
 
-#sign_in, #verify, #emailevents, #sign_up, #forgot_password, #saved_trips, #profile{
+#sign_in, #verify, #emailevents, #sign_up, #forgot_password, #profile{
 	top: 30%;
 	width: 400px;
 }
 
+#saved_trips{
+	top: 10%;
+	width: 400px;
+        height: 350px;
+
+    overflow-y: scroll;
+}
 
 /**************************** Guideboxes *****************************/
 
