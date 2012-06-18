@@ -119,26 +119,23 @@
         <div id="toolbar">
             <img id="logo" src="includes/images/tripbrushlogo_inverted_small.png" alt="Logo" width="138" height="30" />
             <div id="loginactions">
-				<div id="signed_in" class="signed_in_or_out" style="display:none;">
-					<table cellpadding="0" cellspacing="3" height="40px" border="0px">
-						<tr>
-							<td><a href="javascript:acct_management_signIn()"><img src="includes/images/sign_in_icon.png" /></a></td>
-							<td><a href="javascript:acct_management_signIn()">Log in</a></td>
-							<td width="20px">&nbsp;</td>
-							<td><a href="javascript:acct_management_signUp()"><img src="includes/images/sign_up_icon.png" /></a></td>
-							<td><a href="javascript:acct_management_signUp()">Sign up</a></td>
-						</tr>
-					</table>
-				</div>
+                <div id="signed_in" class="signed_in_or_out" style="display:none;">
+                        <table cellpadding="0" cellspacing="3" height="40px" border="0px">
+                                <tr>
+                                        <td><a href="javascript:acct_management_signIn()"><img src="includes/images/sign_in_icon.png" /></a></td>
+                                        <td><a href="javascript:acct_management_signIn()">Log in</a></td>
+                                        <td width="20px">&nbsp;</td>
+                                        <td><a href="javascript:acct_management_signUp()"><img src="includes/images/sign_up_icon.png" /></a></td>
+                                        <td><a href="javascript:acct_management_signUp()">Sign up</a></td>
+                                </tr>
+                        </table>
+                </div>
 
                 
                 <div id="signed_out" class="signed_in_or_out" style="display:none;">
 					<table cellpadding="0" cellspacing="3" height="40px" border="0px">
 						<tr>
 							<td>Welcome <div id="user_first_name"></div></td>
-							<td width="20px">&nbsp;</td>
-							<td class="saved_trips"><a href="javascript:acct_management_showSavedTrips()"><img src="includes/images/saved_trips_icon.png"/></a></td>
-							<td class="saved_trips"><a href="javascript:acct_management_showSavedTrips()">Saved trips</a></td>
 							<td width="20px">&nbsp;</td>
 							<td><a href="javascript:acct_management_showProfile()"><img src="includes/images/profile_icon.png" /></a></td>
 							<td><a href="javascript:acct_management_showProfile()">Profile</a></td>
@@ -245,7 +242,7 @@
                             </tr>
                     </table>
             </div>-->
-            <div id="pre_loaded_plans">
+            <div id="calendar_toolbar">
                 <table>
                     <tr>
                         <td>
@@ -305,6 +302,14 @@
         <div id="white_out">
         </div><!-- white_out -->
 
+        <div id="message">
+            <div id="message_content">Test</div>
+            <a href="javascript:clear_message()">
+                <img src="includes/images/close.png" style="position: absolute; height: 15px; width: 15px; right: 2px; top: 2px;" />
+            </a>
+        </div>        
+
+        
         <div id="sign_in" class="white_dialog">
             <div id="loginmessage"></div>
             <div id="loginerror"></div>

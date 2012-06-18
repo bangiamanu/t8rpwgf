@@ -14,13 +14,13 @@ function plan_actions_new_plan(){
  * Called when the open_plan button is pressed on toolbar
  */
 function plan_actions_open_plan(){
-    
+    acct_management_showSavedTrips();
 }
 /**
  * Called when the save_plan button is pressed on toolbar
  */
 function plan_actions_save_plan(){
-    
+    show_message("Your plan is automatically saved everytime you make a change!");
 }
 
 /**

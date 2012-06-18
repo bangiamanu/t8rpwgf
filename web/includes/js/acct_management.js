@@ -4,6 +4,22 @@ function acct_management_ready(){
     //add_close_buttons_to_dialogs();
 }
 
+/*************************** Messages **********************************/
+
+function clearMessages(div) {
+   $("#"+div+"message").html(""); 
+   $("#"+div+"error").html("");
+}
+
+function clear_message(){
+    $("#message").hide();
+}
+
+function show_message(message){
+    $("#message_content").html(message);
+    setTimeout("$('#message').fadeIn()",400);
+}
+
 function acct_management_verify(showX){
     clearAllDialogs();
     $("#white_out").fadeIn();	
@@ -16,17 +32,12 @@ function acct_management_verify(showX){
     }
 }
 
-function clearMessages(div) {
-   $("#"+div+"message").html(""); 
-   $("#"+div+"error").html("");
-}
 
 function acct_management_signIn(){
     $("#lpassword").val("");
     clearMessages('login');
     clearAllDialogs();
 
-    //test
     $("#white_out").fadeIn();	
     setTimeout("$('#sign_in').fadeIn()",400);
 }

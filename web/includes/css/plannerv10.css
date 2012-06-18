@@ -21,6 +21,30 @@ p{
 	height:546px;
 }
 	
+/********************************** message ********************************/
+#message{
+	position:relative;
+	z-index:4001;
+
+        top: 7px;
+	padding:5px;
+	z-index: 3001;
+        width: 350px;
+	
+	margin-left:auto;
+	margin-right:auto;
+
+	border: solid 1px;	
+        border-color: #67644D;
+        background-color: #F4EEB7;
+        
+        text-align:center;
+        
+        overflow-y: hidden;
+        
+        display: none;
+}
+
 /********************************** toolbar ********************************/
 #toolbar{
 	width:100%;
@@ -68,8 +92,7 @@ p{
 
 	text-align:left;
 	border-right:solid rgb(200,200,200) 1px;
-	
-	//overflow-y:auto;
+
 }
 
 #categorynamecolumn li{
@@ -125,7 +148,6 @@ p{
 	border-right:solid rgb(200,200,200) 1px;
 	border-bottom:solid rgb(200,200,200) 1px;
 
-	//border: solid 1px black;
 	-moz-box-shadow: 3px -2px 8px #888;
 	-webkit-box-shadow: 3px -2px 8px #888;
 	text-align:center;
@@ -150,7 +172,6 @@ p{
 	
 	border-right:solid rgb(200,200,200) 1px;
 
-	//border: solid 1px black;
 	-moz-box-shadow: 3px -2px 8px #888;
 	-webkit-box-shadow: 3px -2px 8px #888;
 	text-align:center;
@@ -191,7 +212,6 @@ p{
 	float:right;
 	display:inline;
 	padding: 5px;
-	//position: relative;
 	top: 0px;
 	}
 
@@ -295,7 +315,6 @@ p{
 	border-bottom: solid 1px rgb(200,200,200);
 	overflow:hidden;
 	padding: 10px;
-	//height: 31px;
 
 	z-index: 500;
 
@@ -308,10 +327,7 @@ p{
 	bottom: 0px;
 	left: 373px;
 	height: 45%;
-	//width:100%;
 
-
-	//border: solid 1px black;
 	border-top: solid 1px rgb(200,200,200);
 	padding: 10px;
 	z-index: 200;
