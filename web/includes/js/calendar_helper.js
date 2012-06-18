@@ -14,7 +14,7 @@ function calendar_helper_populateCalendar(){
 		buttons: false,
 		allowEventCreation: false,
 		businessHours: {start: 8, end: 24, limitDisplay: true},
-		height: function() {return window.innerHeight - 0.45*window.innerHeight - 108},
+		height: function() {return window.innerHeight - 0.45*window.innerHeight - 105},
 		eventRender : function(calEvent, $event) {
                     console.log(calEvent.title + " Render");
 		},

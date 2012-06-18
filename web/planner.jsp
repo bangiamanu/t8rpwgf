@@ -250,37 +250,37 @@
                     <tr>
                         <td>
                             <a href="javascript:plan_actions_new_plan()">
-                                <img src="includes/images/new_icon.png" height="24px" title="New plan (your existing changes will be automatically saved)"/>
+                                <img src="includes/images/new_icon.png" height="20px" title="New plan (your existing changes will be automatically saved)"/>
                             </a>
                         </td>
                         <td>
                             <a href="javascript:plan_actions_open_plan()" >
-                                <img src="includes/images/open_icon_v2.png" height="24px" title="Open saved plans"/>
+                                <img src="includes/images/open_icon_v2.png" height="20px" title="Open saved plans"/>
                             </a>
                         </td>
                         <td>
                             <a href="javascript:plan_actions_save_plan()">
-                                <img src="includes/images/save_icon_v2.png" height="24px" title="Save plan"/>
+                                <img src="includes/images/save_icon_v2.png" height="20px" title="Save plan"/>
                             </a>
                         </td>
                         <td>
                             <a href="javascript:plan_actions_email_plan()" >
-                                <img src="includes/images/email_icon_v2.png" height="24px" title="Email plan"/>
+                                <img src="includes/images/email_icon_v2.png" height="20px" title="Email plan"/>
                             </a>
                         </td>
                         <td>
                             <a href="javascript:plan_actions_print_plan()">
-                                <img src="includes/images/print_icon_v2.png" height="24px" title="Print plan"/>
+                                <img src="includes/images/print_icon_v2.png" height="20px" title="Print plan"/>
                             </a>
                         </td>
                         <td>
                             <a href="javascript:plan_actions_share_plan_facebook()">
-                                <img src="includes/images/facebook_icon.png" height="24px" title="Share on facebook"/>
+                                <img src="includes/images/facebook_icon.png" height="20px" title="Share on facebook"/>
                             </a>
                         </td>
                         <td>
                             <a href="javascript:plan_actions_tweet_plan()">
-                                <img src="includes/images/twitter_icon.png" height="24px" title="Tweet"/>
+                                <img src="includes/images/twitter_icon.png" height="20px" title="Tweet"/>
                             </a>
                         </td>
                         <td>
