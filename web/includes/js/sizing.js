@@ -9,32 +9,34 @@ function sizing_ready(){
 function sizing_divsResize(){	
     var calendarcontainer = document.getElementById('calendarcontainer');
     var mapcontainer = document.getElementById('mapcontainer');
-	var categorydescriptioncolumn = document.getElementById('categorydescriptioncolumn');
-	var destination_details_pane = document.getElementById('destination_details_pane');
-	var large_image = document.getElementById('large_image');
-	var guidebox3 = document.getElementById('guidebox3');
-	var guidebox3text = document.getElementById('guidebox3text');
-	
-	if (!is_contracted){
-		calendarcontainer.style.width= (window.innerWidth - 395).toString() + "px";
-		mapcontainer.style.width = (window.innerWidth - 395).toString() + "px";	
-	}
-	else{
-		calendarcontainer.style.width= (window.innerWidth - 395 - 195).toString() + "px";
-		mapcontainer.style.width = (window.innerWidth - 395 - 195).toString() + "px";	
-	}
-	
-	if (window.innerWidth < 1400)
-		zoom_level = 12;
-	else
-		zoom_level = 13;
+    var categorydescriptioncolumn = document.getElementById('categorydescriptioncolumn');
+    var destination_details_pane = document.getElementById('destination_details_pane');
+    var large_image = document.getElementById('large_image');
+    var guidebox3 = document.getElementById('guidebox3');
+    var guidebox3text = document.getElementById('guidebox3text');
+    //var pre_loaded_plans_choicebox = getElement('pre_loaded_plans_choicebox');
+
+    if (!is_contracted){
+            calendarcontainer.style.width= (window.innerWidth - 395).toString() + "px";
+            mapcontainer.style.width = (window.innerWidth - 395).toString() + "px";
+            //pre_loaded_plans_choicebox.width = (window.innerWidth - 395 - 400).toString() + "px";
+    }
+    else{
+            calendarcontainer.style.width= (window.innerWidth - 395 - 195).toString() + "px";
+            mapcontainer.style.width = (window.innerWidth - 395 - 195).toString() + "px";	
+    }
+
+    if (window.innerWidth < 1400)
+            zoom_level = 12;
+    else
+            zoom_level = 13;
 
 
-	categorydescriptioncolumn.style.height =(window.innerHeight - 100).toString() + "px";
-	destination_details_pane.style.height =(window.innerHeight - 40).toString() + "px";
-	
-	guidebox3.style.height = parseInt(window.innerHeight * 0.55 - 20 -40).toString() + "px";
-	guidebox3text.style.bottom = parseInt(window.innerHeight * 0.45 + 30).toString() + "px";
+    categorydescriptioncolumn.style.height =(window.innerHeight - 100).toString() + "px";
+    destination_details_pane.style.height =(window.innerHeight - 40).toString() + "px";
+
+    guidebox3.style.height = parseInt(window.innerHeight * 0.55 - 20 -40).toString() + "px";
+    guidebox3text.style.bottom = parseInt(window.innerHeight * 0.45 + 30).toString() + "px";
 }
 
 

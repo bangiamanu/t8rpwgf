@@ -134,7 +134,7 @@ function loadAvailableDestinationsData(xml) {
         counter++;
     });
     list_api_setCategoryHighlight(getElement("all"));
-    calendar_helper_populateCalendar();
+    //calendar_helper_populateCalendar();
 }
 
 // populates the available_destinations array - called on document.ready

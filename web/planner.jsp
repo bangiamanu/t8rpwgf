@@ -27,7 +27,7 @@
     <script type='text/javascript' src="includes/js/calendar_and_map_api.js"></script> <!-- Calendar and map APIJS -->
     <script type='text/javascript' src="includes/js/list_api.js"></script> <!-- List APIJS -->
     <script type='text/javascript' src="includes/js/print_api.js"></script> <!-- Print APIJS -->
-    <script type='text/javascript' src="includes/js/done_button_api.js"></script> <!-- Print APIJS -->
+    <script type='text/javascript' src="includes/js/plan_actions.js"></script> <!-- Print APIJS -->
     <script type='text/javascript' src="includes/js/directions_api.js"></script> <!-- Directions APIJS -->
     <script type='text/javascript' src="includes/js/directions_cache.js"></script> <!-- Directions APIJS -->
     <script type='text/javascript' src="includes/js/sizing.js"></script> <!-- Sizing APIJS -->
@@ -76,13 +76,7 @@
     <script type="text/javascript">
             /********************** Window onload and resize code **********************/
 
-            window.onload = function(){
-                    // For some reason, the stupid calendar hgeight doesnt work on ready and has to be called on window.load. Dont knwo why.
-                    $('#calendar').weekCalendar("option","height", function($calendar){
-                            return window.innerHeight - 0.45*window.innerHeight - 80;
-                    });
 
-            };
 
             // using document.ready instead of window.onload
             $(document).ready(function() {
@@ -92,7 +86,7 @@
                     sizing_ready();
                     backend_ready();
                     acct_management_ready();
-                    done_button_api_ready();
+                    //done_button_api_ready();
                     directions_api_ready();
                     if ($("#showuser").val()!="true") {
                         $("#signed_in").show();
@@ -229,31 +223,78 @@
                 </div>
         </div><!-- destination_details_pane-->
 
-        <div id="calendarcontainer" onMouseOver="done_button_api_showDoneButton()" onMouseOut="done_button_api_hideDoneButton()">
-			<div id="done_button">
-				<img src="includes/images/done_button.png" onMouseOver="done_button_api_setDoneToOpaque()" onMouseOut="done_button_api_setDoneToTranslucent()" onClick="done_button_api_toggleDoneMenu()" />
-			</div>
-			<div id="done_menu" onMouseOver="done_button_api_setDoneToOpaque()" onMouseOut="done_button_api_setDoneToTranslucent()" >
-				<img src="includes/images/close.png" id="done_close_button" onClick="done_button_api_hideDoneMenu()"/>
-				<table cellpadding="0" cellspacing="3">
-					<tr>
-                        <td align="center"><a href="javascript:print_api_printEvents()"><img src="includes/images/print_icon.png" width="30" height="28" /></a></td>
-						<td><a href="javascript:print_api_printEvents()">Print</a></td>
-					</tr>
-					<tr>
-						<td align="center"><img src="includes/images/email_icon.png" width="28" height="28" /></td>
-						<td><a href="javascript:emailEvents()">Email</a></td>
-					</tr>
-					<!--tr>
-						<td align="center"><img src="includes/images/save_icon.png" width="24" height="28" /></td>
-						<td>Save</td>
-					</tr-->
-					<tr>
-						<td align="center"><img src="includes/images/facebook_icon.png" width="24" height="28" /></a></td>
-						<td><a href="javascript:shareEvents()">Share on facebook</a></td>
-					</tr>
-				</table>
-			</div>
+        <div id="calendarcontainer">
+            <!--
+            <div id="done_button">
+                    <img src="includes/images/done_button.png" onMouseOver="done_button_api_setDoneToOpaque()" onMouseOut="done_button_api_setDoneToTranslucent()" onClick="done_button_api_toggleDoneMenu()" />
+            </div>
+            <div id="done_menu" onMouseOver="done_button_api_setDoneToOpaque()" onMouseOut="done_button_api_setDoneToTranslucent()" >
+                    <img src="includes/images/close.png" id="done_close_button" onClick="done_button_api_hideDoneMenu()"/>
+                    <table cellpadding="0" cellspacing="3">
+                            <tr>
+                                    <td align="center"><a href="javascript:print_api_printEvents()"><img src="includes/images/print_icon.png" width="30" height="28" /></a></td>
+                                    <td><a href="javascript:print_api_printEvents()">Print</a></td>
+                            </tr>
+                            <tr>
+                                    <td align="center"><img src="includes/images/email_icon.png" width="28" height="28" /></td>
+                                    <td><a href="javascript:emailEvents()">Email</a></td>
+                            </tr>
+                            <tr>
+                                    <td align="center"><img src="includes/images/facebook_icon.png" width="24" height="28" /></a></td>
+                                    <td><a href="javascript:shareEvents()">Share on facebook</a></td>
+                            </tr>
+                    </table>
+            </div>-->
+            <div id="pre_loaded_plans">
+                <table>
+                    <tr>
+                        <td>
+                            <a href="javascript:plan_actions_new_plan()">
+                                <img src="includes/images/new_icon.png" height="24px" title="New plan (your existing changes will be automatically saved)"/>
+                            </a>
+                        </td>
+                        <td>
+                            <a href="javascript:plan_actions_open_plan()" >
+                                <img src="includes/images/open_icon_v2.png" height="24px" title="Open saved plans"/>
+                            </a>
+                        </td>
+                        <td>
+                            <a href="javascript:plan_actions_save_plan()">
+                                <img src="includes/images/save_icon_v2.png" height="24px" title="Save plan"/>
+                            </a>
+                        </td>
+                        <td>
+                            <a href="javascript:plan_actions_email_plan()" >
+                                <img src="includes/images/email_icon_v2.png" height="24px" title="Email plan"/>
+                            </a>
+                        </td>
+                        <td>
+                            <a href="javascript:plan_actions_print_plan()">
+                                <img src="includes/images/print_icon_v2.png" height="24px" title="Print plan"/>
+                            </a>
+                        </td>
+                        <td>
+                            <a href="javascript:plan_actions_share_plan_facebook()">
+                                <img src="includes/images/facebook_icon.png" height="24px" title="Share on facebook"/>
+                            </a>
+                        </td>
+                        <td>
+                            <a href="javascript:plan_actions_tweet_plan()">
+                                <img src="includes/images/twitter_icon.png" height="24px" title="Tweet"/>
+                            </a>
+                        </td>
+                        <td>
+                            <select name="pre_loaded_plans_choicebox" style="width: 100%">
+                                <option>. . . or select a pre-designed plan</option>
+                                <option>Show me the landmarks!</option>
+                                <option>Foodie's London</option>
+                                <option>Walking London</option>
+                                <option>London's Architecture</option>
+                            </select>
+                        </td>                        
+                    </tr>
+                </table>
+            </div>
             <div id='calendar'></div>
         </div><!-- calendarcontainer -->
 
