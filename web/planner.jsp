@@ -243,39 +243,39 @@
                     </table>
             </div>-->
             <div id="calendar_toolbar">
-                <table>
+                <table width="100%">
                     <tr>
-                        <td>
+                        <td width="25px">
                             <a href="javascript:plan_actions_new_plan()">
                                 <img src="includes/images/new_icon.png" height="20px" title="New plan (your existing changes will be automatically saved)"/>
                             </a>
                         </td>
-                        <td>
+                        <td width="25px">
                             <a href="javascript:plan_actions_open_plan()" >
                                 <img src="includes/images/open_icon_v2.png" height="20px" title="Open saved plans"/>
                             </a>
                         </td>
-                        <td>
+                        <td width="25px">
                             <a href="javascript:plan_actions_save_plan()">
                                 <img src="includes/images/save_icon_v2.png" height="20px" title="Save plan"/>
                             </a>
                         </td>
-                        <td>
+                        <td width="25px">
                             <a href="javascript:plan_actions_email_plan()" >
                                 <img src="includes/images/email_icon_v2.png" height="20px" title="Email plan"/>
                             </a>
                         </td>
-                        <td>
+                        <td width="25px">
                             <a href="javascript:plan_actions_print_plan()">
                                 <img src="includes/images/print_icon_v2.png" height="20px" title="Print plan"/>
                             </a>
                         </td>
-                        <td>
+                        <td width="25px">
                             <a href="javascript:plan_actions_share_plan_facebook()">
                                 <img src="includes/images/facebook_icon.png" height="20px" title="Share on facebook"/>
                             </a>
                         </td>
-                        <td>
+                        <td width="25px">
                             <a href="javascript:plan_actions_tweet_plan()">
                                 <img src="includes/images/twitter_icon.png" height="20px" title="Tweet"/>
                             </a>
