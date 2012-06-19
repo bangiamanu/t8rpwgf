@@ -22,6 +22,9 @@
     <script type='text/javascript' src="includes/js/global_variables.js"></script> <!-- Global variables used by files-->
     <script type="application/javascript" src="includes/js/facebook.js"></script> <!-- Standard JS -->
     <script type="application/javascript" src="includes/js/plannerv10.js"></script> <!-- Standard JS -->
+    <script type='text/javascript' src="includes/js/pre_designed_plans.js"></script> <!-- Pre designed plans APIJS -->
+    <script type='text/javascript' src="includes/js/date_math.js"></script> <!-- Date Math APIJS -->
+    <script type='text/javascript' src="includes/js/tutorial.js"></script> <!-- Pre designed plans APIJS -->
     <script type='text/javascript' src="includes/js/data_loader.js"></script> <!-- Event Data-->
     <script type='text/javascript' src="includes/js/calendar_helper.js"></script> <!-- Calendar Helper JS -->
     <script type='text/javascript' src="includes/js/calendar_and_map_api.js"></script> <!-- Calendar and map APIJS -->
@@ -282,7 +285,7 @@
                         </td>
                         <td>
                             <select name="pre_loaded_plans_choicebox" style="width: 100%">
-                                <option>. . . or select a pre-designed plan</option>
+                                <option>. . . or check out these featured plans</option>
                                 <option>Show me the landmarks!</option>
                                 <option>Foodie's London</option>
                                 <option>Walking London</option>

@@ -9,7 +9,7 @@ function calendar_and_map_api_ready(){
 }
 
 /*
- * Adds an event on the calendar and map
+ * Loads an event on the calendar and map
  * Doesnt assume that geocoding is done as the add method does
  * 
  * db_id: databse id
@@ -62,7 +62,7 @@ function calendar_and_map_api_addEventToCalendarAndMap(db_id,destination_id,open
 
     // creating the calendar event
     var cal_destination_id = "C" + destination_id;		
-    var cal_event =  {eid: db_id,
+    var cal_event =  {db_id: db_id,
                     id:cal_destination_id, 
                     start: open_slot.start, 
                     end: open_slot.end,
@@ -87,7 +87,10 @@ function calendar_and_map_api_addEventToCalendarAndMap(db_id,destination_id,open
 
     //Changing pointer in calendar_events to permanent marker
     cal_event.marker = perm_marker;
-
+    
+    //remove temporary marker
+    clearMapSelection();
+    
     //Adding to calendar 
     // This needs to be last because the marker needs to be set (so the calendar can calculate distance)
     $('#calendar').weekCalendar("updateEvent", cal_event);
@@ -326,10 +329,12 @@ function addMinutes(date, minutes){
     return new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes() + minutes);
 }
 
-function deleteAllEvents(db) {
+function calendar_and_map_api_deleteAllEvents(db) {
     length = calendar_events.length;
     for (i=0;i<length;i++){
         var cal_event = calendar_events[0];
         deleteEvent(cal_event.id,db);
-    }    
+    }
+    
+    clearMapSelection();
 }

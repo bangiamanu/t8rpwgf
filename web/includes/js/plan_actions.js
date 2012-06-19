@@ -7,7 +7,8 @@
  * Called when the new plan button is pressed on toolbar
  */
 function plan_actions_new_plan(){
-    
+        calendar_and_map_api_deleteAllEvents(-1);
+        show_message("Plan has been cleared. You can access any old plans by clicking Open");
 }
 
 /**

@@ -23,7 +23,7 @@ function calendar_helper_populateCalendar(){
 
                     // Update the database
                     if (calEvent.id !=null){
-                        updateEvent(calEvent.eid,calEvent.start,calEvent.end);
+                        updateEvent(calEvent.db_id,calEvent.start,calEvent.end);
                     }
                     
                     // Set event params
@@ -48,7 +48,7 @@ function calendar_helper_populateCalendar(){
                     console.log(calEvent.title + " Resize");
                     setIsValid(calEvent);
                     calendar_helper_refreshEvents();
-                    updateEvent(calEvent.eid,calEvent.start,calEvent.end);
+                    updateEvent(calEvent.db_id,calEvent.start,calEvent.end);
                     //calendar_events[calEvent.id] = calEvent; //TODO
 		},
 		eventClick : function(calEvent, $event) {

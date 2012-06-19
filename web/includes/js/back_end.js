@@ -416,7 +416,7 @@ function loadTrip(id) {
 
 function processLoadPlan(xml) {
     
-    deleteAllEvents(false);
+    calendar_and_map_api_deleteAllEvents(false);
     $.xmlDOM( xml ).find("planx").each(function() {
         $("#editable").val($(this).attr("editable"));
     });
@@ -450,14 +450,14 @@ function backend_add_event_to_database(cal_event){
             data: params,
             success: function(xml) {
                 $(xml).find("result").each(function() {
-                    cal_event.eid = $(this).text();
+                    cal_event.db_id = $(this).text();
                 });
             }
         });
 }
 
 function backend_delete_event_from_database(cal_event){
-    var params = "command=DeleteEvent&id=" + cal_event.eid;
+    var params = "command=DeleteEvent&id=" + cal_event.db_id;
 
     $.ajax({
         type: "POST",
