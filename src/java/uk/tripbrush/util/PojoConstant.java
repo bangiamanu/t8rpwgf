@@ -37,6 +37,10 @@ public class PojoConstant implements Serializable {
     public static final String EVENT = "travel.Event";
     public static final String EVENT_MODEL = MODEL+EVENT;
 
+    public static final String CONFIG = "core.Config";
+    public static final String CONFIG_MODEL = MODEL+CONFIG;
+
+
     public static void main(String[] args) {
         System.out.println("IDD");
     }

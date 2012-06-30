@@ -35,7 +35,7 @@ function plan_actions_email_plan(){
  * Called when the print_plan button is pressed on toolbar
  */
 function plan_actions_print_plan(){
-    print_api_printEvents();
+    var printWindow=window.open('print.jsp','Print','width=800');
 }
 
 /**

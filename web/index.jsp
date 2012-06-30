@@ -21,6 +21,7 @@
 
 <script type='text/javascript' src='libs/jquery-1.4.4.min.js'></script>
 <script type="text/javascript" src="includes/js/index.js"></script>
+<script type="text/javascript" src="includes/js/back_end.js"></script>
 <script type='text/javascript' src='libs/jquery-ui-1.8.11.custom.min.js'></script>
     <script type='text/javascript' src="includes/js/acct_management.js"></script> <!-- acct_management APIJS -->
 

@@ -21,9 +21,6 @@ import uk.tripbrush.model.travel.Attraction;
 public class CommonService implements Serializable {
 
     //public static final String ROOT1 = "/Users/sseetal/Dropbox/Life Made Easy Ltd/email/";
-    public static final String ROOT2 = "C:\\Users\\Samir\\Documents\\My Dropbox\\Life Made Easy Ltd\\email\\";
-    public static final int MAX_WALKING = 20;
-    public static final String WEB_URL = "http://localhost:8084/tripbrush/";
     
     //public static final String ROOT1 = "/home/kingston/deploy/tripbrush/";
     

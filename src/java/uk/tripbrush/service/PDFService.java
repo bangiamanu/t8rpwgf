@@ -48,7 +48,7 @@ import uk.tripbrush.view.MResult;
 public class PDFService {
 
 
-    public static void createPlan(Plan plan) throws Exception {
+    public static String createPlan(Plan plan) throws Exception {
         createTitlePage(plan);
         createCalendar(plan);
         for (int datecounter = 0; datecounter < plan.getLength(); datecounter++) {
@@ -56,11 +56,11 @@ public class PDFService {
             createEvents(plan,datecounter);
         }
         createLastPage(plan);
-        merge(plan);
+        return merge(plan);
     }
 
     public static void createTitlePage(Plan plan) throws Exception {
-        FileOutputStream fos = new FileOutputStream(new File(CommonService.ROOT2 + "title" + plan.getId() + ".pdf"));
+        FileOutputStream fos = new FileOutputStream(new File(ConfigService.getRoot() + "title" + plan.getId() + ".pdf"));
         Document document = new Document(PageSize.A4, 50, 50, 50, 50);
         document.open();
         Rectangle area = new Rectangle(36, 24, 559, 802);
@@ -111,7 +111,7 @@ public class PDFService {
     }
     
     public static void createLastPage(Plan plan) throws Exception {
-        FileOutputStream fos = new FileOutputStream(new File(CommonService.ROOT2 + "last" + plan.getId() + ".pdf"));
+        FileOutputStream fos = new FileOutputStream(new File(ConfigService.getRoot() + "last" + plan.getId() + ".pdf"));
         Document document = new Document(PageSize.A4, 50, 50, 50, 50);
         document.open();
         Rectangle area = new Rectangle(36, 24, 559, 802);
@@ -155,7 +155,7 @@ public class PDFService {
     }
     
     public static void createSubTitlePage(Plan plan,int datecounter) throws Exception {
-        FileOutputStream fos = new FileOutputStream(new File(CommonService.ROOT2 + "stitle" + plan.getId() + datecounter + ".pdf"));
+        FileOutputStream fos = new FileOutputStream(new File(ConfigService.getRoot() + "stitle" + plan.getId() + datecounter + ".pdf"));
         Document document = new Document(PageSize.A4, 50, 50, 50, 50);
         document.open();
         Rectangle area = new Rectangle(36, 24, 559, 802);
@@ -210,7 +210,7 @@ public class PDFService {
     }
     
     public static void createEvents(Plan plan,int datecounter) throws Exception {
-        FileOutputStream fos = new FileOutputStream(new File(CommonService.ROOT2 + "events" + plan.getId() + datecounter + ".pdf"));
+        FileOutputStream fos = new FileOutputStream(new File(ConfigService.getRoot() + "events" + plan.getId() + datecounter + ".pdf"));
         Document document = new Document(PageSize.A4, 50, 50, 50, 50);
         document.open();
         Rectangle area = new Rectangle(36, 24, 559, 802);
@@ -283,7 +283,7 @@ public class PDFService {
                 eventcell.setColspan(1);
                 
                 
-                URL url = new URL(CommonService.WEB_URL+ "/includes/images/data/"+attraction.getImageFileName());
+                URL url = new URL(ConfigService.getUrl()+ "/includes/images/data/"+attraction.getImageFileName());
                 Image image = Image.getInstance(url);
                 PdfPCell piccell = new PdfPCell(image);
                 piccell.setBorder(Rectangle.NO_BORDER);
@@ -364,7 +364,7 @@ public class PDFService {
                     String response = Browser.getPage(wsearchUrl).toString();
                     int duration = Integer.parseInt(getLastData(response, "<duration>", "<value>", "</value>"));
                     String durationt = "Walking Time: " + getLastData(response, "<duration>", "<text>", "</text>");
-                    if (duration>60*(CommonService.MAX_WALKING)) {
+                    if (duration>60*(ConfigService.getMaxWalking())) {
                         String dsearchUrl = "http://maps.googleapis.com/maps/api/directions/xml?origin=" + fpostcode + "&destination=" + tpostcode + "&sensor=false";
                         response = Browser.getPage(dsearchUrl).toString();
                         durationt = "Driving Time: " + getLastData(response, "<duration>", "<text>", "</text>");
@@ -440,7 +440,7 @@ public class PDFService {
     }
 
     public static void createCalendar(Plan plan) throws Exception {
-        FileOutputStream fos = new FileOutputStream(new File(CommonService.ROOT2 + "calendar" + plan.getId() + ".pdf"));
+        FileOutputStream fos = new FileOutputStream(new File(ConfigService.getRoot() + "calendar" + plan.getId() + ".pdf"));
         Document document = new Document(PageSize.A4.rotate(), 50, 50, 50, 50);
         document.open();
         Rectangle area = new Rectangle(36, 24, 559, 802);
@@ -588,21 +588,23 @@ public class PDFService {
         return titlecell;
     }
 
-    public static void merge(Plan plan) {
+    public static String merge(Plan plan) {
         try {
             List<InputStream> pdfs = new ArrayList<InputStream>();
-            pdfs.add(new FileInputStream(CommonService.ROOT2 + "title" + plan.getId() + ".pdf"));
-            pdfs.add(new FileInputStream(CommonService.ROOT2 + "calendar" + plan.getId() + ".pdf"));
+            pdfs.add(new FileInputStream(ConfigService.getRoot() + "title" + plan.getId() + ".pdf"));
+            pdfs.add(new FileInputStream(ConfigService.getRoot() + "calendar" + plan.getId() + ".pdf"));
             for (int datecounter = 0; datecounter < plan.getLength(); datecounter++) {
-                pdfs.add(new FileInputStream(CommonService.ROOT2 + "stitle" + plan.getId() + datecounter+ ".pdf"));
-                pdfs.add(new FileInputStream(CommonService.ROOT2 + "events" + plan.getId() + datecounter+".pdf"));
+                pdfs.add(new FileInputStream(ConfigService.getRoot() + "stitle" + plan.getId() + datecounter+ ".pdf"));
+                pdfs.add(new FileInputStream(ConfigService.getRoot() + "events" + plan.getId() + datecounter+".pdf"));
             }
-            pdfs.add(new FileInputStream(CommonService.ROOT2 + "last" + plan.getId() + ".pdf"));
-            OutputStream output = new FileOutputStream(CommonService.ROOT2 + "plan" + plan.getId() + ".pdf");
+            pdfs.add(new FileInputStream(ConfigService.getRoot() + "last" + plan.getId() + ".pdf"));
+            OutputStream output = new FileOutputStream(ConfigService.getRoot() + "plan" + plan.getId() + ".pdf");
             concatPDFs(pdfs, output, true);
+            return ConfigService.getRoot() + "plan" + plan.getId() + ".pdf";
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return "";
     }
 
     public static void concatPDFs(List<InputStream> streamOfPDFFiles, OutputStream outputStream, boolean paginate) {
