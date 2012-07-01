@@ -4,7 +4,7 @@
         destination:google.maps.latLng,
         time:   {walking:google.maps.Duration,
                 driving:google.maps.Duration,
-                public_transport:google.maps.Duration},
+                transit:google.maps.Duration},
         directions:google.maps.DirectionsResult}
 
  */
@@ -29,7 +29,7 @@ function directions_cache_showDirections(origin, destination){
         var request = {
             origin:origin,
             destination:destination,
-            travelMode: google.maps.DirectionsTravelMode.DRIVING
+            travelMode: google.maps.DirectionsTravelMode.TRANSIT    // this is the default type of directions shown on map
         };
         directionsService.route(request, function(result, status) {
             if (status == google.maps.DirectionsStatus.OK) {
@@ -117,6 +117,46 @@ function getDrivingTime(origin, destination, functionToCall){
     }
 }
 
+/*
+ * THIS FUNCTION DOES NOT WORK!!
+ * because diztancematrixservice doesnt support public transport. It needs to be rewritten!
+ * 
+ * Gets the driving time between origin and destination and calls functionToCall
+ * origin: google.maps.latLng
+ * destination: google.maps.latLng
+ * functionToCall(google.maps.Duration): function to call after walking time is determined
+ */
+function getTransitTime(origin, destination, functionToCall){
+    var cache_driving_time = getTimeFromCache(origin, destination, google.maps.TravelMode.TRANSIT);
+    if (cache_driving_time != null){
+        // if already in cache
+       functionToCall(cache_driving_time);
+    }
+   else{
+       // if not in cache
+        var service = new google.maps.DistanceMatrixService();
+        service.getDistanceMatrix(
+          {
+            origins: [origin],
+            destinations: [destination],
+            travelMode: google.maps.TravelMode.TRANSIT,
+            avoidHighways: false,
+            avoidTolls: false
+          }, callback);
+
+        function callback(response, status) {
+              if (status == google.maps.DistanceMatrixStatus.OK) {
+                addTimeToCache(origin, destination, google.maps.TravelMode.TRANSIT, response.rows[0].elements[0].duration)
+                functionToCall(response.rows[0].elements[0].duration);
+              }
+              else{
+                  alert(DIRECTIONS_NOT_FOUND_ERROR + " (Errorcode - " + status + ")");
+              }
+        }
+    }
+}
+
+
 
 /*********************** Private functions *****************************/
 
@@ -153,8 +193,12 @@ function getTimeFromCache(origin, destination, type){
                     return cache_entry.time.walking
             }
             if (type == google.maps.TravelMode.DRIVING){
-                if (cache_entry.time.walking != null)
+                if (cache_entry.time.driving != null)
                     return cache_entry.time.driving
+            }
+            if (type == google.maps.TravelMode.TRANSIT){
+                if (cache_entry.time.transit != null)
+                    return cache_entry.time.transit
             }
         }
     }
@@ -185,7 +229,7 @@ function addDirectionsToCache(origin, destination, directions){
         destination:destination,
         time:   {walking:null,
                 driving:null,
-                public_transport:null},
+                transit:null},
         directions:directions}
     );
 }
@@ -206,6 +250,8 @@ function addTimeToCache(origin, destination, type, duration){
                     cache_entry.time.walking = duration;
                 if (type == google.maps.TravelMode.DRIVING)
                     cache_entry.time.driving = duration;
+                if (type == google.maps.TravelMode.TRANSIT)
+                    cache_entry.time.transit = duration;
                 return;
             }
         }
@@ -218,7 +264,7 @@ function addTimeToCache(origin, destination, type, duration){
             destination:destination,
             time:   {walking:duration,
                     driving:null,
-                    public_transport:null},
+                    transit:null},
             directions:null}
         );
 
@@ -228,7 +274,17 @@ function addTimeToCache(origin, destination, type, duration){
             destination:destination,
             time:   {walking:null,
                     driving:duration,
-                    public_transport:null},
+                    transit:null},
+            directions:directions}
+        );
+
+    if (type == google.maps.TravelMode.TRANSIT)
+        directions_cache.push(
+            {origin:origin,
+            destination:destination,
+            time:   {walking:null,
+                    driving:null,
+                    transit:duration},
             directions:directions}
         );
 }
