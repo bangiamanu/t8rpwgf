@@ -118,10 +118,7 @@ function getDrivingTime(origin, destination, functionToCall){
 }
 
 /*
- * THIS FUNCTION DOES NOT WORK!!
- * because diztancematrixservice doesnt support public transport. It needs to be rewritten!
- * 
- * Gets the driving time between origin and destination and calls functionToCall
+  * Gets the driving time between origin and destination and calls functionToCall
  * origin: google.maps.latLng
  * destination: google.maps.latLng
  * functionToCall(google.maps.Duration): function to call after walking time is determined
@@ -133,25 +130,25 @@ function getTransitTime(origin, destination, functionToCall){
        functionToCall(cache_driving_time);
     }
    else{
-       // if not in cache
-        var service = new google.maps.DistanceMatrixService();
-        service.getDistanceMatrix(
-          {
-            origins: [origin],
-            destinations: [destination],
-            travelMode: google.maps.TravelMode.TRANSIT,
-            avoidHighways: false,
-            avoidTolls: false
-          }, callback);
-
+        // if not in cache
+        // make new directions request and store it in cache
+        var request = {
+            origin:origin,
+            destination:destination,
+            travelMode: google.maps.DirectionsTravelMode.TRANSIT    // this is the default type of directions shown on map
+        };
+        directionsService.route(request, callback);
+       
         function callback(response, status) {
-              if (status == google.maps.DistanceMatrixStatus.OK) {
-                addTimeToCache(origin, destination, google.maps.TravelMode.TRANSIT, response.rows[0].elements[0].duration)
-                functionToCall(response.rows[0].elements[0].duration);
-              }
-              else{
-                  alert(DIRECTIONS_NOT_FOUND_ERROR + " (Errorcode - " + status + ")");
-              }
+            if (status == google.maps.DirectionsStatus.OK) {
+                addDirectionsToCache(origin, destination, response);
+                
+                addTimeToCache(origin, destination, google.maps.TravelMode.TRANSIT, response.routes[0].legs[0].duration)
+                functionToCall(response.routes[0].legs[0].duration);                
+            }
+            else{
+                alert(DIRECTIONS_NOT_FOUND_ERROR + " (Errorcode - " + status + ")");
+            }
         }
     }
 }

@@ -63,7 +63,7 @@ function directions_api_addTravelTimeToTitle(cal_event){
                 calendar_helper_updateCalEventTitleAndBackground(cal_event, title);
             }
             else{
-                getDrivingTime(previous_event.marker.getPosition(), cal_event.marker.getPosition(), function (duration){
+                getTransitTime(previous_event.marker.getPosition(), cal_event.marker.getPosition(), function (duration){
                 title = available_destinations[cal_event.available_destination_id].title +
                         " (~" + duration.text + " by public transport)";
                 calendar_helper_updateCalEventTitleAndBackground(cal_event, title);

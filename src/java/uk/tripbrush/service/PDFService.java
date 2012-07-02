@@ -365,7 +365,7 @@ public class PDFService {
                     int duration = Integer.parseInt(getLastData(response, "<duration>", "<value>", "</value>"));
                     String durationt = "Walking Time: " + getLastData(response, "<duration>", "<text>", "</text>");
                     if (duration>60*(ConfigService.getMaxWalking())) {
-                        String dsearchUrl = "http://maps.googleapis.com/maps/api/directions/xml?origin=" + fpostcode + "&destination=" + tpostcode + "&sensor=false";
+                        String dsearchUrl = "http://maps.googleapis.com/maps/api/directions/xml?origin=" + fpostcode + "&destination=" + tpostcode + "&sensor=false&mode=transit";
                         response = Browser.getPage(dsearchUrl).toString();
                         durationt = "Driving Time: " + getLastData(response, "<duration>", "<text>", "</text>");
                     }
@@ -378,7 +378,7 @@ public class PDFService {
 
                     PdfPCell instructions = new PdfPCell();
                     instructions.setBorder(Rectangle.NO_BORDER);
-                    Paragraph p = new Paragraph("Written Directions (" + durationt + ")");;
+                    Paragraph p = new Paragraph("Written Directions (" + durationt + ")");
                     instructions.addElement(p);                    
                     String header = "<html_instructions>";
                     String headere = "</html_instructions>";
