@@ -31,6 +31,8 @@ function directions_cache_showDirections(origin, destination){
             destination:destination,
             travelMode: google.maps.DirectionsTravelMode.TRANSIT    // this is the default type of directions shown on map
         };
+        
+        console.log("Making Google maps TRANSIT request. Origin:" + origin + " Destination:" + destination);
         directionsService.route(request, function(result, status) {
             if (status == google.maps.DirectionsStatus.OK) {
                 directionsDisplay.setDirections(result);
@@ -60,6 +62,8 @@ function getWalkingTime(origin, destination, functionToCall){
    else{
        // if not in cache
         var service = new google.maps.DistanceMatrixService();
+
+        console.log("Making Google maps WALKING distance request. Origin:" + origin + " Destination:" + destination);
         service.getDistanceMatrix(
           {
             origins: [origin],
@@ -96,6 +100,8 @@ function getDrivingTime(origin, destination, functionToCall){
    else{
        // if not in cache
         var service = new google.maps.DistanceMatrixService();
+
+        console.log("Making Google maps DRIVING distance request. Origin:" + origin + " Destination:" + destination);
         service.getDistanceMatrix(
           {
             origins: [origin],
@@ -132,6 +138,8 @@ function getTransitTime(origin, destination, functionToCall){
    else{
         // if not in cache
         // make new directions request and store it in cache
+        
+        console.log("Making Google maps TRANSIT distance request. Origin:" + origin + " Destination:" + destination);
         var request = {
             origin:origin,
             destination:destination,

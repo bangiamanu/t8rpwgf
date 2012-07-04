@@ -4,7 +4,6 @@
  */
 package uk.tripbrush.service;
 
-import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Element;
@@ -19,6 +18,8 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.google.gson.*;
+import com.itextpdf.text.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -26,8 +27,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
@@ -84,15 +83,17 @@ public class PDFService {
         int[] widths = {1};
         table.setWidths(widths);
 
+        // TODO: add Logo here
         Paragraph destination = new Paragraph("Trip to " + plan.getLocation().getName());
         destination.setAlignment(Element.ALIGN_CENTER);
         destination.getFont().setFamily("Arial");
         destination.getFont().setSize(20);
+        destination.getFont().setStyle("bold");
 
-        Paragraph date = new Paragraph("\n\n" + DateUtil.getFullDay(plan.getStartdate()) + "\n\nto\n\n" + DateUtil.getFullDay(plan.getEnddate()));
+        Paragraph date = new Paragraph("\n\n" + DateUtil.getFullDay(plan.getStartdate()) + "\nto\n" + DateUtil.getFullDay(plan.getEnddate()));
         date.getFont().setFamily("Arial");
         date.setAlignment(Element.ALIGN_CENTER);
-        date.getFont().setSize(16);
+        date.getFont().setSize(12);
 
 
         PdfPCell titlecell = new PdfPCell();
@@ -135,19 +136,17 @@ public class PDFService {
         int[] widths = {1};
         table.setWidths(widths);
 
-        Paragraph destination = new Paragraph("TripBrush. Let's Paint!");
-        destination.setAlignment(Element.ALIGN_CENTER);
-        destination.getFont().setFamily("Arial");
-        destination.getFont().setSize(20);
+        //TODO: Add logo here instead
+        URL url = new URL("http://www.tripbrush.com/includes/images/TripBrushLogo.jpg");
+        Image image = Image.getInstance(url);
 
-        PdfPCell titlecell = new PdfPCell();
-        titlecell.setBorder(Rectangle.BOX);
+        
+        PdfPCell titlecell = new PdfPCell(image);
+        titlecell.setBorder(Rectangle.NO_BORDER);
         titlecell.setHorizontalAlignment(Element.ALIGN_CENTER);
         titlecell.setVerticalAlignment(Element.ALIGN_MIDDLE);
         titlecell.setFixedHeight(tableheight);
-
-        titlecell.addElement(destination);
-
+        
         table.addCell(titlecell);
         document.add(table);
 
@@ -183,19 +182,19 @@ public class PDFService {
         destination.setAlignment(Element.ALIGN_CENTER);
         destination.getFont().setFamily("Arial");
         destination.getFont().setSize(20);
-
+        destination.getFont().setStyle("bold");
+        
         Calendar cal = Calendar.getInstance();
         cal.setTime(plan.getStartdate().getTime());
         cal.add(Calendar.DAY_OF_MONTH, datecounter);
         
-        Paragraph date = new Paragraph("\n\nDay" + (datecounter+1) + "\n\n" + DateUtil.getFullDay(cal));
+        Paragraph date = new Paragraph("\n\nDay" + (datecounter+1) + "\n" + DateUtil.getFullDay(cal));
         date.getFont().setFamily("Arial");
         date.setAlignment(Element.ALIGN_CENTER);
-        date.getFont().setSize(16);
-
+        date.getFont().setSize(12);
 
         PdfPCell titlecell = new PdfPCell();
-        titlecell.setBorder(Rectangle.BOX);
+        titlecell.setBorder(Rectangle.NO_BORDER);
         titlecell.setHorizontalAlignment(Element.ALIGN_CENTER);
         titlecell.setVerticalAlignment(Element.ALIGN_MIDDLE);
         titlecell.setFixedHeight(tableheight);
@@ -247,10 +246,11 @@ public class PDFService {
                 table.setWidths(widths);    
                 
                 Chunk datetitle = new Chunk(DateUtil.getFullDay(cal));
-                datetitle.setUnderline(0.1f,-2f);
+                //datetitle.setUnderline(0.1f,-2f);
                 datetitle.getFont().setFamily("Arial");
-                datetitle.getFont().setSize(16);
+                datetitle.getFont().setSize(12);
                 datetitle.getFont().setColor(51,102,00);
+                datetitle.getFont().setStyle("bold");
                 
                 PdfPCell datecell = new PdfPCell();
                 datecell.setBorder(Rectangle.NO_BORDER);
@@ -258,9 +258,9 @@ public class PDFService {
                 datecell.setColspan(2);
 
                 
-                Paragraph time = new Paragraph(sevent.getDuration());
+                Paragraph time = new Paragraph(sevent.getDuration() + "\n");
                 time.getFont().setFamily("Arial");
-                time.getFont().setSize(14);
+                time.getFont().setSize(12);
                 
                 PdfPCell timecell = new PdfPCell(time);
                 timecell.setBorder(Rectangle.NO_BORDER);
@@ -268,13 +268,14 @@ public class PDFService {
                 
                 Attraction attraction = sevent.getAttraction();
                 
-                Paragraph eventname = new Paragraph(attraction.getName());
+                Paragraph eventname = new Paragraph(attraction.getName() + "\n");
                 eventname.getFont().setFamily("Arial");
-                eventname.getFont().setSize(14);
+                eventname.getFont().setSize(12);
+                eventname.getFont().setStyle("bold");
                
                 Paragraph eventdesc = new Paragraph(attraction.getDescription());
                 eventdesc.getFont().setFamily("Arial");
-                eventdesc.getFont().setSize(12);                
+                eventdesc.getFont().setSize(10);                
                 
                 PdfPCell eventcell = new PdfPCell();
                 eventcell.addElement(eventname);
@@ -291,7 +292,8 @@ public class PDFService {
                 
                 Paragraph eventhours = new Paragraph("Opening Hours");
                 eventhours.getFont().setFamily("Arial");
-                eventhours.getFont().setSize(14);                   
+                eventhours.getFont().setSize(12);                   
+                eventhours.getFont().setStyle("bold");
 
                 
                 CalendarService.loadAttractionTimes(plan, attraction);
@@ -303,7 +305,7 @@ public class PDFService {
                 for (AttractionOpenView view: attraction.getOpeningTimes()) {
                     Paragraph eventtimes = new Paragraph(DateUtil.getDay(view.getFrom())+" " + DateUtil.getTime(view.getFrom()) + "-"+ DateUtil.getTime(view.getTo()));
                     eventtimes.getFont().setFamily("Arial");
-                    eventtimes.getFont().setSize(12);
+                    eventtimes.getFont().setSize(10);
                     description.addElement(eventtimes);
                 }
                 
@@ -313,14 +315,14 @@ public class PDFService {
                 if (!StringUtil.isEmpty(sevent.getAttraction().getPhone())) {
                     Paragraph eventphone = new Paragraph("Telephone: " + attraction.getPhone());
                     eventphone.getFont().setFamily("Arial");
-                    eventphone.getFont().setSize(14);  
+                    eventphone.getFont().setSize(10);  
                     description.addElement(eventphone);
                 }
                 
                 if (!StringUtil.isEmpty(sevent.getAttraction().getAddress())) {
                     Paragraph eventaddress = new Paragraph("Address: " + attraction.getAddress());
                     eventaddress.getFont().setFamily("Arial");
-                    eventaddress.getFont().setSize(14);      
+                    eventaddress.getFont().setSize(10);      
                     description.addElement(eventaddress);
                 }
                 
@@ -347,9 +349,9 @@ public class PDFService {
 
                     table1.addCell(datecell);
                     
-                    Paragraph directions = new Paragraph("Directions from A. " + attraction.getName() + " to B. " + nextatt.getName());
+                    Paragraph directions = new Paragraph("Directions from A:" + attraction.getName() + " to B:" + nextatt.getName() + "\n\n");
                     directions.getFont().setFamily("Arial");
-                    directions.getFont().setSize(14);
+                    directions.getFont().setSize(10);
 
                     PdfPCell dcell = new PdfPCell(directions);
                     dcell.setBorder(Rectangle.NO_BORDER);
@@ -358,50 +360,21 @@ public class PDFService {
                     
                     String fpostcode = attraction.getPostcode().replaceAll(" ","")+",UK";
                     String tpostcode = nextatt.getPostcode().replaceAll(" ","")+",UK";
-    
-        
-                    String wsearchUrl = "http://maps.googleapis.com/maps/api/directions/xml?origin=" + fpostcode + "&destination=" + tpostcode + "&sensor=false&mode=walking";
-                    String response = Browser.getPage(wsearchUrl).toString();
-                    int duration = Integer.parseInt(getLastData(response, "<duration>", "<value>", "</value>"));
-                    String durationt = "Walking Time: " + getLastData(response, "<duration>", "<text>", "</text>");
-                    if (duration>60*(ConfigService.getMaxWalking())) {
-                        String dsearchUrl = "http://maps.googleapis.com/maps/api/directions/xml?origin=" + fpostcode + "&destination=" + tpostcode + "&sensor=false&mode=transit";
-                        response = Browser.getPage(dsearchUrl).toString();
-                        durationt = "Driving Time: " + getLastData(response, "<duration>", "<text>", "</text>");
-                    }
-
-                    double latfrom = Double.parseDouble(getData(response,"<start_location>","<lat>","</lat>"));
-                    double lngfrom = Double.parseDouble(getData(response,"<start_location>","<lng>","</lng>"));
-                    double latto= Double.parseDouble(getLastData(response,"<end_location>","<lat>","</lat>"));
-                    double lngto = Double.parseDouble(getLastData(response,"<end_location>","<lng>","</lng>"));
-                    String polyline = getData(response,"<overview_polyline>","<points>","</points>");
-
-                    PdfPCell instructions = new PdfPCell();
-                    instructions.setBorder(Rectangle.NO_BORDER);
-                    Paragraph p = new Paragraph("Written Directions (" + durationt + ")");
-                    instructions.addElement(p);                    
-                    String header = "<html_instructions>";
-                    String headere = "</html_instructions>";
-                    int index = 0;
-                    while (true) {
-                        int indexp = response.indexOf(header,index);
-                        int indexpe = response.indexOf(headere,indexp);
-                        if (indexp<index) break;
-                        String line = clean(response.substring(indexp+header.length(),indexpe));
-                        p = new Paragraph(line);
-                        instructions.addElement(p);
-                        index = indexpe+1;
-                    }
-
-
-                    URL google = new URL("http://maps.googleapis.com/maps/api/staticmap?sensor=false&size=500x250&path=weight:3|color:red|enc:" + polyline + "&markers=label:A|" + latfrom + "," + lngfrom + "&markers=label:B|" + latto + "," + lngto);
-                    Image image1 = Image.getInstance(google);
-                    PdfPCell smap = new PdfPCell(image1);
-                    smap.setBorder(Rectangle.NO_BORDER);
-                    smap.setColspan(1);
                     
-                    table1.addCell(smap);
-                    table1.addCell(instructions);
+                    /*** Manu's Code ***/
+                    String json_string;
+                    json_string = Browser.getPage("http://maps.googleapis.com/maps/api/directions/json?origin=" + fpostcode + "&destination=" + tpostcode + "&sensor=false&mode=walking").toString();
+                    JsonParser parser = new JsonParser();
+                    JsonObject json = parser.parse(json_string).getAsJsonObject();                    
+                    JsonArray routes = json.get("routes").getAsJsonArray();
+                    if (routes.get(0).getAsJsonObject().get("legs").getAsJsonArray().get(0).getAsJsonObject().get("duration").getAsJsonObject().get("value").getAsInt() > 60*(ConfigService.getMaxWalking())){
+                        json_string = Browser.getPage("http://maps.googleapis.com/maps/api/directions/json?origin=" + fpostcode + "&destination=" + tpostcode + "&sensor=false&mode=transit").toString();                    
+                        parser = new JsonParser();
+                        json = parser.parse(json_string).getAsJsonObject();                    
+                        routes = json.get("routes").getAsJsonArray();
+                    }
+                    addPublicTransportDirections(table1,routes);
+                    
                     
                     document.add(table1); 
                     document.newPage();
@@ -425,7 +398,7 @@ public class PDFService {
 
 
             PdfPCell titlecell = new PdfPCell();
-            titlecell.setBorder(Rectangle.BOX);
+            titlecell.setBorder(Rectangle.NO_BORDER);
             titlecell.setHorizontalAlignment(Element.ALIGN_CENTER);
             titlecell.setVerticalAlignment(Element.ALIGN_MIDDLE);
             titlecell.setFixedHeight(tableheight);
@@ -439,6 +412,199 @@ public class PDFService {
         document.close();
     }
 
+    public static void addPublicTransportDirections(PdfPTable table, JsonArray routes) throws Exception{
+
+        JsonArray legs = routes.get(0).getAsJsonObject().get("legs").getAsJsonArray();
+        JsonArray steps = legs.get(0).getAsJsonObject().get("steps").getAsJsonArray();                    
+
+        PdfPTable directions_table = new PdfPTable(3);
+        int[] widthArray = {20,200,400};
+        directions_table.setWidths(widthArray);
+
+        String marker_text;
+        String logo_str,
+               directions_str,
+               image_str,
+               duration_str;
+        ArrayList markers = new ArrayList();
+        
+        JsonElement overview_polyline_points = routes.get(0).getAsJsonObject().get("overview_polyline").getAsJsonObject().get("points");
+        
+        for (int i=0;i<steps.size();i++){
+            JsonElement travel_mode, 
+                    start_lat, 
+                    start_lng, 
+                    end_lat, 
+                    end_lng, 
+                    polyline_points, 
+                    html_instructions, 
+                    duration, 
+                    line, 
+                    line_name = null,
+                    vehicle, 
+                    local_icon = null, 
+                    vehicle_type = null, 
+                    vehicle_name = null, 
+                    short_name = null, 
+                    headsign = null, 
+                    departure_stop_name = null, 
+                    arrival_stop_name = null, 
+                    departure_time = null, 
+                    arrival_time = null, 
+                    num_stops = null;
+            
+            travel_mode = steps.get(i).getAsJsonObject().get("travel_mode");
+            start_lat = steps.get(i).getAsJsonObject().get("start_location").getAsJsonObject().get("lat");
+            start_lng = steps.get(i).getAsJsonObject().get("start_location").getAsJsonObject().get("lng");
+            end_lat = steps.get(i).getAsJsonObject().get("end_location").getAsJsonObject().get("lat");
+            end_lng = steps.get(i).getAsJsonObject().get("end_location").getAsJsonObject().get("lng");
+            polyline_points = steps.get(i).getAsJsonObject().get("polyline").getAsJsonObject().get("points");
+            html_instructions = steps.get(i).getAsJsonObject().get("html_instructions");
+            duration = steps.get(i).getAsJsonObject().get("duration").getAsJsonObject().get("text");
+
+            JsonElement transit_details = steps.get(i).getAsJsonObject().get("transit_details");
+            if (transit_details != null){
+                line = transit_details.getAsJsonObject().get("line");
+                line_name = line.getAsJsonObject().get("name");
+                vehicle = line.getAsJsonObject().get("vehicle");
+                local_icon = vehicle.getAsJsonObject().get("local_icon");
+                vehicle_type = vehicle.getAsJsonObject().get("type");
+                vehicle_name = vehicle.getAsJsonObject().get("name");
+                short_name = line.getAsJsonObject().get("short_name");
+                headsign = transit_details.getAsJsonObject().get("headsign");
+                departure_stop_name = transit_details.getAsJsonObject().get("departure_stop").getAsJsonObject().get("name");
+                arrival_stop_name = transit_details.getAsJsonObject().get("arrival_stop").getAsJsonObject().get("name");
+                departure_time = transit_details.getAsJsonObject().get("departure_time").getAsJsonObject().get("text");
+                arrival_time = transit_details.getAsJsonObject().get("arrival_time").getAsJsonObject().get("text");
+                num_stops = transit_details.getAsJsonObject().get("num_stops");
+            }
+            
+            // *****************  Logo *************************
+            logo_str = null;
+            if (stringify(travel_mode).equals("TRANSIT")){
+                if (stringify(vehicle_type).equals("BUS") || 
+                    stringify(vehicle_type).equals("INTERCITY_BUS") || 
+                    stringify(vehicle_type).equals("TROLLEYBUS")){
+                    logo_str = ConfigService.getUrl()+ "/includes/images/bus.png";
+                    marker_text = "&markers=icon:http://chart.apis.google.com/chart?chst=d_map_pin_icon%26chld=bus%257CFFFFFF%257Ctest%257CFFFFFF%257C000000%7C";
+                }
+                else{
+                    logo_str = ConfigService.getUrl()+ "/includes/images/rail.png";
+                     marker_text = "&markers=icon:http://chart.apis.google.com/chart?chst=d_map_pin_icon%26chld=train%257CFFFFFF%257Ctest%257CFFFFFF%257C000000%7C";
+                }
+                
+                //if (local_icon != null)
+                    //logo_str = "http:" + stringify(local_icon);
+            }
+            else if (stringify(travel_mode).equals("DRIVING")){
+                logo_str = ConfigService.getUrl()+ "/includes/images/drive.png";
+                marker_text = "&markers=icon:http://chart.apis.google.com/chart?chst=d_map_pin_icon%26chld=taxi%257CFFFFFF%257Ctest%257CFFFFFF%257C000000%7C";
+             }
+            else{
+                logo_str = ConfigService.getUrl()+ "/includes/images/walk.png";                
+                marker_text = "&markers=icon:http://chart.apis.google.com/chart?chst=d_map_pin_icon%26chld=wc-male%257CFFFFFF%257Ctest%257CFFFFFF%257C000000%7C";
+            }
+            
+            // *****************  Directions text *************************
+            directions_str = "";
+            if (stringify(travel_mode).equals("TRANSIT")){   
+                directions_str += "Take ";                    
+                directions_str += stringify(vehicle_name) +" (";
+                directions_str += stringify(short_name) + " "
+                               + stringify(line_name) + "), ";
+                directions_str += "towards ";
+                directions_str += stringify(headsign);
+                directions_str += ", from ";
+                directions_str += stringify(departure_stop_name);
+                directions_str += " to ";
+                directions_str += stringify(arrival_stop_name);
+            }
+            else{
+                directions_str = stringify(html_instructions);
+            }
+            
+            
+            // *****************  image *************************
+            image_str = "http://maps.googleapis.com/maps/api/staticmap?size=400x200&scale=2";
+            
+            // starting marker text is diff
+            marker_text += start_lat + "," + start_lng;
+            image_str += marker_text;
+            markers.add(marker_text);
+            
+            //ending marker text and path
+            image_str += "&markers=color:blue|label:B|" + end_lat + "," + end_lng;
+            image_str += "&path=color:0x000000|weight:5|enc:" + stringify(polyline_points);
+            image_str += "&sensor=false";
+
+            
+            // *****************  duration / stops *************************
+            duration_str = "";
+            if (stringify(travel_mode).equals("TRANSIT")){
+                    duration_str += stringify(departure_time) + " - " + stringify(arrival_time);
+                    duration_str += "\n\n";
+                    duration_str += "(" + stringify(duration) + ", " + stringify(num_stops) + " stops )";
+                }
+            else{
+                    duration_str = "(About " + stringify(duration) + ")";
+                }
+            
+            
+            // ***************** add to table *************************
+            PdfPCell c1 = new PdfPCell();
+            PdfPCell c2 = new PdfPCell();
+            PdfPCell c3 = new PdfPCell();
+            
+            c1.setBorder(Rectangle.NO_BORDER);
+            c2.setBorder(Rectangle.NO_BORDER);
+            c3.setBorder(Rectangle.NO_BORDER);
+            
+            Image image;
+            URL url;
+            
+            if (logo_str != null){
+                url = new URL(logo_str);
+                image = Image.getInstance(url);
+                c1.setImage(image);
+            }
+            
+            Paragraph p = new Paragraph(directions_str + "\n\n" + duration_str);
+            p.getFont().setSize(10);
+            c2.setPhrase(p);
+            
+            url = new URL(image_str);
+            image = Image.getInstance(url);
+            c3.setImage(image);
+                        
+            directions_table.addCell(c1);
+            directions_table.addCell(c2);
+            directions_table.addCell(c3);
+        }
+        
+        /** Big map **/
+        String main_map_src = "http://maps.googleapis.com/maps/api/staticmap?size=900x2700&scale=2";
+        for (int i=0;i< markers.size();i++){
+            main_map_src += markers.get(i);
+        }
+        main_map_src += "&path=color:0x000000|weight:5|enc:" + stringify(overview_polyline_points);
+        main_map_src += "&sensor=false";
+        URL url = new URL(main_map_src);
+        Image image = Image.getInstance(url);
+        
+        table.addCell(image);
+        table.addCell(new Phrase("\n"));
+        table.addCell(directions_table);
+    }
+    
+    public static String stringify(JsonElement ob){
+        if (ob!=null){
+            return ob.getAsString();
+        }
+        else{
+            return "";
+        }
+    }
+    
     public static void createCalendar(Plan plan) throws Exception {
         FileOutputStream fos = new FileOutputStream(new File(ConfigService.getRoot() + "calendar" + plan.getId() + ".pdf"));
         Document document = new Document(PageSize.A4.rotate(), 50, 50, 50, 50);
