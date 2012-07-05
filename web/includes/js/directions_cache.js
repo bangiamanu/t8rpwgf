@@ -11,7 +11,9 @@
 var directions_cache = new Array();
 var MAX_WALKING_MINUTES = 20;
 // This ensures no concurrent requests are made
-var outstanding_directions_request = false;
+var outstanding_walking_request = false;
+var outstanding_transit_request = false;
+var outstanding_driving_request = false;
 
 /**
  * shows directions on the map
@@ -34,12 +36,11 @@ function directions_cache_showDirections(origin, destination){
             travelMode: google.maps.DirectionsTravelMode.TRANSIT    // this is the default type of directions shown on map
         };
 
-        if (!outstanding_directions_request){
-            outstanding_directions_request = true;
+        if (!outstanding_transit_request){
+            outstanding_transit_request = true;
             console.log("Making Google maps TRANSIT request. Origin:" + origin + " Destination:" + destination);
             
             directionsService.route(request, function(result, status) {
-                outstanding_directions_request = false;                
                 if (status == google.maps.DirectionsStatus.OK) {
                     directionsDisplay.setDirections(result);
                     addDirectionsToCache(origin, destination, result);
@@ -47,7 +48,7 @@ function directions_cache_showDirections(origin, destination){
                 else{
                     alert(DIRECTIONS_NOT_FOUND_ERROR + " (Errorcode - " + status + ")");
                 }
-
+                outstanding_transit_request = false;                
             });
         }
     }
@@ -70,8 +71,8 @@ function getWalkingTime(origin, destination, functionToCall){
        // if not in cache
         var service = new google.maps.DistanceMatrixService();
 
-        if (!outstanding_directions_request){
-            outstanding_directions_request = true;
+        if (!outstanding_walking_request){
+            outstanding_walking_request = true;
             console.log("Making Google maps WALKING distance request. Origin:" + origin + " Destination:" + destination);
             
             service.getDistanceMatrix(
@@ -84,7 +85,6 @@ function getWalkingTime(origin, destination, functionToCall){
             }, callback);
 
             function callback(response, status) {
-                outstanding_directions_request = false;
                 if (status == google.maps.DistanceMatrixStatus.OK) {
                     addTimeToCache(origin, destination, google.maps.TravelMode.WALKING, response.rows[0].elements[0].duration)
                     functionToCall(response.rows[0].elements[0].duration);
@@ -92,6 +92,7 @@ function getWalkingTime(origin, destination, functionToCall){
                 else{
                     alert(DIRECTIONS_NOT_FOUND_ERROR + " (Errorcode - " + status + ")");
                 }
+                outstanding_walking_request = false;
             }
         }
     }
@@ -113,8 +114,8 @@ function getDrivingTime(origin, destination, functionToCall){
        // if not in cache
         var service = new google.maps.DistanceMatrixService();
 
-        if (!outstanding_directions_request){
-            outstanding_directions_request = true;
+        if (!outstanding_driving_request){
+            outstanding_driving_request = true;
             console.log("Making Google maps DRIVING distance request. Origin:" + origin + " Destination:" + destination);
 
             service.getDistanceMatrix(
@@ -127,7 +128,6 @@ function getDrivingTime(origin, destination, functionToCall){
             }, callback);
 
             function callback(response, status) {
-                outstanding_directions_request = false;
                 if (status == google.maps.DistanceMatrixStatus.OK) {
                     addTimeToCache(origin, destination, google.maps.TravelMode.DRIVING, response.rows[0].elements[0].duration)
                     functionToCall(response.rows[0].elements[0].duration);
@@ -135,6 +135,7 @@ function getDrivingTime(origin, destination, functionToCall){
                 else{
                     alert(DIRECTIONS_NOT_FOUND_ERROR + " (Errorcode - " + status + ")");
                 }
+                outstanding_driving_request = false;
             }
         }
     }
@@ -162,14 +163,13 @@ function getTransitTime(origin, destination, functionToCall){
             travelMode: google.maps.DirectionsTravelMode.TRANSIT    // this is the default type of directions shown on map
         };
 
-        if (!outstanding_directions_request){
-            outstanding_directions_request = true;
+        if (!outstanding_transit_request){
+            outstanding_transit_request = true;
             console.log("Making Google maps TRANSIT distance request. Origin:" + origin + " Destination:" + destination);
 
             directionsService.route(request, callback);
 
             function callback(response, status) {
-                outstanding_directions_request = false;
                 if (status == google.maps.DirectionsStatus.OK) {
                     addDirectionsToCache(origin, destination, response);
 
@@ -179,6 +179,7 @@ function getTransitTime(origin, destination, functionToCall){
                 else{
                     alert(DIRECTIONS_NOT_FOUND_ERROR + " (Errorcode - " + status + ")");
                 }
+                outstanding_transit_request = false;
             }
         }
     }
