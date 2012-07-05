@@ -4,7 +4,6 @@
  */
 package uk.tripbrush.service;
 
-import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Image;
@@ -233,7 +232,7 @@ public class PDFService {
         String date = DateUtil.getFullDay(cal);
         
         List<Event> todaysevents = plan.getEvents(cal);
-        PdfPTable table = null;
+        PdfPTable table;
         if (!todaysevents.isEmpty()) {
             int counter = 0;
             for (Event sevent: todaysevents) {
@@ -367,15 +366,25 @@ public class PDFService {
                     JsonParser parser = new JsonParser();
                     JsonObject json = parser.parse(json_string).getAsJsonObject();                    
                     JsonArray routes = json.get("routes").getAsJsonArray();
-                    if (routes.get(0).getAsJsonObject().get("legs").getAsJsonArray().get(0).getAsJsonObject().get("duration").getAsJsonObject().get("value").getAsInt() > 60*(ConfigService.getMaxWalking())){
+                    
+                    String status = stringify(json.get("status"));
+                    
+                    if (!status.equals("OK") || routes.get(0).getAsJsonObject().get("legs").getAsJsonArray().get(0).getAsJsonObject().get("duration").getAsJsonObject().get("value").getAsInt() > 60*(ConfigService.getMaxWalking())){
                         json_string = Browser.getPage("http://maps.googleapis.com/maps/api/directions/json?origin=" + fpostcode + "&destination=" + tpostcode + "&sensor=false&mode=transit").toString();                    
                         parser = new JsonParser();
                         json = parser.parse(json_string).getAsJsonObject();                    
                         routes = json.get("routes").getAsJsonArray();
                     }
-                    addPublicTransportDirections(table1,routes);
                     
-                    
+                    status = stringify(json.get("status"));
+                    if (status.equals("OK")){
+                        addPublicTransportDirections(table1,routes);
+                    }
+                    else{
+                        table1.addCell("Sorry Google did not return any public directions. If you feel this is in error, please email this file to error@tripbrush.com. Apologies for the inconvenience");
+                    }
+                        
+                                        
                     document.add(table1); 
                     document.newPage();
                 }
@@ -480,17 +489,16 @@ public class PDFService {
             }
             
             // *****************  Logo *************************
-            logo_str = null;
             if (stringify(travel_mode).equals("TRANSIT")){
                 if (stringify(vehicle_type).equals("BUS") || 
                     stringify(vehicle_type).equals("INTERCITY_BUS") || 
                     stringify(vehicle_type).equals("TROLLEYBUS")){
                     logo_str = ConfigService.getUrl()+ "/includes/images/bus.png";
-                    marker_text = "&markers=icon:http://chart.apis.google.com/chart?chst=d_map_pin_icon%26chld=bus%257CFFFFFF%257Ctest%257CFFFFFF%257C000000%7C";
+                    marker_text = "&markers=icon:http://chart.apis.google.com/chart?chst=d_map_pin_icon%26chld=bus%257CFFFFFF%257Ctest%257CFFFFFF%257C000000%7C" + start_lat + "," + start_lng;
                 }
                 else{
                     logo_str = ConfigService.getUrl()+ "/includes/images/rail.png";
-                     marker_text = "&markers=icon:http://chart.apis.google.com/chart?chst=d_map_pin_icon%26chld=train%257CFFFFFF%257Ctest%257CFFFFFF%257C000000%7C";
+                     marker_text = "&markers=icon:http://chart.apis.google.com/chart?chst=d_map_pin_icon%26chld=train%257CFFFFFF%257Ctest%257CFFFFFF%257C000000%7C" + start_lat + "," + start_lng;
                 }
                 
                 //if (local_icon != null)
@@ -498,12 +506,24 @@ public class PDFService {
             }
             else if (stringify(travel_mode).equals("DRIVING")){
                 logo_str = ConfigService.getUrl()+ "/includes/images/drive.png";
-                marker_text = "&markers=icon:http://chart.apis.google.com/chart?chst=d_map_pin_icon%26chld=taxi%257CFFFFFF%257Ctest%257CFFFFFF%257C000000%7C";
+                marker_text = "&markers=icon:http://chart.apis.google.com/chart?chst=d_map_pin_icon%26chld=taxi%257CFFFFFF%257Ctest%257CFFFFFF%257C000000%7C" + start_lat + "," + start_lng;
              }
             else{
                 logo_str = ConfigService.getUrl()+ "/includes/images/walk.png";                
-                marker_text = "&markers=icon:http://chart.apis.google.com/chart?chst=d_map_pin_icon%26chld=wc-male%257CFFFFFF%257Ctest%257CFFFFFF%257C000000%7C";
+                //marker_text = "&markers=icon:http://chart.apis.google.com/chart?chst=d_map_pin_icon%26chld=wc-male%257CFFFFFF%257Ctest%257CFFFFFF%257C000000%7C" + start_lat + "," + start_lng;
+                marker_text = "";
             }
+            
+            // First marker should be A and last marker should be B
+            if (i == 0){
+                marker_text = "&markers=color:blue|label:A|" + start_lat + "," + start_lng;
+            }
+            else if (i == (steps.size()-1)){
+                marker_text += "&markers=color:blue|label:B|" + end_lat + "," + end_lng;                
+            }
+            
+            markers.add(marker_text);
+
             
             // *****************  Directions text *************************
             directions_str = "";
@@ -520,19 +540,16 @@ public class PDFService {
                 directions_str += stringify(arrival_stop_name);
             }
             else{
-                directions_str = stringify(html_instructions);
+                directions_str = clean(stringify(html_instructions));
             }
             
             
             // *****************  image *************************
+            // Beginning marker
             image_str = "http://maps.googleapis.com/maps/api/staticmap?size=400x200&scale=2";
+            image_str += "&markers=color:blue|label:A|" + start_lat + "," + start_lng;
             
-            // starting marker text is diff
-            marker_text += start_lat + "," + start_lng;
-            image_str += marker_text;
-            markers.add(marker_text);
-            
-            //ending marker text and path
+            // Ending marker text and path
             image_str += "&markers=color:blue|label:B|" + end_lat + "," + end_lng;
             image_str += "&path=color:0x000000|weight:5|enc:" + stringify(polyline_points);
             image_str += "&sensor=false";
@@ -582,7 +599,7 @@ public class PDFService {
         }
         
         /** Big map **/
-        String main_map_src = "http://maps.googleapis.com/maps/api/staticmap?size=900x2700&scale=2";
+        String main_map_src = "http://maps.googleapis.com/maps/api/staticmap?size=900x3600&scale=2";
         for (int i=0;i< markers.size();i++){
             main_map_src += markers.get(i);
         }

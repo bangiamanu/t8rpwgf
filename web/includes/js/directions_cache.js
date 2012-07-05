@@ -10,6 +10,8 @@
  */
 var directions_cache = new Array();
 var MAX_WALKING_MINUTES = 20;
+// This ensures no concurrent requests are made
+var outstanding_directions_request = false;
 
 /**
  * shows directions on the map
@@ -25,24 +27,29 @@ function directions_cache_showDirections(origin, destination){
         directionsDisplay.setDirections(cache_directions);
     }
     else{
-    // make new directions request and store it in cache
+        // make new directions request and store it in cache            
         var request = {
             origin:origin,
             destination:destination,
             travelMode: google.maps.DirectionsTravelMode.TRANSIT    // this is the default type of directions shown on map
         };
-        
-        console.log("Making Google maps TRANSIT request. Origin:" + origin + " Destination:" + destination);
-        directionsService.route(request, function(result, status) {
-            if (status == google.maps.DirectionsStatus.OK) {
-                directionsDisplay.setDirections(result);
-                addDirectionsToCache(origin, destination, result);
-            }
-            else{
-                alert(DIRECTIONS_NOT_FOUND_ERROR + " (Errorcode - " + status + ")");
-            }
 
-        });
+        if (!outstanding_directions_request){
+            outstanding_directions_request = true;
+            console.log("Making Google maps TRANSIT request. Origin:" + origin + " Destination:" + destination);
+            
+            directionsService.route(request, function(result, status) {
+                outstanding_directions_request = false;                
+                if (status == google.maps.DirectionsStatus.OK) {
+                    directionsDisplay.setDirections(result);
+                    addDirectionsToCache(origin, destination, result);
+                }
+                else{
+                    alert(DIRECTIONS_NOT_FOUND_ERROR + " (Errorcode - " + status + ")");
+                }
+
+            });
+        }
     }
 }
 
@@ -63,24 +70,29 @@ function getWalkingTime(origin, destination, functionToCall){
        // if not in cache
         var service = new google.maps.DistanceMatrixService();
 
-        console.log("Making Google maps WALKING distance request. Origin:" + origin + " Destination:" + destination);
-        service.getDistanceMatrix(
-          {
-            origins: [origin],
-            destinations: [destination],
-            travelMode: google.maps.TravelMode.WALKING,
-            avoidHighways: false,
-            avoidTolls: false
-          }, callback);
+        if (!outstanding_directions_request){
+            outstanding_directions_request = true;
+            console.log("Making Google maps WALKING distance request. Origin:" + origin + " Destination:" + destination);
+            
+            service.getDistanceMatrix(
+            {
+                origins: [origin],
+                destinations: [destination],
+                travelMode: google.maps.TravelMode.WALKING,
+                avoidHighways: false,
+                avoidTolls: false
+            }, callback);
 
-        function callback(response, status) {
-              if (status == google.maps.DistanceMatrixStatus.OK) {
-                addTimeToCache(origin, destination, google.maps.TravelMode.WALKING, response.rows[0].elements[0].duration)
-                functionToCall(response.rows[0].elements[0].duration);
-              }
-              else{
-                  alert(DIRECTIONS_NOT_FOUND_ERROR + " (Errorcode - " + status + ")");
-              }
+            function callback(response, status) {
+                outstanding_directions_request = false;
+                if (status == google.maps.DistanceMatrixStatus.OK) {
+                    addTimeToCache(origin, destination, google.maps.TravelMode.WALKING, response.rows[0].elements[0].duration)
+                    functionToCall(response.rows[0].elements[0].duration);
+                }
+                else{
+                    alert(DIRECTIONS_NOT_FOUND_ERROR + " (Errorcode - " + status + ")");
+                }
+            }
         }
     }
 }
@@ -101,24 +113,29 @@ function getDrivingTime(origin, destination, functionToCall){
        // if not in cache
         var service = new google.maps.DistanceMatrixService();
 
-        console.log("Making Google maps DRIVING distance request. Origin:" + origin + " Destination:" + destination);
-        service.getDistanceMatrix(
-          {
-            origins: [origin],
-            destinations: [destination],
-            travelMode: google.maps.TravelMode.DRIVING,
-            avoidHighways: false,
-            avoidTolls: false
-          }, callback);
+        if (!outstanding_directions_request){
+            outstanding_directions_request = true;
+            console.log("Making Google maps DRIVING distance request. Origin:" + origin + " Destination:" + destination);
 
-        function callback(response, status) {
-              if (status == google.maps.DistanceMatrixStatus.OK) {
-                addTimeToCache(origin, destination, google.maps.TravelMode.DRIVING, response.rows[0].elements[0].duration)
-                functionToCall(response.rows[0].elements[0].duration);
-              }
-              else{
-                  alert(DIRECTIONS_NOT_FOUND_ERROR + " (Errorcode - " + status + ")");
-              }
+            service.getDistanceMatrix(
+            {
+                origins: [origin],
+                destinations: [destination],
+                travelMode: google.maps.TravelMode.DRIVING,
+                avoidHighways: false,
+                avoidTolls: false
+            }, callback);
+
+            function callback(response, status) {
+                outstanding_directions_request = false;
+                if (status == google.maps.DistanceMatrixStatus.OK) {
+                    addTimeToCache(origin, destination, google.maps.TravelMode.DRIVING, response.rows[0].elements[0].duration)
+                    functionToCall(response.rows[0].elements[0].duration);
+                }
+                else{
+                    alert(DIRECTIONS_NOT_FOUND_ERROR + " (Errorcode - " + status + ")");
+                }
+            }
         }
     }
 }
@@ -139,23 +156,29 @@ function getTransitTime(origin, destination, functionToCall){
         // if not in cache
         // make new directions request and store it in cache
         
-        console.log("Making Google maps TRANSIT distance request. Origin:" + origin + " Destination:" + destination);
         var request = {
             origin:origin,
             destination:destination,
             travelMode: google.maps.DirectionsTravelMode.TRANSIT    // this is the default type of directions shown on map
         };
-        directionsService.route(request, callback);
-       
-        function callback(response, status) {
-            if (status == google.maps.DirectionsStatus.OK) {
-                addDirectionsToCache(origin, destination, response);
-                
-                addTimeToCache(origin, destination, google.maps.TravelMode.TRANSIT, response.routes[0].legs[0].duration)
-                functionToCall(response.routes[0].legs[0].duration);                
-            }
-            else{
-                alert(DIRECTIONS_NOT_FOUND_ERROR + " (Errorcode - " + status + ")");
+
+        if (!outstanding_directions_request){
+            outstanding_directions_request = true;
+            console.log("Making Google maps TRANSIT distance request. Origin:" + origin + " Destination:" + destination);
+
+            directionsService.route(request, callback);
+
+            function callback(response, status) {
+                outstanding_directions_request = false;
+                if (status == google.maps.DirectionsStatus.OK) {
+                    addDirectionsToCache(origin, destination, response);
+
+                    addTimeToCache(origin, destination, google.maps.TravelMode.TRANSIT, response.routes[0].legs[0].duration)
+                    functionToCall(response.routes[0].legs[0].duration);                
+                }
+                else{
+                    alert(DIRECTIONS_NOT_FOUND_ERROR + " (Errorcode - " + status + ")");
+                }
             }
         }
     }

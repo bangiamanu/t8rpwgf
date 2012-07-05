@@ -3,6 +3,10 @@
 <%@ page import="uk.tripbrush.service.*"%>
 <%@ page import="java.io.*"%>
 
+<html>
+    <body>
+        <img src="http://classicprocessing.en.ecplaza.net/mainl.gif" />
+
 <%
         Plan plan = (Plan)session.getAttribute(Constant.SESSION_PLAN);
         if (plan!=null) {
@@ -33,4 +37,5 @@
         }
 %>
 
-<div>Processing...</div>
+</body>
+</html>
