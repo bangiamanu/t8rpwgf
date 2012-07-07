@@ -19,6 +19,7 @@ import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.google.gson.*;
 import com.itextpdf.text.*;
+import com.sun.net.ssl.internal.ssl.Debug;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -361,6 +362,10 @@ public class PDFService {
                     String tpostcode = nextatt.getPostcode().replaceAll(" ","")+",UK";
                     
                     /*** Manu's Code ***/
+                    long departure_time = sevent.getStartdate().getTimeInMillis();
+                    departure_time = departure_time / 1000;
+                    String d_t = String.valueOf(departure_time);
+                    
                     String json_string;
                     json_string = Browser.getPage("http://maps.googleapis.com/maps/api/directions/json?origin=" + fpostcode + "&destination=" + tpostcode + "&sensor=false&mode=walking").toString();
                     JsonParser parser = new JsonParser();
@@ -370,7 +375,7 @@ public class PDFService {
                     String status = stringify(json.get("status"));
                     
                     if (!status.equals("OK") || routes.get(0).getAsJsonObject().get("legs").getAsJsonArray().get(0).getAsJsonObject().get("duration").getAsJsonObject().get("value").getAsInt() > 60*(ConfigService.getMaxWalking())){
-                        json_string = Browser.getPage("http://maps.googleapis.com/maps/api/directions/json?origin=" + fpostcode + "&destination=" + tpostcode + "&sensor=false&mode=transit").toString();                    
+                        json_string = Browser.getPage("http://maps.googleapis.com/maps/api/directions/json?origin=" + fpostcode + "&destination=" + tpostcode + "&sensor=false&mode=transit&departureTime=" + d_t).toString();                    
                         parser = new JsonParser();
                         json = parser.parse(json_string).getAsJsonObject();                    
                         routes = json.get("routes").getAsJsonArray();

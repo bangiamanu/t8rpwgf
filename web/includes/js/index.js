@@ -62,8 +62,8 @@ function verifypassword() {
                     alert("Sorry. Wrong Password. Are you sure you're supposed to be here");
                 }
                 else {
-                    $("#realsubmit").click();
-                }
+    $("#realsubmit").click();
+}
             });
         }
     });

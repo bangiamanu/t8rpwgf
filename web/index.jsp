@@ -89,7 +89,7 @@
         <input type="button" name="Close" id="Close" value="Close" onclick="javascript:hideLoginWindow()" />
             </div>
         <![endif]-->
-        <![if !IE]>
+        <![if !IE]-->
             <div id="dictionary_text">
                   <p>tripbrush <img src="includes/images/speaker.jpg"/> <span style="font-family:Verdana, Geneva, sans-serif;font-weight:normal;font-style:italic"> [trip-bruhsh] </span></p>
                   <p>noun</p>
@@ -125,11 +125,7 @@
                 	<option value="6">6 days</option>
                 	<option value="7">7 days</option>
                 </select>
-                </td></tr><tr><td align="right">
-                <label for="alpha_password">Password*:</label>
-                </td><td>
-                <input type="password" name="alpha_password" id="alpha_password" />
-               </td></tr></table>
+                </td></tr></table>
                   
               </div>
               <!-- signupform-->
