@@ -59,7 +59,7 @@ function loadCategoryData(xml) {
 }
 
 
-function loadAvailableDestinations(){
+function backend_loadAvailableDestinations(){
     var params = "command=getAttractions";
     $.ajax({
         type: "POST",
@@ -133,14 +133,10 @@ function loadAvailableDestinationsData(xml) {
         };
         counter++;
     });
-    list_api_setCategoryHighlight(getElement("all"));
+    list_api_setCategoryHighlight(getElement("art"));
     //calendar_helper_populateCalendar();
 }
 
-// populates the available_destinations array - called on document.ready
-function backend_loadAvailableDestinations(){
-	loadAvailableDestinations(); // replace this function with backend code
-}
 
 function checkin() {
     var params = "command=GetUser";
