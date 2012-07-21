@@ -214,7 +214,6 @@
                         </div>
 
                         <div class="tabcontent hide" id="cont-2-1">
-                                <p>This attaraction is open during the following times:</p>
                                 <div id="destination_hours"></div>
                         </div>
 

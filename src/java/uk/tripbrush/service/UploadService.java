@@ -103,7 +103,7 @@ public class UploadService {
     public static void process(InputStream is) throws Exception {
         XSSFWorkbook wb = new XSSFWorkbook(is);  
         
-        XSSFSheet sheet = wb.getSheetAt(1);
+        XSSFSheet sheet = wb.getSheetAt(0);
         Iterator rows = sheet.rowIterator();
 
         Session session = Database.getSession();
@@ -136,21 +136,21 @@ public class UploadService {
             attraction.setLocation(CommonService.getLocation(getRowValue(row,3)));
             attraction.setName(getRowValue(row,2));
             attraction.setPostcode(getRowValue(row,5));
-            attraction.setDescription_short(getRowValue(row,13));
-            attraction.setDescription(getRowValue(row,14));
-            attraction.setImageFileName(getRowValue(row,16));
-            attraction.setImageFileName_small(getRowValue(row,15));
-            attraction.setWikiurl(getRowValue(row,17));
-            attraction.setOtherlinks(getRowValue(row,18));
+            attraction.setDescription_short(getRowValue(row,14));
+            attraction.setDescription(getRowValue(row,15));
+            attraction.setImageFileName(getRowValue(row,17));
+            attraction.setImageFileName_small(getRowValue(row,16));
+            attraction.setWikiurl(getRowValue(row,18));
+            attraction.setOtherlinks(getRowValue(row,19));
             session.save(attraction);
             
-            addTime(session,attraction,Calendar.MONDAY,getRowValue(row,6));
-            addTime(session,attraction,Calendar.TUESDAY,getRowValue(row,7));
-            addTime(session,attraction,Calendar.WEDNESDAY,getRowValue(row,8));
-            addTime(session,attraction,Calendar.THURSDAY,getRowValue(row,9));
-            addTime(session,attraction,Calendar.FRIDAY,getRowValue(row,10));
-            addTime(session,attraction,Calendar.SATURDAY,getRowValue(row,11));
-            addTime(session,attraction,Calendar.SUNDAY,getRowValue(row,12));
+            addTime(session,attraction,Calendar.MONDAY,getRowValue(row,7));
+            addTime(session,attraction,Calendar.TUESDAY,getRowValue(row,8));
+            addTime(session,attraction,Calendar.WEDNESDAY,getRowValue(row,9));
+            addTime(session,attraction,Calendar.THURSDAY,getRowValue(row,10));
+            addTime(session,attraction,Calendar.FRIDAY,getRowValue(row,11));
+            addTime(session,attraction,Calendar.SATURDAY,getRowValue(row,12));
+            addTime(session,attraction,Calendar.SUNDAY,getRowValue(row,13));
             
             
         }
@@ -168,7 +168,7 @@ public class UploadService {
     }    
     
     public static void main(String[] args) throws Exception {
-        String file = "c://Users//Samir//Documents//My Dropbox//Life Made Easy Ltd//Attraction Data Capture v2.5.xlsx";
+        String file = "C://Users//Manu//Documents//Attraction Data Capture v13.xlsx";
         //String file = "c://Users//Samir//Documents//My DropBox//Mauritius//input//Agro-Industry and FS//input.xlsx";
         InputStream input = new BufferedInputStream(new FileInputStream(file));
         process(input);      
