@@ -17,7 +17,7 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfWriter;
-import com.google.gson.*;
+//import com.google.gson.*;
 import com.itextpdf.text.*;
 import com.sun.net.ssl.internal.ssl.Debug;
 import java.io.File;
@@ -367,7 +367,7 @@ public class PDFService {
                     String fpostcode = attraction.getPostcode().replaceAll(" ","")+",UK";
                     String tpostcode = nextatt.getPostcode().replaceAll(" ","")+",UK";
                     
-                    /*** Manu's Code ***/
+                    // Manu's Code
                     long departure_time = sevent.getStartdate().getTimeInMillis();
                     departure_time = departure_time / 1000;
                     String d_t = String.valueOf(departure_time);
@@ -609,7 +609,7 @@ public class PDFService {
             directions_table.addCell(c3);
         }
         
-        /** Big map **/
+        //big map
         String main_map_src = "http://maps.googleapis.com/maps/api/staticmap?size=900x3600&scale=2";
         for (int i=0;i< markers.size();i++){
             main_map_src += markers.get(i);

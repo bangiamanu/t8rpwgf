@@ -39,7 +39,7 @@ public class PlanAction extends org.apache.struts.action.Action {
         if (CommandConstant.LOAD_PLANS.equals(pform.getCommand())) {
             if (user!=null) {
                 if (user.getPlans().size()==0) {
-                    PlanService.loadPlans(user);
+                    PlanService.loadPlans(user,(Plan)request.getSession().getAttribute(Constant.SESSION_PLAN));
                 }
                 request.setAttribute(Constant.REQUEST_MESSAGE,  user.getPlans());
                 return mapping.findForward("plans");
