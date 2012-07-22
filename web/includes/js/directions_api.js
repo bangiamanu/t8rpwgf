@@ -7,13 +7,13 @@ function directions_api_ready(){
     directionsDisplay.setMap(map);	
 }
 
-function directions_api_getDirectionHTML(cal_event_id){	
+function directions_api_getDirectionHTML(cal_event){	
     var str = "";
 	
     // setting previous and next events based on the current selected event
-    var target_event = calendar_helper_getCalendarEvent(cal_event_id);
-    var previous_event = calendar_helper_getPreviousEvent(cal_event_id);
-    var next_event = calendar_helper_getNextEvent(cal_event_id);
+    var target_event = cal_event;
+    var previous_event = calendar_helper_getPreviousEvent(cal_event);
+    var next_event = calendar_helper_getNextEvent(cal_event);
 
     // Providing directions based on previous and next events
     if (previous_event == null && next_event == null)
@@ -52,7 +52,7 @@ function directions_api_getDirections(cal_event_id1, cal_event_id2){
  * if no previous event, title is preserved
  */
 function directions_api_addTravelTimeToTitle(cal_event){
-    var previous_event = calendar_helper_getPreviousEvent(cal_event.id)
+    var previous_event = calendar_helper_getPreviousEvent(cal_event)
     var title = "";
 
     if (previous_event != null && previous_event.marker != null && cal_event != null && cal_event.marker != null){

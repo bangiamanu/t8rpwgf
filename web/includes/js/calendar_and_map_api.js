@@ -46,7 +46,8 @@ function calendar_and_map_api_loadEvent(db_id, destination_id, timeslot){
                 list_api_clearListSelection();
         }
         else{
-            alert(LOAD_ADDRESS_ERROR);
+            if (status != google.maps.GeocoderStatus.OVER_QUERY_LIMIT )            
+                alert(LOAD_ADDRESS_ERROR + "\n" + destination_to_load.title);
         }
     });
 }
@@ -94,21 +95,26 @@ function calendar_and_map_api_addEventToCalendarAndMap(db_id,destination_id,open
     //Adding to calendar 
     // This needs to be last because the marker needs to be set (so the calendar can calculate distance)
     $('#calendar').weekCalendar("updateEvent", cal_event);
-    calendar_events = $('#calendar').weekCalendar("serializeEvents");	
+    calendar_events = $('#calendar').weekCalendar("serializeEvents");
+    
+    //refreshing the next event
+    var next_event = calendar_helper_getNextEvent(cal_event);
+    if (next_event!=null){
+        events_to_be_refreshed.push(next_event);
+    }    
 }
 
 // accepts cal_event_id id from calendar_events array and removes it fron both calendar and map
-function calendar_and_map_api_removeEventFromCalendarAndMap(cal_event_id){
-    if (cal_event_id != null)
+function calendar_and_map_api_removeEventFromCalendarAndMap(cal_event){
+    if (cal_event != null)
     {
         calendar_events = $('#calendar').weekCalendar("serializeEvents");			
-        var cal_event = calendar_helper_getCalendarEvent(cal_event_id);
 
         // delete permanent marker from the map
         cal_event.marker.setMap(null);
 
         // then delete event from calendar
-        $('#calendar').weekCalendar("removeEvent", cal_event_id);
+        $('#calendar').weekCalendar("removeEvent", cal_event.id);
         calendar_events = $('#calendar').weekCalendar("serializeEvents");
     }
     else{
@@ -150,7 +156,8 @@ function calendar_and_map_api_addTemporaryEventToMap(destination_id){
             calendar_and_map_api_updateCurrentInfoWindow(temporary_destination.id, current_marker);
         }
         else{
-            alert(ADDRESS_NOT_FOUND);
+            if (status != google.maps.GeocoderStatus.OVER_QUERY_LIMIT)            
+                alert(ADDRESS_NOT_FOUND);
         }
     });
 }
@@ -191,21 +198,31 @@ function calendar_and_map_api_refreshCurrentInfoWindow(){
 }
 
 // accepts an id from the array calendar_events and selects that event on the calendar
-function calendar_and_map_api_selectEventOnCalendar(cal_event_id){
-    selected_calendar_event_id = cal_event_id;
-    calendar_helper_refreshEvents();
+function calendar_and_map_api_selectEventOnCalendar(cal_event){
+    var last_selected_calendar_event_id = selected_calendar_event_id;
+    selected_calendar_event_id = cal_event.id;
+    //calendar_helper_refreshEvents();
+
+    // unselect the one before
+    if(last_selected_calendar_event_id!="")
+        calendar_helper_refreshEvent(calendar_helper_getCalendarEvent(last_selected_calendar_event_id));
+    
+    //select the one now
+    calendar_helper_refreshEvent(cal_event);
 }
 
 // accepts an id from the array calendar_events and selects it on the map
-function calendar_and_map_api_selectEventOnMap(cal_event_id){
-    var cal_event = calendar_helper_getCalendarEvent(cal_event_id);
+function calendar_and_map_api_selectEventOnMap(cal_event){
     calendar_and_map_api_updateCurrentInfoWindow(cal_event.available_destination_id, cal_event.marker);	
 }
 
 // clears calendar selection
 function calendar_and_map_api_clearCalendarSelection(){
+    var last_selected_calendar_event_id = selected_calendar_event_id;
     selected_calendar_event_id = "";
-    calendar_helper_refreshEvents();
+    
+    if(last_selected_calendar_event_id!="")
+        calendar_helper_refreshEvent(calendar_helper_getCalendarEvent(last_selected_calendar_event_id));
 }
 
 
@@ -232,7 +249,7 @@ function clearInfoWindow(){
 */
 function getInfoWindow(destination_id){		
     var dest = available_destinations[destination_id];
-    var cal_event_id;
+    var cal_event;
 
     //setup infowindow
     var content_string = "<table><tr> <td><img src='" + dest.image_file_name_small.substring(0,dest .image_file_name_small.length - 4) + "co.jpg' /></td><td>&nbsp;</td><td valign=top align=left><span style='font-weight:bold; text-align:left;'>" + dest.title + "</span><br/><br/>"
@@ -240,8 +257,8 @@ function getInfoWindow(destination_id){
 
     // add or remove to calendar
     if (calendar_helper_isPlanned(dest.id)){
-        cal_event_id = calendar_helper_getCalendarEventId(dest.id);
-        content_string += "<tr><td><img src='includes/images/removefromitinerary.png' /></td><td valign=middle><a href='#' onclick='deleteEvent(\"" + cal_event_id +"\",true)'>Remove</a></td></tr>"				
+        cal_event = calendar_helper_getCalendarEventFromDestinationId(dest.id);
+        content_string += "<tr><td><img src='includes/images/removefromitinerary.png' /></td><td valign=middle><a href='#' onclick='deleteEvent(\"" + cal_event.id +"\",true)'>Remove</a></td></tr>"
     }
     else{
         content_string += "<tr><td><img src='includes/images/addtoitinerary.png' /></td><td valign=middle><a href='#' onclick='addEvent(" + dest.id +")'>Add to itinerary</a></td></tr>"				
@@ -256,7 +273,7 @@ function getInfoWindow(destination_id){
 
     // Directions
     if (calendar_helper_isPlanned(dest.id))
-        content_string += directions_api_getDirectionHTML(cal_event_id);
+        content_string += directions_api_getDirectionHTML(cal_event);
 
     content_string += "</table>"
     content_string += "</td></tr></table>";

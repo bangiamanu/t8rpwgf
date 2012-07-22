@@ -62,15 +62,15 @@ function list_api_selectDestinationOnList(destination_id){
 
 // clears list selection
 function list_api_clearListSelection(){
-	if (current_destination_id != null){
-            var selected_destination_id = current_destination_id;
-            current_destination_id = null;	
-            list_api_removeDestinationHighlight(selected_destination_id );
+    if (current_destination_id != null){
+        var selected_destination_id = current_destination_id;
+        current_destination_id = null;	
+        list_api_removeDestinationHighlight(selected_destination_id );
 
 
-            // remove previous more links
-            $(".more_link").remove()
-	}
+        // remove previous more links
+        $(".more_link").remove()
+    }
 }
 
 

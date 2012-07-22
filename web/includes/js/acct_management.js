@@ -77,7 +77,7 @@ function acct_management_showProfile(){
     $("#old_password").val("");
     $("#new_password").val("");
     $("#new_password1").val("");        
-    $("#white_out").fadeIn();	
+    $("#white_out").fadeIn();
     setTimeout("$('#profile').fadeIn()",400);
 }
 

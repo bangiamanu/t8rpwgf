@@ -111,13 +111,22 @@
             window.onresize = function(){
                     sizing_divsResize();
             };
+            
+        $(window).load(function(){
+            clearAllDialogs();
+        })            
     </script>
 
 </head><!-- head -->
 
 
 <body>
-    <div id="container">   
+    <div id="container">
+
+    <div id="loading" class="white_dialog">
+        <p align="center"> Loading . . . </p>
+    </div><!-- saved_trips -->
+
         <div id="fb-root"></div>
         <div id="toolbar">
             <img id="logo" src="includes/images/tripbrushlogo_inverted_small.png" alt="Logo" width="138" height="30" />
@@ -283,12 +292,12 @@
                             </a>
                         </td>
                         <td>
-                            <select name="pre_loaded_plans_choicebox" style="width: 100%">
-                                <option>. . . or check out these featured plans</option>
-                                <option>Show me the landmarks!</option>
-                                <option>Foodie's London</option>
-                                <option>Walking London</option>
-                                <option>London's Architecture</option>
+                            <select id="pre_loaded_plans_choicebox" style="width: 100%" onchange="javascript:pre_designed_plans_dropBoxChange()">
+                                <option value="">. . . or check out these featured plans</option>
+                                <option value="landmarks">Show me the landmarks!</option>
+                                <option value="">Foodie's London</option>
+                                <option value="">London's Museums</option>
+                                <option value="">Others coming soon . . .</option>
                             </select>
                         </td>                        
                     </tr>
@@ -460,6 +469,8 @@
                 
             </div>
         </div><!-- saved_trips -->
+
+        
 
         <div id="profile" class="white_dialog">
             <div id='profileclose'><img src='includes/images/close.png' id='close_image' onClick='clearAllDialogs()'/></div>
