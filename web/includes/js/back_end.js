@@ -134,7 +134,7 @@ function loadAvailableDestinationsData(xml) {
         counter++;
     });
     list_api_setCategoryHighlight(getElement("art"));
-    //calendar_helper_populateCalendar();
+    
 }
 
 
@@ -431,6 +431,7 @@ function processLoadPlan(xml) {
     });
     
     clearAllDialogs();
+    calendar_helper_populateCalendar();
 }
 
 function backend_add_event_to_database(cal_event){
