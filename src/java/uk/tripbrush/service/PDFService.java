@@ -285,10 +285,16 @@ public class PDFService {
                 
                 
                 URL url = new URL(ConfigService.getUrl()+ "/includes/images/data/"+attraction.getImageFileName());
-                Image image = Image.getInstance(url);
-                PdfPCell piccell = new PdfPCell(image);
-                piccell.setBorder(Rectangle.NO_BORDER);
-                piccell.setColspan(1);
+                PdfPCell piccell = new PdfPCell();
+                try{
+                    Image image = Image.getInstance(url);
+                    image.scaleToFit(250,250);
+                    piccell = new PdfPCell(image);
+                    piccell.setBorder(Rectangle.NO_BORDER);
+                    piccell.setColspan(1);
+                }
+                catch(Exception e){
+                }
                 
                 Paragraph eventhours = new Paragraph("Opening Hours");
                 eventhours.getFont().setFamily("Arial");

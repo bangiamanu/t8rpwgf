@@ -35,7 +35,7 @@ var SMALL_IMAGE_SIZE;
 var REMOVE_EVENT_ERROR;
 var ADDRESS_NOT_FOUND;
 var CALENDAR_EVENT_NOT_FOUND;
-var NO_TIMESLOTS_AVILABLE_ERROR;
+var NO_TIMESLOTS_AVAILABLE_ERROR;
 
 //TODO Samir, what is this?
 var emptycalendar = true;
@@ -64,8 +64,10 @@ var DIRECTIONS_NOT_FOUND_ERROR = "Couldnt plot directions. Please email us at er
 
 var LOAD_ADDRESS_ERROR = "An error occurred while loading an event. It seems that the address cannot be found. Please email us at error@tripbrush.com with a screenshot. Apologies for the inconvenience."
 
+// when drag and drop is performed on the calendar, this array holds the events that need to be refreshed
+var events_to_be_refreshed;
+
 function global_variables_ready(){
-    console.log("Global variables initialised")
     
     current_destination_id = null;
     
@@ -76,17 +78,19 @@ function global_variables_ready(){
     REMOVE_EVENT_ERROR = "Couldnt find event on the map. Please contact support@tripbrush.com with a screenshot. Apologies for the inconvenience."
     ADDRESS_NOT_FOUND = "Could not find the indicated address. Please make sure you are connected to the internet. If you are connected, please contact support@tripbrush.com with a screenshot. Apologies for the inconvenience."
     CALENDAR_EVENT_NOT_FOUND = "Couldnt find destination in calendar. Please contact support@tripbrush.com with a screenshot. Apologies for the inconvenience."
-    NO_TIMESLOTS_AVILABLE_ERROR = "No timeslots available. Please free up your calendar. If you believe this is in error, please contact support@tripbrush.com with a screenshot.";
+    NO_TIMESLOTS_AVAILABLE_ERROR = "This place is not open during your visit. If you believe this is in error, please email a screenshot to error@tripbrush.com";
 
 
     TIMESLOTS_PER_HOUR = 2;
 
-    dayofweek = new Date().getDay();
+    dayofweek = new Date(calendar_start_date).getDay();
 
     calendar_events = new Array();
     selected_calendar_event_id = "";
     
     TIMESLOT_LENGTH = 90;
 
+    events_to_be_refreshed = new Array();
 
+    console.log("Global variables initialised")
 }

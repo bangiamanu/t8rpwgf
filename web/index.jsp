@@ -19,12 +19,22 @@
 <link rel='stylesheet' type='text/css' href='includes/css/jquery-ui-1.8.16.custom.css' />
 <!-- Link to index.js-->
 
-<script type='text/javascript' src='libs/jquery-1.4.4.min.js'></script>
-<script type="text/javascript" src="includes/js/index.js"></script>
-<script type="text/javascript" src="includes/js/back_end.js"></script>
-<script type='text/javascript' src='libs/jquery-ui-1.8.11.custom.min.js'></script>
+    <script type='text/javascript' src="includes/js/global_variables.js"></script> <!-- Global variables used by files-->
+    <script type='text/javascript' src='libs/jquery-1.4.4.min.js'></script>
+    <script type="text/javascript" src="includes/js/index.js"></script>
+    <script type="text/javascript" src="includes/js/back_end.js"></script>
+    <script type='text/javascript' src='libs/jquery-ui-1.8.11.custom.min.js'></script>
+    <script type="application/javascript" src="includes/js/facebook.js"></script> <!-- Standard JS -->
     <script type='text/javascript' src="includes/js/acct_management.js"></script> <!-- acct_management APIJS -->
+    <script type='text/javascript' src="includes/js/date_math.js"></script> <!-- Date Math APIJS -->
+    <script type='text/javascript' src="includes/js/plan_actions.js"></script> <!-- Print APIJS -->
 
+        <!-- Javascript date formatting library
+		 URL: http://www.svendtofte.com/javascript/javascript-date-string-formatting/
+		 PHP formats: http://uk3.php.net/manual/en/function.date.php -->
+    <script type='text/javascript' src="libs/formatdate.js"></script> <!-- Calendar JS -->
+
+    
 <!-- Google Analytics Script -->
 <script type="text/javascript">
   var _gaq = _gaq || [];
@@ -48,7 +58,7 @@
 	<!-- Content -->
 	<div id="content" align="center">
             
-            <div id="index_login_and_signup">
+            <div id="index_login_and_signup" class="signed_in_or_out" style="display:block;">
                 <table cellpadding="0" cellspacing="5" height="40px" border="0px">
                     <tr>
                         <td align="center"><a href="javascript:acct_management_signIn()"><img src="includes/images/sign_in_icon.png"  /></a></td>
@@ -59,7 +69,10 @@
                     </tr>
                 </table>                
             </div>
-
+            <div id="index_login_and_signup" class="signed_in_or_out" style="display:none;">
+                <p align="left">Welcome <div id="user_first_name" style="font-weight: bold"></div></p>
+            </div>
+            
             <div id="facebook">
                 <iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.facebook.com%2Fpages%2FTripbrush%2F144328425633175&amp;layout=box_count&amp;show_faces=true&amp;width=50&amp;action=like&amp;font&amp;colorscheme=light&amp;height=65" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:50px; height:65px;" allowTransparency="true"></iframe>
             </div> <!-- facbebook likes -->
@@ -286,7 +299,7 @@
                         <p style="text-align:center">&nbsp;</p>
                 </form>
         </div><!-- forgot_password -->
-          
+        
     
 </body>
 </html>

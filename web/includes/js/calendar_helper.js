@@ -11,17 +11,14 @@ function calendar_helper_populateCalendar(){
 		timeslotsPerHour: TIMESLOTS_PER_HOUR,
 		daysToShow: days_to_show,
 		date: calendar_start_date,
-		firstDayOfWeek: dayofweek,
+		startOnFirstDayOfWeek: false,
 		buttons: false,
 		allowEventCreation: false,
 		businessHours: {start: 8, end: 24, limitDisplay: true},
 		height: function() {return window.innerHeight - 0.45*window.innerHeight - 105},
 		eventRender : function(calEvent, $event) {
-                    console.log(calEvent.title + " Render");
 		},
 		eventAfterRender : function(calEvent, $event) {
-                    console.log(calEvent.title + " After Render");
-
                     // Update the database
                     if (calEvent.id !=null){
                         updateEvent(calEvent.db_id,calEvent.start,calEvent.end);
@@ -37,28 +34,33 @@ function calendar_helper_populateCalendar(){
 		eventNew : function(calEvent, $event) {
 		},
 		eventDrag : function(calEvent, $event) {
+                    var next_event = calendar_helper_getNextEvent(calEvent);
+                    
+                    if (next_event!=null){
+                        events_to_be_refreshed.push(next_event);
+                    }
 		},
 		eventDrop : function(calEvent, $event) {
-                    console.log(calEvent.title + " Drop");
-                    
                     // $event is not the dom handler but the calevent itsself 
                     // and there are 2 events of the same type on the calendar right now
                     // making this a pretty useless event
+
+                    var next_event = calendar_helper_getNextEvent(calEvent);
+                    
+                    if (next_event!=null){
+                        events_to_be_refreshed.push(next_event);
+                    }
+
+                    events_to_be_refreshed.push(calEvent);
 		},
 		eventResize : function(calEvent, $event) {
-                    console.log(calEvent.title + " Resize");
                     setIsValid(calEvent);
                     calendar_helper_refreshEvents();
                     updateEvent(calEvent.db_id,calEvent.start,calEvent.end);
                     //calendar_events[calEvent.id] = calEvent; //TODO
 		},
 		eventClick : function(calEvent, $event) {
-                    console.log(calEvent.title + " Click");
-                    
-                    destination_selected_from_calendar(calEvent.id);
-
-                    // After render is not called after click so refreshing backgrounds
-                    calendar_helper_refreshEvents();
+                    destination_selected_from_calendar(calEvent);
 		},
 		eventMouseover : function(calEvent, $event) {
 		},
@@ -100,13 +102,45 @@ function updateEvent(id,start,end) {
 }
 
 function calendar_helper_refreshEvents(){
+    for (var i in events_to_be_refreshed){
+       var cal_event = events_to_be_refreshed[i];
+       calendar_helper_setTitleAndBackground(cal_event);
+       console.log("Refreshing " + cal_event.title)
+    }
+    events_to_be_refreshed = new Array();
+}
+
+
+function calendar_helper_refreshAllEvents(){
     calendar_events = $('#calendar').weekCalendar("serializeEvents");
     calendar_helper_sortEvents(calendar_events);
     
-    for (var i in calendar_events){			
-       var cal_event = calendar_events[i];
-       calendar_helper_setTitleAndBackground(cal_event);
+//    for (var i in calendar_events){			
+//       var cal_event = calendar_events[i];       
+//       calendar_helper_setTitleAndBackground(cal_event);
+//    }
+    slowLoop2(0);
+}
+
+function slowLoop2(i){
+    if (i<calendar_events.length){
+        var cal_event = calendar_events[i];       
+
+        if (cal_event!=null){
+            if (cal_event.is_valid){
+                directions_api_addTravelTimeToTitle(cal_event);
+                setTimeout(function(){slowLoop2(i+1)}, 750);
+            }
+            else{
+                calendar_helper_updateCalEventTitleAndBackground(cal_event, openingHoursToString(cal_event.available_destination_id, cal_event.start));
+                slowLoop2(i+1);
+            }
+        }
     }
+}
+
+function calendar_helper_refreshEvent(cal_event){
+    calendar_helper_setTitleAndBackground(cal_event);
 }
 
 /*
@@ -147,7 +181,7 @@ function calendar_helper_isPlanned(destination_id){
  * if nothing is available, returns null
  * accepts calendar event id as cal_event_id
  */
-function calendar_helper_getPreviousEvent(cal_event_id){
+function calendar_helper_getPreviousEvent(cal_event){
     calendar_events = $('#calendar').weekCalendar("serializeEvents");
     calendar_helper_sortEvents(calendar_events);
     var calEvent = null;
@@ -155,7 +189,7 @@ function calendar_helper_getPreviousEvent(cal_event_id){
 
     for (var i in calendar_events){
         calEvent = calendar_events[i];
-        if (calEvent.id == cal_event_id){
+        if (calEvent.id == cal_event.id){
 
             // if not first event
             if (i != 0)
@@ -176,7 +210,7 @@ function calendar_helper_getPreviousEvent(cal_event_id){
  * if nothing is available, returns null
  * accepts calendar event id as cal_event_id
  */
-function calendar_helper_getNextEvent(cal_event_id){
+function calendar_helper_getNextEvent(cal_event){
     calendar_events = $('#calendar').weekCalendar("serializeEvents");
     calendar_helper_sortEvents(calendar_events);
     var calEvent = null;
@@ -184,7 +218,7 @@ function calendar_helper_getNextEvent(cal_event_id){
 
     for (var i in calendar_events){
         calEvent = calendar_events[i];
-        if (calEvent.id == cal_event_id){
+        if (calEvent.id == cal_event.id){
 
             // if not last event
             if (i != calendar_events.length-1)
@@ -226,16 +260,17 @@ function calendar_helper_sortEvents(array) {
 }
 
 // converts an id in the available_destinations array to the calendar_event id
-function calendar_helper_getCalendarEventId(destination_id){
+function calendar_helper_getCalendarEventFromDestinationId(destination_id){
     for (var i in calendar_events){
         var cal_event = calendar_events[i]
         if (cal_event.available_destination_id == destination_id){
-            return cal_event.id;
+            return cal_event;
         }
     }
     alert(CALENDAR_EVENT_NOT_FOUND );
     return null;
 }
+
 
 // returns the calendar_event object from the calendar_event_id (necessary because ids are strings and may not correspond to the sequential numerical id in the array
 function calendar_helper_getCalendarEvent(cal_event_id){

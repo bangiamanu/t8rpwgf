@@ -24,7 +24,7 @@ p{
 /********************************** message ********************************/
 #message{
 	position:relative;
-	z-index:4001;
+	z-index:2001;
 
         top: 7px;
 	padding:5px;
@@ -371,7 +371,7 @@ p{
 
 /**************************** Account Management *****************************/
 #white_out{
-	display:none;
+	display:block;
 	
 	position:fixed;
 	top:0px;
@@ -414,6 +414,12 @@ p{
 #sign_in, #verify, #emailevents, #sign_up, #forgot_password, #profile{
 	top: 30%;
 	width: 400px;
+}
+
+#loading{
+        display: block;
+	top: 60%;
+	width: 300px;
 }
 
 #saved_trips{

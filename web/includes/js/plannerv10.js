@@ -3,38 +3,31 @@ function getElement(name) {
     return document.getElementById(name);
 }
 
-// TODO remove the code below
-/* adds event as denoted by destination_id
-function addEvent(destination_id){
-    var timeslot = findFirstOpenSlot(destination_id);
-    addNewEvent(-1,destination_id,timeslot);
-    emptycalendar = false;
-}*/
-
 // db: database id (-1 means its a new event that hasnt been added yet to the database)
 // timeslot is javascript timeslot
 function addEvent(destination_id){
     emptycalendar = false;
 
     var timeslot = findFirstOpenSlot(destination_id);
+    
+    if (timeslot != false){
+        // add it to calendar and map
+        calendar_and_map_api_addEventToCalendarAndMap(-1,destination_id,timeslot);
 
-    // add it to calendar and map
-    calendar_and_map_api_addEventToCalendarAndMap(-1,destination_id,timeslot);
+        // select it on calendar. remove temp from map and add permanent
+        var cal_event = calendar_helper_getCalendarEventFromDestinationId(destination_id);
+        calendar_and_map_api_selectEventOnCalendar(cal_event);
+        clearMapSelection();
+        calendar_and_map_api_selectEventOnMap(cal_event);
 
-    // select it on calendar. remove temp from map and add permanent
-    var cal_event_id = calendar_helper_getCalendarEventId(destination_id);
-    var cal_event = calendar_helper_getCalendarEvent(cal_event_id);
-    calendar_and_map_api_selectEventOnCalendar(cal_event.id);
-    clearMapSelection();
-    calendar_and_map_api_selectEventOnMap(cal_event.id);
-
-    // Add event to database
-    backend_add_event_to_database(cal_event);
+        // Add event to database
+        backend_add_event_to_database(cal_event);
 
 
-    // grey out destination and clear list
-    list_api_greyOutDestination(destination_id);
-    list_api_clearListSelection();
+        // grey out destination and clear list
+        list_api_greyOutDestination(destination_id);
+        list_api_clearListSelection();
+    }
 }
 
 // deletes event as denoted by cal_event_id
@@ -44,7 +37,7 @@ function deleteEvent(cal_event_id, db){
     list_api_unGreyDestination(cal_event.available_destination_id);
 
     // and remove it from calendar and map
-    calendar_and_map_api_removeEventFromCalendarAndMap(cal_event_id);
+    calendar_and_map_api_removeEventFromCalendarAndMap(cal_event);
 
     // if its a hard delete, remove it from the database
     if (db)
@@ -68,11 +61,9 @@ function destination_selected_from_list(destination_id){
     list_api_selectDestinationOnList(destination_id);
 
     if (calendar_helper_isPlanned(destination_id)){
-        var cal_event_id;
-
-        cal_event_id = calendar_helper_getCalendarEventId(destination_id);
-        calendar_and_map_api_selectEventOnCalendar(cal_event_id);
-        calendar_and_map_api_selectEventOnMap(cal_event_id);
+        var cal_event = calendar_helper_getCalendarEventFromDestinationId(destination_id);
+        calendar_and_map_api_selectEventOnCalendar(cal_event);
+        calendar_and_map_api_selectEventOnMap(cal_event);
     }
     else{
         calendar_and_map_api_addTemporaryEventToMap(destination_id);
@@ -88,8 +79,8 @@ function event_selected_from_map(evnt){
     for (var i in calendar_events){
         var cal_event = calendar_events[i];
         if (cal_event.marker.position.equals(evnt.latLng)){
-            calendar_and_map_api_selectEventOnCalendar(cal_event.id);
-            calendar_and_map_api_selectEventOnMap(cal_event.id);
+            calendar_and_map_api_selectEventOnCalendar(cal_event);
+            calendar_and_map_api_selectEventOnMap(cal_event);
             list_api_selectDestinationOnList(cal_event.available_destination_id);
             return;
         }
@@ -100,11 +91,10 @@ function event_selected_from_map(evnt){
 /*
         a selection was made on the calendar (i.e., an event was selected)
 */
-function destination_selected_from_calendar(cal_event_id){
-    calendar_and_map_api_selectEventOnCalendar(cal_event_id);
-    calendar_and_map_api_selectEventOnMap(cal_event_id);
+function destination_selected_from_calendar(cal_event){
+    calendar_and_map_api_selectEventOnCalendar(cal_event);
+    calendar_and_map_api_selectEventOnMap(cal_event);
 
-    var cal_event = calendar_helper_getCalendarEvent(cal_event_id);
     list_api_selectDestinationOnList(cal_event.available_destination_id);
 }
 
