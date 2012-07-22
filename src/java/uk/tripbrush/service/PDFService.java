@@ -17,7 +17,7 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfWriter;
-import com.google.gson.*;
+//import com.google.gson.*;
 import com.itextpdf.text.*;
 import com.sun.net.ssl.internal.ssl.Debug;
 import java.io.File;
@@ -209,7 +209,7 @@ public class PDFService {
     }
     
     public static void createEvents(Plan plan,int datecounter) throws Exception {
-        FileOutputStream fos = new FileOutputStream(new File(ConfigService.getRoot() + "events" + plan.getId() + datecounter + ".pdf"));
+        /*FileOutputStream fos = new FileOutputStream(new File(ConfigService.getRoot() + "events" + plan.getId() + datecounter + ".pdf"));
         Document document = new Document(PageSize.A4, 50, 50, 50, 50);
         document.open();
         Rectangle area = new Rectangle(36, 24, 559, 802);
@@ -361,7 +361,7 @@ public class PDFService {
                     String fpostcode = attraction.getPostcode().replaceAll(" ","")+",UK";
                     String tpostcode = nextatt.getPostcode().replaceAll(" ","")+",UK";
                     
-                    /*** Manu's Code ***/
+                    // Manu's Code
                     long departure_time = sevent.getStartdate().getTimeInMillis();
                     departure_time = departure_time / 1000;
                     String d_t = String.valueOf(departure_time);
@@ -423,10 +423,10 @@ public class PDFService {
             document.add(table); 
         }
                  
-        document.close();
+        document.close();*/
     }
 
-    public static void addPublicTransportDirections(PdfPTable table, JsonArray routes) throws Exception{
+    /*public static void addPublicTransportDirections(PdfPTable table, JsonArray routes) throws Exception{
 
         JsonArray legs = routes.get(0).getAsJsonObject().get("legs").getAsJsonArray();
         JsonArray steps = legs.get(0).getAsJsonObject().get("steps").getAsJsonArray();                    
@@ -603,7 +603,7 @@ public class PDFService {
             directions_table.addCell(c3);
         }
         
-        /** Big map **/
+        //big map
         String main_map_src = "http://maps.googleapis.com/maps/api/staticmap?size=900x3600&scale=2";
         for (int i=0;i< markers.size();i++){
             main_map_src += markers.get(i);
@@ -625,7 +625,7 @@ public class PDFService {
         else{
             return "";
         }
-    }
+    }*/
     
     public static void createCalendar(Plan plan) throws Exception {
         FileOutputStream fos = new FileOutputStream(new File(ConfigService.getRoot() + "calendar" + plan.getId() + ".pdf"));

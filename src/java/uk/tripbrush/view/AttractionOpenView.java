@@ -11,6 +11,7 @@ import java.util.Calendar;
  * @author sseetal
  */
 public class AttractionOpenView {
+
     private Calendar from;
     private Calendar to;
 

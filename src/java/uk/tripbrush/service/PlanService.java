@@ -32,9 +32,21 @@ import uk.tripbrush.util.DateUtil;
  */
 public class PlanService {
 
-    public static void loadPlans(User user) {
+    public static void loadPlans(User user,Plan plan) {
         Session session = Database.getSession();
         List<Plan> plans = session.createCriteria("uk.tripbrush.model.core.Plan").add(Restrictions.eq("user", user)).list();
+        List<Plan> allplans = new ArrayList<Plan>();
+        for (Plan dplan: plans) {
+            if (plan!=null && dplan.getId()==plan.getId()) {
+                allplans.add(dplan);
+            }
+            else {
+                List<Event> events = session.createCriteria(PojoConstant.EVENT_MODEL).add(Restrictions.eq("plan", dplan)).list();
+                if (events.size()>0) {
+                    allplans.add(dplan);
+                }
+            }
+        }
         if (plans != null) {
             user.setPlans(plans);
         }
