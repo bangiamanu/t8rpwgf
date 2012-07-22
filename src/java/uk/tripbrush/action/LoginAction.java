@@ -71,7 +71,7 @@ public class LoginAction extends org.apache.struts.action.Action {
                 User user = (User)result.getObject();
                 if (user!=null) {
                     request.setAttribute(Constant.REQUEST_MESSAGE, user.getName());
-                    PlanService.loadPlans(user);
+                    PlanService.loadPlans(user,(Plan)request.getSession().getAttribute(Constant.SESSION_PLAN));
                     User suser = (User)request.getSession().getAttribute(Constant.SESSION_USER);
                     if (suser!=null && suser.getStatus()==UserService.TEMP_USER) {
                         user.getPlans().addAll(UserService.deleteTempUser(suser,user));
@@ -124,7 +124,7 @@ public class LoginAction extends org.apache.struts.action.Action {
                             }
                             else {
                                 request.setAttribute(Constant.REQUEST_MESSAGE, user.getName());
-                                PlanService.loadPlans(user);
+                                PlanService.loadPlans(user,(Plan)request.getSession().getAttribute(Constant.SESSION_PLAN));
                                 User suser = (User)request.getSession().getAttribute(Constant.SESSION_USER);
                                 if (suser!=null && suser.getStatus()==UserService.TEMP_USER) {
                                     user.getPlans().addAll(UserService.deleteTempUser(suser,user));
