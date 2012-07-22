@@ -209,7 +209,7 @@ public class PDFService {
     }
     
     public static void createEvents(Plan plan,int datecounter) throws Exception {
-        /*FileOutputStream fos = new FileOutputStream(new File(ConfigService.getRoot() + "events" + plan.getId() + datecounter + ".pdf"));
+        FileOutputStream fos = new FileOutputStream(new File(ConfigService.getRoot() + "events" + plan.getId() + datecounter + ".pdf"));
         Document document = new Document(PageSize.A4, 50, 50, 50, 50);
         document.open();
         Rectangle area = new Rectangle(36, 24, 559, 802);
@@ -423,10 +423,10 @@ public class PDFService {
             document.add(table); 
         }
                  
-        document.close();*/
+        document.close();
     }
 
-    /*public static void addPublicTransportDirections(PdfPTable table, JsonArray routes) throws Exception{
+    public static void addPublicTransportDirections(PdfPTable table, JsonArray routes) throws Exception{
 
         JsonArray legs = routes.get(0).getAsJsonObject().get("legs").getAsJsonArray();
         JsonArray steps = legs.get(0).getAsJsonObject().get("steps").getAsJsonArray();                    
@@ -625,7 +625,7 @@ public class PDFService {
         else{
             return "";
         }
-    }*/
+    }
     
     public static void createCalendar(Plan plan) throws Exception {
         FileOutputStream fos = new FileOutputStream(new File(ConfigService.getRoot() + "calendar" + plan.getId() + ".pdf"));
