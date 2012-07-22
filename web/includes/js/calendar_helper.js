@@ -6,7 +6,6 @@
  */
 function calendar_helper_populateCalendar(){
 	// Event listeners for calendar and intiialize calendar
-        alert(calendar_start_date);
 	$('#calendar').weekCalendar({
 		timeslotsPerHour: TIMESLOTS_PER_HOUR,
 		daysToShow: days_to_show,

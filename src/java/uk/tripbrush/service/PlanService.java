@@ -48,7 +48,7 @@ public class PlanService {
             }
         }
         if (plans != null) {
-            user.setPlans(plans);
+            user.setPlans(allplans);
         }
     }
 
