@@ -14,5 +14,7 @@
     <property name="startminute" type="int"/>
     <property name="endhour" type="int"/>
     <property name="endminute" type="int"/>
+    
+    <property name="description" type="java.lang.String" length="255"/>
   </class>
 </hibernate-mapping>

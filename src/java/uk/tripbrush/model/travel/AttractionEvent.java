@@ -20,6 +20,8 @@ public class AttractionEvent  implements Serializable {
     private int endhour;
 
     private int endminute;
+    
+    private String description;
 
     /**
      * @return the id
@@ -117,6 +119,20 @@ public class AttractionEvent  implements Serializable {
      */
     public void setHday(Calendar hday) {
         this.hday = hday;
+    }
+
+    /**
+     * @return the description
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * @param description the description to set
+     */
+    public void setDescription(String description) {
+        this.description = description;
     }
 
 }

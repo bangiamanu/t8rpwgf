@@ -32,7 +32,7 @@
         out.println("</other_links>");
         out.println("<opening_hours>");
         for (AttractionOpenView aov: c.getOpeningTimes()) {
-             out.println(" <open fromy=\"" + aov.getFrom().get(Calendar.YEAR) + "\" fromm=\"" + aov.getFrom().get(Calendar.MONTH) + "\""
+             out.println(" <open description=\"" + aov.getDescription() + "\" fromy=\"" + aov.getFrom().get(Calendar.YEAR) + "\" fromm=\"" + aov.getFrom().get(Calendar.MONTH) + "\""
                 + " fromd=\"" + aov.getFrom().get(Calendar.DAY_OF_MONTH) + "\" fromh=\"" + aov.getFrom().get(Calendar.HOUR_OF_DAY) + "\""
                 + " fromn=\"" + aov.getFrom().get(Calendar.MINUTE) + "\""
                 + " toy=\"" + aov.getTo().get(Calendar.YEAR) + "\" tom=\"" + aov.getTo().get(Calendar.MONTH) + "\""

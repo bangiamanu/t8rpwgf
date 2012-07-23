@@ -128,6 +128,7 @@ public class CalendarService implements Serializable {
                 aov.getFrom().set(Calendar.MINUTE,time.getStartminute());
                 aov.getTo().set(Calendar.HOUR_OF_DAY,time.getEndhour());
                 aov.getTo().set(Calendar.MINUTE,time.getEndminute());
+                aov.setDescription(time.getDescription());
                 aovlist.add(aov);
             }            
             attraction.setOpeningTimes(aovlist);        

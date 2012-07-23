@@ -14,10 +14,13 @@ public class AttractionOpenView {
 
     private Calendar from;
     private Calendar to;
+    private String description; 
+   
 
     public AttractionOpenView() {
         from = Calendar.getInstance();
         to = Calendar.getInstance();
+        description = "";
     }
     
     /**
@@ -47,5 +50,19 @@ public class AttractionOpenView {
      */
     public void setTo(Calendar to) {
         this.to = to;
+    }
+
+    /**
+     * @return the description
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * @param description the description to set
+     */
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
