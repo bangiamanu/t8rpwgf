@@ -69,8 +69,6 @@ function calendar_helper_populateCalendar(){
 		},
 		data:{events:calendar_events}
 	});
-	
-	
 	// Activating tabs
 	$(".tabLink").each(function(){
 	  $(this).click(function(){
