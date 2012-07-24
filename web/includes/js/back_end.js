@@ -133,7 +133,8 @@ function loadAvailableDestinationsData(xml) {
         };
         counter++;
     });
-    list_api_setCategoryHighlight(getElement("art"));
+
+//list_api_setCategoryHighlight(getElement("art"));
     
 }
 

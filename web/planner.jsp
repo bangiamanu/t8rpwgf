@@ -114,6 +114,7 @@
             
         $(window).load(function(){
             clearAllDialogs();
+            setTimeout(startTutorial,500);
         })            
     </script>
 
@@ -124,7 +125,7 @@
     <div id="container">
 
     <div id="loading" class="white_dialog">
-        <p align="center"> Loading . . . </p>
+        <p align="center"> . . . loading . . . </p>
     </div><!-- saved_trips -->
 
         <div id="fb-root"></div>
@@ -232,27 +233,6 @@
         </div><!-- destination_details_pane-->
 
         <div id="calendarcontainer">
-            <!--
-            <div id="done_button">
-                    <img src="includes/images/done_button.png" onMouseOver="done_button_api_setDoneToOpaque()" onMouseOut="done_button_api_setDoneToTranslucent()" onClick="done_button_api_toggleDoneMenu()" />
-            </div>
-            <div id="done_menu" onMouseOver="done_button_api_setDoneToOpaque()" onMouseOut="done_button_api_setDoneToTranslucent()" >
-                    <img src="includes/images/close.png" id="done_close_button" onClick="done_button_api_hideDoneMenu()"/>
-                    <table cellpadding="0" cellspacing="3">
-                            <tr>
-                                    <td align="center"><a href="javascript:print_api_printEvents()"><img src="includes/images/print_icon.png" width="30" height="28" /></a></td>
-                                    <td><a href="javascript:print_api_printEvents()">Print</a></td>
-                            </tr>
-                            <tr>
-                                    <td align="center"><img src="includes/images/email_icon.png" width="28" height="28" /></td>
-                                    <td><a href="javascript:emailEvents()">Email</a></td>
-                            </tr>
-                            <tr>
-                                    <td align="center"><img src="includes/images/facebook_icon.png" width="24" height="28" /></a></td>
-                                    <td><a href="javascript:shareEvents()">Share on facebook</a></td>
-                            </tr>
-                    </table>
-            </div>-->
             <div id="calendar_toolbar">
                 <table width="100%">
                     <tr>
@@ -515,23 +495,6 @@
                                         <input type="button" name="Cancel" value="Cancel" style="font-size:10px" onClick="clearAllDialogs()"/>
                                 </td>
                         </tr>
-                        <!--tr>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                        </tr>
-                        <tr>
-                                <td colspan="2"> <b>Add / Remove facebook account</b></td>
-                        </tr>
-                        <tr>
-                                <td>Facebook stuff goes here</td>
-                                <td>Facebook stuff goes here</td>
-                        </tr>
-                        <tr>
-                                <td colspan="2" align="center">
-                                        <input type="submit" name="Submit" value="Submit" style="font-size:10px"/>
-                                        <input type="button" name="Cancel" value="Cancel" style="font-size:10px" onClick="clearAllDialogs()"/>
-                                </td>
-                        </tr-->
                 </table>
         </div><!-- profile -->
 
@@ -550,8 +513,9 @@
     <div id="guidebox1text">
         <p style="color:#36c" align="center"><b>Step 1</b></p><br />
         <p style="padding-bottom:2px">&lt;&lt; Choose what you would like to do</p>
-        <p style="font-size:10px;padding-bottom:2px">(hint: select "All destinations" to see all options)</p><br />
-        <p style="font-size:10px">I already know how to use this website - <a href="javascript:endTutorial()">End Tutorial</a></p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p style="font-size:8px;float:right;">I already know how to use this. <a href="javascript:endTutorial()">End Tutorial</a></p>
     </div>
 
     <div id="guidebox2">
@@ -559,15 +523,13 @@
     <div id="guidebox2text">
         <p style="color:#36c" align="center"><b>Step 2</b></p><br />
         <p style="padding-bottom:2px">&lt;&lt; Choose where you would like to go</p>
-        <p style="font-size:10px">(hint: select "All destinations" if you dont see anything)</p>
     </div>
 
     <div id="guidebox3">
 	</div>
     <div id="guidebox3text">
         <p style="color:#36c" align="center"><b>Step 3</b></p><br />
-        <p style="padding-bottom:2px"> Read the description below and click "Add"</p>
-        <p style="font-size:10px">(hint: check out the other tabs such as Pics, Reviews etc.)</p>
+        <p style="padding-bottom:2px">Click "Add to itinerary"</p>
     </div>
 
     <div id="guidebox4text">
@@ -576,7 +538,7 @@
         	<li>Scroll the calendar to see your events</li>
         	<li>You can drag the events around using your mouse</li>
         	<li>You can make them longer or shorter</li>
-        	<li>Click settings link at the top for more options</li>
+        	<li>Use the toolbar on top for more options</li>
         </ul>
         <p style="padding-bottom:2px;color:#36c" align="center">Happy Planning!</p>
         <p style="font-size:10px"><a href="javascript:endTutorial()">Close</a></p

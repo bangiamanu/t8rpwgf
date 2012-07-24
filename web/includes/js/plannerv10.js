@@ -27,6 +27,12 @@ function addEvent(destination_id){
         // grey out destination and clear list
         list_api_greyOutDestination(destination_id);
         list_api_clearListSelection();
+        
+	// Move onto next guide
+	if (showing_steps && current_step == "step3"){
+		current_step = "step4";
+		refreshSteps();
+	}        
     }
 }
 

@@ -21,7 +21,10 @@ function plan_actions_open_plan(){
  * Called when the save_plan button is pressed on toolbar
  */
 function plan_actions_save_plan(){
-    show_message("Your plan is automatically saved everytime you make a change!");
+    if ($("#loggedin").val() == "true")        
+        show_message("Your plan is automatically saved everytime you make a change!");
+    else
+        show_message("You need to be logged in to save. Please login / signup on the top right corner");
 }
 
 /**
