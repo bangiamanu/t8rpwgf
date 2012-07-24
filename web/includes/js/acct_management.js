@@ -66,6 +66,7 @@ function acct_management_logOut(){
 }
 
 function acct_management_showSavedTrips(){
+    acct_management_createSavedTripsBox();
     clearAllDialogs();
     $("#white_out").fadeIn();	
     setTimeout("$('#saved_trips').fadeIn()",400);
@@ -86,8 +87,8 @@ function acct_management_createSavedTripsBox(){
     for (var i in saved_trips){
         var t = saved_trips[i];
         str += "<tr><td rowspan=2><img src='includes/images/" + t.city.toLowerCase() + "_icon.jpg' class='saved_trip_city' height='50px' width='50px' /></td>";
-        str += "<td><b>" + t.name + "</b> (" + t.city + ") - <a href='javascript:loadTrip(" + t.id + ")'>Load trip</a> </td></tr>";
-        str +=  "<tr><td>" + t.start_date.formatDate('D M j') + " to " +	t.end_date.formatDate('D M j') + "</td></tr>";
+        str += "<td><b>" + t.name + " - <a href='javascript:loadTrip(" + t.id + ")'>Load</a> <a href='javascript:deleteTrip(" + t.id + ")'>Delete</a> </td></tr>";
+        str +=  "<tr><td>" + t.start_date.formatDate('D M j') + " to " + t.end_date.formatDate('D M j') + "</td></tr>";
         str +=  "<tr><td>&nbsp;</td></tr>";
     }
     str += "</table>";

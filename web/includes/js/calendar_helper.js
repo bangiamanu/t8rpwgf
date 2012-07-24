@@ -109,6 +109,11 @@ function calendar_helper_refreshEvents(){
     events_to_be_refreshed = new Array();
 }
 
+function calendar_helper_refreshAllEvents3x(){
+        setTimeout(calendar_helper_refreshAllEvents, 1);
+        setTimeout(calendar_helper_refreshAllEvents, 30000);
+        setTimeout(calendar_helper_refreshAllEvents, 60000);    
+}
 
 function calendar_helper_refreshAllEvents(){
     calendar_events = $('#calendar').weekCalendar("serializeEvents");

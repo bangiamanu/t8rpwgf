@@ -435,6 +435,23 @@ function processLoadPlan(xml) {
     calendar_helper_populateCalendar();
 }
 
+function deleteTrip(id) {
+    var params = "command=DeletePlan&id="+id;
+    $.ajax({
+        type: "POST",
+        url: "PlanAction.do",
+        cache: false,
+        data: params,
+        success: planDeleted
+    });
+}
+
+function planDeleted(xml){
+    show_message("Plan Deleted");
+    clearAllDialogs();
+    backend_populateSavedTrips();
+}
+
 function backend_add_event_to_database(cal_event){
         var destination_id = cal_event.available_destination_id;
         

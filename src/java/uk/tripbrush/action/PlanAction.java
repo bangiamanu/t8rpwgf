@@ -38,9 +38,7 @@ public class PlanAction extends org.apache.struts.action.Action {
         User user = (User)request.getSession().getAttribute(Constant.SESSION_USER);
         if (CommandConstant.LOAD_PLANS.equals(pform.getCommand())) {
             if (user!=null) {
-                if (user.getPlans().size()==0) {
-                    PlanService.loadPlans(user,(Plan)request.getSession().getAttribute(Constant.SESSION_PLAN));
-                }
+                PlanService.loadPlans(user,(Plan)request.getSession().getAttribute(Constant.SESSION_PLAN));
                 request.setAttribute(Constant.REQUEST_MESSAGE,  user.getPlans());
                 return mapping.findForward("plans");
             }            
@@ -94,6 +92,18 @@ public class PlanAction extends org.apache.struts.action.Action {
             errors.add(CommandConstant.MESSAGE, new ActionMessage("email.ok"));
             if (!errors.isEmpty()) {
                 this.saveMessages(request, errors);
+            }          
+        }
+        else if (CommandConstant.DELETE_PLAN.equals(pform.getCommand())) {
+            MResult result = PlanService.deletePlan(user, pform.getId());
+            if (result.getCode()==MResult.RESULT_OK) {
+//                Plan plan = (Plan)result.getObject();
+//                plan.setEditable(true);
+//                request.getSession().setAttribute(Constant.SESSION_PLAN, plan);
+                return mapping.findForward("plans");
+            }
+            else {
+                request.setAttribute(Constant.REQUEST_MESSAGE,"NOTOK");
             }            
         }
         return mapping.findForward(Constant.MAPPING_MESSAGE);

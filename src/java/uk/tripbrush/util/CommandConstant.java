@@ -34,6 +34,7 @@ public class CommandConstant implements Serializable {
 
     public static final String LOAD_PLANS="GetPlans";
     public static final String LOAD_PLAN="GetPlan";
+    public static final String DELETE_PLAN="DeletePlan";
     public static final String ADD_EVENT="AddEvent";
     public static final String UPDATE_EVENT="UpdateEvent";
     public static final String DELETE_EVENT="DeleteEvent";

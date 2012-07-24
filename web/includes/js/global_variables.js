@@ -65,6 +65,7 @@ var DIRECTIONS_NOT_FOUND_ERROR = "Couldnt plot directions. Please email us at er
 var LOAD_ADDRESS_ERROR = "An error occurred while loading an event. It seems that the address cannot be found. Please email us at error@tripbrush.com with a screenshot. Apologies for the inconvenience."
 
 // when drag and drop is performed on the calendar, this array holds the events that need to be refreshed
+// its an array of calendar_events
 var events_to_be_refreshed;
 
 function global_variables_ready(){

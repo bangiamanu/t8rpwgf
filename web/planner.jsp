@@ -29,6 +29,7 @@
     <script type='text/javascript' src="includes/js/calendar_helper.js"></script> <!-- Calendar Helper JS -->
     <script type='text/javascript' src="includes/js/calendar_and_map_api.js"></script> <!-- Calendar and map APIJS -->
     <script type='text/javascript' src="includes/js/list_api.js"></script> <!-- List APIJS -->
+    <script type='text/javascript' src="includes/js/loading_api.js"></script> <!-- loading APIJS -->
     <script type='text/javascript' src="includes/js/print_api.js"></script> <!-- Print APIJS -->
     <script type='text/javascript' src="includes/js/plan_actions.js"></script> <!-- Print APIJS -->
     <script type='text/javascript' src="includes/js/directions_api.js"></script> <!-- Directions APIJS -->

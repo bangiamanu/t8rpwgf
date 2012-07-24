@@ -39,49 +39,33 @@ function saveJSON(){
 }
 
 function loadJSON(filename){
-
-    clearAllDialogs();
-    $("#white_out").fadeIn();	
-    setTimeout("$('#loading').fadeIn()",400);
-    
-    
     var start = calendar_start_date;
     var end = date_math_addMilliseconds(calendar_start_date, days_to_show * 24 * 60 * 60 * 1000);
     
+    // this holds the events to be loaded
+    var events_to_be_loaded = new Array();
+    
+    // getting the data
     $.getJSON(filename, 
     function(json_data){
-        slowLoop(0, json_data, start, end);
+        for (var i in json_data){
+            var timeslot={
+                start: date_math_addMilliseconds(calendar_start_date, json_data[i].timeslot.start),
+                end: date_math_addMilliseconds(calendar_start_date, json_data[i].timeslot.end)
+            };
+            if (timeslot.start >= start && timeslot.end <= end){
+                var event = {
+                    db_id: -1,
+                    available_destination_id: json_data[i].available_destination_id,
+                    timeslot: timeslot
+                };
+                events_to_be_loaded.push(event);
+            }
+        }
+
+    //loading it on the calendar
+    loading_api_loadEvents(events_to_be_loaded);
     });
-}
-
-function slowLoop(i, json_data, start, end){
-    if (i==json_data.length){
-        setTimeout(calendar_helper_refreshAllEvents, 1);
-        setTimeout(calendar_helper_refreshAllEvents, 30000);
-        setTimeout(calendar_helper_refreshAllEvents, 60000);
-        
-        clearAllDialogs();
-        show_message("A featured plan was loaded for you. Please note that some places may not be open and adjust accordingly.");
-        return;
-    }
-    
-    var timeslot={
-        start: date_math_addMilliseconds(calendar_start_date, json_data[i].timeslot.start),
-        end: date_math_addMilliseconds(calendar_start_date, json_data[i].timeslot.end)
-    };
-
-    if (i<json_data.length && timeslot.start >= start && timeslot.end <= end){
-        calendar_and_map_api_loadEvent(-1, json_data[i].available_destination_id, timeslot);
-        setTimeout(function(){slowLoop(i+1, json_data, start, end);}, 800);
-    }
-    else{
-        setTimeout(calendar_helper_refreshAllEvents, 1);
-        setTimeout(calendar_helper_refreshAllEvents, 30000);
-        setTimeout(calendar_helper_refreshAllEvents, 60000);
-
-        clearAllDialogs();
-        show_message("A featured plan was loaded for you. Please note that some places may not be open and adjust accordingly.");
-    }
 }
 
 function pre_designed_plans_loadPlan(name){
