@@ -238,6 +238,8 @@
                         </div>
 
                         <div class="tabcontent hide" id="cont-3-1">
+                            <b>Please note </b> that the images below are ones publically available on Flickr that have been tagged under this destination. They may or may not be accurate. We are working to develop an accurate database.<br/><br/>
+                            <div id="destination_images"></div>
                         </div>
                 </div>
         </div><!-- destination_details_pane-->

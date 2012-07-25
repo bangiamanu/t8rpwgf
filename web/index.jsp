@@ -119,7 +119,6 @@
                 </td><td>
                 <select name="destination" id="destination" onchange="javascript:selectlondon()">
                 	<option value="London" selected="selected">London</option>
-                        <option value="Dublin">Dublin</option>
                 	<option value="Other">Other cities coming soon!</option>
                 </select>
                 </td></tr><tr><td align="right">
@@ -144,12 +143,10 @@
               <!-- signupform-->
               <p id="submitbuttons">
                 <input type="button" name="Cancel" id="Cancel" value="Cancel" onclick="javascript:hideLoginWindow()" />
-                <input type="submit" name="Lets Paint >" id="Lets Paint >" value="Lets Paint >" onclick="return verifypassword()"/>
+                <input type="submit" name="Lets Paint >" id="Lets Paint &gt;" value="Lets Paint >" onclick="return verifypassword()"/>
                 <input type="submit" style="display:none" id="realsubmit"/>
               </p>
               </form>
-              <br/>
-              <p id="footnote">* Would you like a trial account? <a href="mailto:contact@tripbrush.com">Email us</a></p>
             <![endif]>        
           </div><!-- whitecontent -->
 

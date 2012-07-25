@@ -52,6 +52,7 @@ function list_api_selectDestinationOnList(destination_id){
 	sizing_setUpMoreLink();
 	showDestinationDetails(destination_id);
 	showOpeningHours(destination_id);
+        list_api_showImages(destination_id);
 			
 	// Move onto next guide
 	if (showing_steps && current_step == "step2"){
@@ -156,27 +157,46 @@ function showDestinationDetails(destination_id){
 
 
 function showOpeningHours(destination_id){
-	var destination = available_destinations[destination_id];
-	
-	var hours = "";
-	hours = "";
-	hours += "<br/>";
-		for (i in destination.opening_hours){
-			hour = destination.opening_hours[i];
-			var month = hour.start.getMonth() + 1;
-			var day = hour.start.getDate();
-			var year = hour.start.getFullYear();
+    var destination = available_destinations[destination_id];
 
-			var shour = hour.start.getHours();
-			var smin = hour.start.getMinutes();
+    var hours = "";
+    hours = "";
+    hours += "<br/>";
+            for (i in destination.opening_hours){
+                    hour = destination.opening_hours[i];
+                    var month = hour.start.getMonth() + 1;
+                    var day = hour.start.getDate();
+                    var year = hour.start.getFullYear();
 
-			var ehour = hour.end.getHours();
-			var emin = hour.end.getMinutes();
+                    var shour = hour.start.getHours();
+                    var smin = hour.start.getMinutes();
 
-			hours += "<p>"+day+"/"+month+"/"+year+" " +pad(shour)+":"+pad(smin)+"-"+pad(ehour)+":"+pad(emin)+"</p>";
-		}
-	$("#destination_hours").children().remove();	
-	$("#destination_hours").append("<div>" + hours + "</div>");
+                    var ehour = hour.end.getHours();
+                    var emin = hour.end.getMinutes();
+
+                    hours += "<p>"+day+"/"+month+"/"+year+" " +pad(shour)+":"+pad(smin)+"-"+pad(ehour)+":"+pad(emin)+"</p>";
+            }
+    $("#destination_hours").children().remove();	
+    $("#destination_hours").append("<div>" + hours + "</div>");
+}
+
+function list_api_showImages(destination_id){
+    $("#destination_images").html("");
+    
+    var destination = available_destinations[destination_id];
+
+    $.getJSON("http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?",
+    {
+        tags: destination.title,
+        tagmode: "any",
+        format: "json"
+    },
+    function(data) {
+        $.each(data.items, function(i,item){
+        $("<img/>").attr("src", item.media.m).appendTo("#destination_images");
+        if ( i == 50 ) return false;
+        });
+    });
 }
 
 function pad(input) {
