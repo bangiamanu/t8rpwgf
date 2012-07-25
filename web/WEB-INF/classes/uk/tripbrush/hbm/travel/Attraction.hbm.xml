@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 24, 2007 3:59:18 PM by Hibernate Tools 3.1.0.beta5 -->
+<hibernate-mapping>
+  <class name="uk.tripbrush.model.travel.Attraction" table="attraction">
+    <id name="id" type="integer">
+      <generator class="native"/>
+    </id>
+    <many-to-one class="uk.tripbrush.model.travel.Category" lazy="false" name="category">
+      <column length="32" name="category_id" not-null="true"/>
+    </many-to-one>
+    <many-to-one class="uk.tripbrush.model.core.Location" lazy="false" name="location">
+      <column length="32" name="location_id" not-null="false"/>
+    </many-to-one>
+    <property length="255" name="postcode" type="java.lang.String"/>
+    <property length="255" name="name" type="java.lang.String"/>
+    <property length="5000" name="description" type="java.lang.String"/>
+    <property length="5000" name="description_short" type="java.lang.String"/>
+    <property length="255" name="imageFileName" type="java.lang.String"/>
+    <property length="255" name="imageFileName_small" type="java.lang.String"/>
+    <property length="255" name="url" type="java.lang.String"/>
+    <property length="255" name="wikiurl" type="java.lang.String"/>
+    <property length="1000" name="otherlinks" type="java.lang.String"/>
+    <property length="1000" name="address" type="java.lang.String"/>
+    <property length="20" name="phone" type="java.lang.String"/>
+  </class>
+</hibernate-mapping>

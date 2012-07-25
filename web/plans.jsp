@@ -9,7 +9,7 @@
     List<Plan> result = (List<Plan>)request.getAttribute(Constant.REQUEST_MESSAGE);
     out.println("<plans>");
     for (Plan c: result) {
-        out.println("<plan id=\"" + c.getId() + "\" name=\"" + c.getTitle() + "\" location=\"" + c.getLocation().getName() + "\"  fromdate=\"" + DateUtil.getDay(c.getStartdate()) + "\" enddate=\"" + DateUtil.getDay(c.getEnddate()) + "\"/>");
+        out.println("<plan id=\"" + c.getId() + "\" name=\"" + c.getTitle() + "\" location=\"" + c.getLocation().getName() + "\"  fromdate=\"" + DateUtil.getDay(c.getStartdate()) + "\" enddate=\"" + DateUtil.getDay(c.getEnddate()) + "\" numevents=\"" + c.getNumevents() + "\"/>");
     }    
     out.println("</plans>");
 %>

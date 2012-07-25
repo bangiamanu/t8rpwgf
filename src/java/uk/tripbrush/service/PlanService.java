@@ -43,6 +43,7 @@ public class PlanService {
             else {
                 List<Event> events = session.createCriteria(PojoConstant.EVENT_MODEL).add(Restrictions.eq("plan", dplan)).list();
                 if (events.size()>0) {
+                    dplan.setNumevents(events.size());
                     allplans.add(dplan);
                 }
             }
@@ -89,6 +90,13 @@ public class PlanService {
         plan.setEvents(EventService.getEvents(plan));
         return result;
     }
+    
+    public static void loadEventsForPlan(Plan plan) {
+        Session session = Database.getSession();
+        plan.setEvents(session.createCriteria(PojoConstant.EVENT_MODEL).add(Restrictions.eq("plan", plan)).list());
+    }
+    
+    
 
     public static MResult getPlan(String keypass) {
         MResult result = new MResult();

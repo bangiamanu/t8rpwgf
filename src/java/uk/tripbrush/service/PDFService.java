@@ -877,6 +877,7 @@ public class PDFService {
         cal.add(Calendar.DAY_OF_MONTH, datecounter);
         PdfPCell pcell = null; 
         int numslot = 1;
+        PlanService.loadEventsForPlan(plan);
         for (Event event: plan.getEvents()) {
             if (startSlot(event.getStartdate(),cal,hour,slot)) {
                numslot = event.getNumberSlots();

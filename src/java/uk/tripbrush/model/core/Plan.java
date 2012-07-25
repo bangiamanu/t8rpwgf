@@ -37,6 +37,8 @@ public class Plan implements Serializable {
     private Location location;
     
     private boolean verify;
+    
+    private int numevents;
 
 
     public Plan() {
@@ -264,5 +266,19 @@ public class Plan implements Serializable {
      */
     public void setVerify(boolean verify) {
         this.verify = verify;
+    }
+
+    /**
+     * @return the numevents
+     */
+    public int getNumevents() {
+        return numevents;
+    }
+
+    /**
+     * @param numevents the numevents to set
+     */
+    public void setNumevents(int numevents) {
+        this.numevents = numevents;
     }
 }
