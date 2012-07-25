@@ -412,7 +412,6 @@ function loadTrip(id) {
 }
 
 function processLoadPlan(xml) {
-    calendar_and_map_api_deleteAllEvents(false);
     $.xmlDOM( xml ).find("planx").each(function() {
         $("#editable").val($(this).attr("editable"));
         days_to_show = $(this).attr("numdays") // replace this function with backend code
@@ -420,7 +419,9 @@ function processLoadPlan(xml) {
         var startDateField = $(this).attr("startdate").split("/");
         calendar_start_date = new Date(startDateField[2],startDateField[1]-1,startDateField[0]);
     });
-
+    
+    var events_to_be_loaded = new Array()
+    
     $.xmlDOM( xml ).find("pevent").each(function() {      
         // build timeslot
         var startDateField = $(this).attr("fromdate").split(":");
@@ -428,17 +429,26 @@ function processLoadPlan(xml) {
         var timeslot = {start: new Date(startDateField[2],startDateField[1]-1,startDateField[0],startDateField[3],startDateField[4],0) , end: new Date(endDateField[2],endDateField[1]-1,endDateField[0],endDateField[3],endDateField[4],0)};
         
         // load it on the UI
-        calendar_and_map_api_loadEvent($(this).attr("id"),$(this).attr("aid"),timeslot);
-        //destination_selected_from_list($(this).attr("aid"));
-        //alert(event_to_add.marker);
-        //addNewEvent($(this).attr("id"),$(this).attr("aid"),timeslot);                
+        var event = {
+            db_id: $(this).attr("id"),
+            available_destination_id: $(this).attr("aid"),
+            timeslot: timeslot
+        };
+
+        events_to_be_loaded.push(event);
     });
     
-    clearAllDialogs();
+    //prepping the stage
+    calendar_and_map_api_deleteAllEvents(false);
     $("#calendar").weekCalendar("gotoDate",calendar_start_date);
     $('#calendar').weekCalendar({"daysToShow":days_to_show});
-    //$('#calendar').weekCalendar("date",calendar_start_date); 
-    //calendar_helper_populateCalendar();
+    backend_loadAvailableDestinations();
+    
+    // loading the events
+    loading_api_loadEvents(events_to_be_loaded, function(){
+        show_message("Your plan was loaded");
+        clearAllDialogs();
+    });
 }
 
 function deleteTrip(id) {

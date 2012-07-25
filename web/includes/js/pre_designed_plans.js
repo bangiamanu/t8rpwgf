@@ -63,8 +63,14 @@ function loadJSON(filename){
             }
         }
 
-    //loading it on the calendar
-    loading_api_loadEvents(events_to_be_loaded);
+        //loading it on the calendar
+        loading_api_loadEvents(events_to_be_loaded, function() {
+            show_message("A featured plan was loaded for you. Please note that some places may not be open and adjust accordingly.");
+            for (var i in calendar_events){
+                var cal_event = calendar_events[i];
+                backend_add_event_to_database(cal_event);
+            }
+        });
     });
 }
 

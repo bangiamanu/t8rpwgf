@@ -131,7 +131,7 @@ public class PlanService {
         ecal.setTime(cal.getTime());
         ecal.add(Calendar.DAY_OF_MONTH, length);
         String dateto = CommonService.getSDate(ecal.getTime());
-        plan.setTitle("Trip to " + dest + "(" + from + "-" + dateto + ")");
+        plan.setTitle("Trip to " + dest);
         plan.setStartdate(cal);
         plan.setEnddate(ecal);
         return plan;

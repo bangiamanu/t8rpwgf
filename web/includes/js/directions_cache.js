@@ -82,7 +82,7 @@ function directions_cache_showDirections(origin, destination){
                 }
                 else{
                     if (status!="OVER_QUERY_LIMIT")
-                        alert(DIRECTIONS_NOT_FOUND_ERROR + " (Errorcode - " + status + ")");
+                        console.log(DIRECTIONS_NOT_FOUND_ERROR + " (Errorcode - " + status + ")");
                     else
                         console.log("Query limit. Origin: " + origin + " Destination: " + destination);
                 }
@@ -129,7 +129,7 @@ function getWalkingTime(origin, destination, functionToCall){
                 }
                 else{
                     if (status!="OVER_QUERY_LIMIT")                    
-                        alert(DIRECTIONS_NOT_FOUND_ERROR + " (Errorcode - " + status + ")");
+                        console.log(DIRECTIONS_NOT_FOUND_ERROR + " (Errorcode - " + status + ")");
                     else
                         console.log("Query limit. Origin: " + origin + " Destination: " + destination);                    
                 }
@@ -175,7 +175,7 @@ function getDrivingTime(origin, destination, functionToCall){
                 }
                 else{
                     if (status!="OVER_QUERY_LIMIT")                    
-                        alert(DIRECTIONS_NOT_FOUND_ERROR + " (Errorcode - " + status + ")");
+                        console.log(DIRECTIONS_NOT_FOUND_ERROR + " (Errorcode - " + status + ")");
                     else
                         console.log("Query limit. Origin: " + origin + " Destination: " + destination);                    
                 }
@@ -222,7 +222,7 @@ function getTransitTime(origin, destination, functionToCall){
                 }
                 else{
                     if (status!="OVER_QUERY_LIMIT")
-                        alert(DIRECTIONS_NOT_FOUND_ERROR + " (Errorcode - " + status + ")");
+                        console.log(DIRECTIONS_NOT_FOUND_ERROR + " (Errorcode - " + status + ")");
                     else
                         console.log("Query limit. Origin: " + origin + " Destination: " + destination);                    
                 }
