@@ -341,7 +341,7 @@ function processPlans(xml) {
     $.xmlDOM( xml ).find("plan").each(function() {
         var startDateField = $(this).attr("fromdate").split("/");
         var endDateField = $(this).attr("enddate").split("/");
-        saved_trips[counter] = {id: $(this).attr("id"), name:$(this).attr("name"), city:$(this).attr("location"), start_date: new Date(startDateField[2],startDateField[1]-1,startDateField[0]), end_date: new Date(endDateField[2],endDateField[1]-1,endDateField[0])};
+        saved_trips[counter] = {id: $(this).attr("id"), num_events: $(this).attr("numevents"), name:$(this).attr("name"), city:$(this).attr("location"), start_date: new Date(startDateField[2],startDateField[1]-1,startDateField[0]), end_date: new Date(endDateField[2],endDateField[1]-1,endDateField[0])};
         counter++;
     });
     acct_management_createSavedTripsBox();

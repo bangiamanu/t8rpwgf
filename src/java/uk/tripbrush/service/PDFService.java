@@ -392,7 +392,7 @@ public class PDFService {
                         addPublicTransportDirections(table1,routes);
                     }
                     else{
-                        table1.addCell("Sorry Google did not return any public directions. If you feel this is in error, please email this file to error@tripbrush.com. Apologies for the inconvenience");
+                        table1.addCell("Sorry there seems to be a bug where Google doesn't return certain directions. We are currently working with Google to address this. Apologies for the inconvenience. Please check back soon for a fix.");
                     }
                         
                                         
