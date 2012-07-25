@@ -50,7 +50,7 @@
 
 </head>
 <body>
-	
+	<div id="fb-root"></div>
     <!-- background picture -->
     <div id="page-background"><img src="includes/images/Back.jpg" width="100%" height="100%">
     </div> <!-- background picture -->

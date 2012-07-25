@@ -1,5 +1,6 @@
 // JavaScript Document
 window.onload = function(){
+    loadFacebook();
 };
 
 function getElement(name) {
