@@ -58,8 +58,8 @@
 	<!-- Content -->
 	<div id="content" align="center">
             
-            <div id="index_login_and_signup" class="signed_in_or_out" style="display:block;">
-                <table cellpadding="0" cellspacing="5" height="40px" border="0px">
+            <div id="index_login_and_signup" class="signed_in_or_out" style="display:block;"> &nbsp;
+                <!--<table cellpadding="0" cellspacing="5" height="40px" border="0px">
                     <tr>
                         <td align="center"><a href="javascript:acct_management_signIn()"><img src="includes/images/sign_in_icon.png"  /></a></td>
                         <td><a href="javascript:acct_management_signIn()">Log in</a></td>
@@ -67,11 +67,11 @@
                         <td align="center"><a href="javascript:acct_management_signUp()"><img src="includes/images/sign_up_icon.png"  /></a></td>
                         <td><a href="javascript:acct_management_signUp()">Sign up</a></td>
                     </tr>
-                </table>                
+                </table>      -->          
             </div>
-            <div id="index_login_and_signup" class="signed_in_or_out" style="display:none;">
+            <!--<div id="index_login_and_signup" class="signed_in_or_out" style="display:none;">
                 <p align="left">Welcome <div id="user_first_name" style="font-weight: bold"></div></p>
-            </div>
+            </div>-->
             
             <div id="facebook">
                 <iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.facebook.com%2Fpages%2FTripbrush%2F144328425633175&amp;layout=box_count&amp;show_faces=true&amp;width=50&amp;action=like&amp;font&amp;colorscheme=light&amp;height=65" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:50px; height:65px;" allowTransparency="true"></iframe>

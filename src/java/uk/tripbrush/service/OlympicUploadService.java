@@ -205,7 +205,7 @@ public class OlympicUploadService {
     }    
     
     public static void main(String[] args) throws Exception {
-        String file = "/Users/sseetal/Dropbox/Life Made Easy Ltd/Olympic Sched.xlsx";
+        String file = "c://Users//Manu//Documents//Manu//tripbrush//Olympics//Olympic Sched.xlsx";
         //String file = "c://Users//Samir//Documents//My DropBox//Mauritius//input//Agro-Industry and FS//input.xlsx";
         InputStream input = new BufferedInputStream(new FileInputStream(file));
         process(input);      
