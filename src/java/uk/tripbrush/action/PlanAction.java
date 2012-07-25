@@ -36,7 +36,13 @@ public class PlanAction extends org.apache.struts.action.Action {
         PlanForm pform = (PlanForm)form;
 
         User user = (User)request.getSession().getAttribute(Constant.SESSION_USER);
-        if (CommandConstant.LOAD_PLANS.equals(pform.getCommand())) {
+        if (CommandConstant.NEW_PLAN.equals(pform.getCommand())) {
+            Plan oldplan = (Plan)request.getSession().getAttribute(Constant.SESSION_PLAN);
+            Plan plan = PlanService.createNewPlan(oldplan.getLocation().getName(),oldplan.getStartdateString(),oldplan.getLength());
+            PlanService.createPlan(user, plan);
+            request.getSession().setAttribute(Constant.SESSION_PLAN,plan);
+        }
+        else if (CommandConstant.LOAD_PLANS.equals(pform.getCommand())) {
             if (user!=null) {
                 PlanService.loadPlans(user,(Plan)request.getSession().getAttribute(Constant.SESSION_PLAN));
                 request.setAttribute(Constant.REQUEST_MESSAGE,  user.getPlans());

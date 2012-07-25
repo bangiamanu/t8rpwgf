@@ -7,8 +7,17 @@
  * Called when the new plan button is pressed on toolbar
  */
 function plan_actions_new_plan(){
-    calendar_and_map_api_deleteAllEvents(-1);
+    calendar_and_map_api_deleteAllEvents(false);
     show_message("Plan has been cleared. You can access any old plans by clicking Open");
+    var params = "command=NewPlan";
+    $.ajax({
+        type: "POST",
+        url: "PlanAction.do",
+        cache: false,
+        data: params,
+        success: function(xml) {
+        }
+    });    
 }
 
 /**

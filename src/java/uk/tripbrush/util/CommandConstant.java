@@ -32,6 +32,7 @@ public class CommandConstant implements Serializable {
     public static final String CHANGE_NAME ="ChangeName";
     
 
+    public static final String NEW_PLAN="NewPlan";
     public static final String LOAD_PLANS="GetPlans";
     public static final String LOAD_PLAN="GetPlan";
     public static final String DELETE_PLAN="DeletePlan";
