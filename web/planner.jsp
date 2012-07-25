@@ -78,41 +78,35 @@
 %>  
     
     <script type="text/javascript">
-            /********************** Window onload and resize code **********************/
-
-
-
-            // using document.ready instead of window.onload
-            $(document).ready(function() {
-                    // calling ready functions of APIs and other javascript files
-                    global_variables_ready();
-                    calendar_and_map_api_ready();
-                    sizing_ready();
-                    backend_ready();
-                    acct_management_ready();
-                    //done_button_api_ready();
-                    directions_api_ready();
-                    if ($("#showuser").val()!="true") {
-                        $("#signed_in").show();
+        $(document).ready(function() {
+                // calling ready functions of APIs and other javascript files
+                global_variables_ready();
+                calendar_and_map_api_ready();
+                sizing_ready();
+                backend_ready();
+                acct_management_ready();
+                //done_button_api_ready();
+                directions_api_ready();
+                if ($("#showuser").val()!="true") {
+                    $("#signed_in").show();
+                }
+                else {
+                    $("#signed_out").show();
+                }
+                loadFacebook();
+                <%
+                    if (user!=null) out.println("$('#user_first_name').val('" + user.getName() + "');");
+                    if (plan.isVerify()) {
+                        String result = (String) request.getAttribute(Constant.REQUEST_MESSAGE);
+                        out.println("$('#ofbid').val('" + result + "');");
                     }
-                    else {
-                        $("#signed_out").show();
-                    }
-                    loadFacebook();
-                    <%
-                        if (user!=null) out.println("$('#user_first_name').val('" + user.getName() + "');");
-                        if (plan.isVerify()) {
-                            String result = (String) request.getAttribute(Constant.REQUEST_MESSAGE);
-                            out.println("$('#ofbid').val('" + result + "');");
-                        }
-                    %>
-            });
+                %>
+        });
 
-
-            window.onresize = function(){
-                    sizing_divsResize();
-            };
-            
+        window.onresize = function(){
+                sizing_divsResize();
+        };
+          
         $(window).load(function(){
             clearAllDialogs();
             setTimeout(startTutorial,500);
@@ -136,6 +130,9 @@
                 <div id="signed_in" class="signed_in_or_out" style="display:none;">
                         <table cellpadding="0" cellspacing="3" height="40px" border="0px">
                                 <tr>
+                                        <td><a href="javascript:startTutorial()" style="display:none" class="tutorial"><img src="includes/images/tutorial_icon.png" /></a></td>
+                                        <td><a href="javascript:startTutorial()" style="display:none" class="tutorial">Tutorial</a></td>
+                                        <td width="20px">&nbsp;</td>
                                         <td><a href="javascript:acct_management_signIn()"><img src="includes/images/sign_in_icon.png" /></a></td>
                                         <td><a href="javascript:acct_management_signIn()">Log in</a></td>
                                         <td width="20px">&nbsp;</td>
@@ -257,7 +254,7 @@
                                 <img src="includes/images/email_icon_v2.png" height="20px" title="Email plan"/>
                             </a>
                         </td>
-                        <td width="25px">
+                        <td width="25px" id="print_plan">
                             <a href="javascript:plan_actions_print_plan()">
                                 <img src="includes/images/print_icon_v2.png" height="20px" title="Print plan"/>
                             </a>
@@ -509,31 +506,47 @@
     </div><!-- container -->
 
     <!-- **************** guideboxes **************** -->
-    <div id="guidebox1">
-	</div>
-    <div id="guidebox1text">
+    <div id="white_out_step1" class ="white_background"></div>
+    <div id="white_out_step2" class ="white_background"></div>
+    <div id="white_out_step3" class ="white_background"></div>
+
+
+    <div id="guidebox1text" class="guidebox">
         <p style="color:#36c" align="center"><b>Step 1</b></p><br />
         <p style="padding-bottom:2px">&lt;&lt; Choose what you would like to do</p>
         <p>&nbsp;</p>
         <p>&nbsp;</p>
-        <p style="font-size:8px;float:right;">I already know how to use this. <a href="javascript:endTutorial()">End Tutorial</a></p>
+        <p style="font-size:10px;float:right;">I already know how to use this. <a href="javascript:endTutorial()">End Tutorial</a></p>
     </div>
 
-    <div id="guidebox2">
-	</div>
-    <div id="guidebox2text">
+    <div id="guidebox2text" class="guidebox">
         <p style="color:#36c" align="center"><b>Step 2</b></p><br />
         <p style="padding-bottom:2px">&lt;&lt; Choose where you would like to go</p>
     </div>
 
-    <div id="guidebox3">
-	</div>
-    <div id="guidebox3text">
+    <div id="guidebox3text" class="guidebox">
         <p style="color:#36c" align="center"><b>Step 3</b></p><br />
-        <p style="padding-bottom:2px">Click "Add to itinerary"</p>
+        <p style="padding-bottom:2px">Almost done! Click "Add to itinerary"</p>
     </div>
 
-    <div id="guidebox4text">
+    <div id="print_tip" class="tipbox">
+        <p style="color:#36c" align="center"><b>Tip #1:</b></p>
+        <p style="padding-bottom:2px">Try printing your plan</p>
+    </div>
+
+    <div id="pre_loaded_tip" class="tipbox">
+        <p style="color:#36c" align="center"><b>Tip #2:</b></p>
+        <p style="padding-bottom:2px">Check out one of our featured plans</p>
+    </div>
+
+    <div id="more_info_tip" class="tipbox">
+        <p style="color:#36c" align="center"><b>Tip #3:</b></p>
+        <p style="padding-bottom:2px">Click "More information" below to find out more about the destination</p>
+        <br/>
+        <p align="center"><input type="button" onclick="javascript:clearAllTips()" value="Start Planning >>" /> </p>
+    </div>
+
+    <div id="guidebox4text" class="guidebox">
         <p style="padding-bottom:2px;color:#36c" align="center"><b>Your calendar was updated. Some tips:</b></p>
         <ul>
         	<li>Scroll the calendar to see your events</li>

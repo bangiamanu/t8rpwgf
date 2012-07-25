@@ -266,11 +266,15 @@ function getInfoWindow(destination_id){
     }
 
     // More information
-    if (!is_contracted)
-        content_string += "<tr><td><img src='includes/images/moreinformation.png' /></td><td valign=middle><a href='#' onclick='sizing_contract()'>More information</a></td></tr>"
-    else
-        content_string += "<tr><td><img src='includes/images/lessinformation.png' /></td><td valign=middle><a href='#' onclick='sizing_expand()'>Less information</a></td></tr>"
-
+    if (!is_contracted){
+        content_string += "<tr><td><img src='includes/images/moreinformation.png' /></td><td id='more_info_link' "
+        if (showing_steps && current_step == "step4")
+            content_string += "style='border: solid red 3px;'"
+        content_string += "valign=middle><a href='#' onclick='sizing_contract()'>More information</a></td></tr>"
+    }else{
+        content_string += "<tr><td><img src='includes/images/lessinformation.png' /></td><td id='more_info_link' "
+        content_string += "valign=middle><a href='#' onclick='sizing_expand()'>Less information</a></td></tr>"
+    }
 
     // Directions
     if (calendar_helper_isPlanned(dest.id))

@@ -95,3 +95,9 @@ function global_variables_ready(){
 
     console.log("Global variables initialised")
 }
+
+function clearAllDialogs(){
+    $(".white_dialog").fadeOut();
+    $("#white_out").fadeOut();
+}
+

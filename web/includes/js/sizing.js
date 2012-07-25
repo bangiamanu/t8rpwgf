@@ -12,7 +12,7 @@ function sizing_divsResize(){
     var categorydescriptioncolumn = document.getElementById('categorydescriptioncolumn');
     var destination_details_pane = document.getElementById('destination_details_pane');
     var large_image = document.getElementById('large_image');
-    var guidebox3 = document.getElementById('guidebox3');
+    var white_out_step3 = document.getElementById('white_out_step3');
     var guidebox3text = document.getElementById('guidebox3text');
     //var pre_loaded_plans_choicebox = getElement('pre_loaded_plans_choicebox');
 
@@ -35,12 +35,14 @@ function sizing_divsResize(){
     categorydescriptioncolumn.style.height =(window.innerHeight - 100).toString() + "px";
     destination_details_pane.style.height =(window.innerHeight - 40).toString() + "px";
 
-    guidebox3.style.height = parseInt(window.innerHeight * 0.55 - 20 -40).toString() + "px";
+    white_out_step3.style.height = parseInt(window.innerHeight * 0.55 - 20 -40).toString() + "px";
     guidebox3text.style.bottom = parseInt(window.innerHeight * 0.45 + 30).toString() + "px";
 }
 
 
 function sizing_contract(){
+        if (showing_steps)
+            clearAllTips();
 	is_contracted = true;
 	
 	$(".category_icon").animate({width:"50px",height:"45px"}, 500, 'swing');

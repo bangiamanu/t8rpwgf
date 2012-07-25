@@ -84,6 +84,7 @@ function pre_designed_plans_loadPlan(name){
 }
 
 function pre_designed_plans_dropBoxChange(){
+    clearAllTips();
     var val = $('#pre_loaded_plans_choicebox').val();
     if (val!="")
         pre_designed_plans_loadPlan(val);

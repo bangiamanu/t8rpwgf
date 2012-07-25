@@ -50,7 +50,8 @@ function plan_actions_email_plan(){
  * Called when the print_plan button is pressed on toolbar
  */
 function plan_actions_print_plan(){
-    var printWindow=window.open('print.jsp','Print','width=800');
+    clearAllTips();
+    var printWindow=window.open('print_loadpage.jsp','Print','width=600, height=300');
 }
 
 /**

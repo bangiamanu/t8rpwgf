@@ -14,6 +14,12 @@ function addEvent(destination_id){
         // add it to calendar and map
         calendar_and_map_api_addEventToCalendarAndMap(-1,destination_id,timeslot);
 
+	// Move onto next guide
+	if (showing_steps && current_step == "step3"){
+		current_step = "step4";
+		refreshSteps();
+	}        
+
         // select it on calendar. remove temp from map and add permanent
         var cal_event = calendar_helper_getCalendarEventFromDestinationId(destination_id);
         calendar_and_map_api_selectEventOnCalendar(cal_event);
@@ -28,11 +34,6 @@ function addEvent(destination_id){
         list_api_greyOutDestination(destination_id);
         list_api_clearListSelection();
         
-	// Move onto next guide
-	if (showing_steps && current_step == "step3"){
-		current_step = "step4";
-		refreshSteps();
-	}        
     }
 }
 

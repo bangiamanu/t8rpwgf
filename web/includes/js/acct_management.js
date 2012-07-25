@@ -1,7 +1,7 @@
 // JavaScript Document
 
 function acct_management_ready(){
-    //add_close_buttons_to_dialogs();
+
 }
 
 /*************************** Messages **********************************/
@@ -104,12 +104,4 @@ function acct_managament_emailTrip() {
     setTimeout("$('#emailevents').fadeIn()",400);    
 }
 
-function clearAllDialogs(){
-    $(".white_dialog").fadeOut();
-    $("#white_out").fadeOut();
-}
-
 /*************************** private functions (shouldnt be called outside this file) **********************************/
-function add_close_buttons_to_dialogs(){
-    $(".white_dialog").prepend("<div id='close'><img src='includes/images/close.png' id='close_image' onClick='clearAllDialogs()'/></div>");
-}
