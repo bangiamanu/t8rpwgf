@@ -49,6 +49,18 @@
       })();
     </script>-->
 
+    <!-- Google Analytics Script -->
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-22565085-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
 
     <!-- JQuery Calendar Files -->
     <!-- URL: https://github.com/themouette/jquery-week-calendar/tree/gh-pages -->
@@ -130,8 +142,8 @@
                 <div id="signed_in" class="signed_in_or_out" style="display:none;">
                         <table cellpadding="0" cellspacing="3" height="40px" border="0px">
                                 <tr>
-                                        <td><a href="javascript:startTutorial()" style="display:none" class="tutorial"><img src="includes/images/tutorial_icon.png" /></a></td>
-                                        <td><a href="javascript:startTutorial()" style="display:none" class="tutorial">Tutorial</a></td>
+                                        <td><a href="javascript:tutorialButtonPressed()" style="display:none" class="tutorial"><img src="includes/images/tutorial_icon.png" /></a></td>
+                                        <td><a href="javascript:tutorialButtonPressed()" style="display:none" class="tutorial">Tutorial</a></td>
                                         <td width="20px">&nbsp;</td>
                                         <td><a href="javascript:acct_management_signIn()"><img src="includes/images/sign_in_icon.png" /></a></td>
                                         <td><a href="javascript:acct_management_signIn()">Log in</a></td>

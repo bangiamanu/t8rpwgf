@@ -76,6 +76,10 @@ function loadJSON(filename){
 
 function pre_designed_plans_loadPlan(name){
     //-1 means dont delete from database
+    //tracking code
+    _gaq.push(['_trackEvent', 'Featured_plans', 'Load', name]);
+    
+    
     calendar_and_map_api_deleteAllEvents(-1);
     
     loadJSON('./includes/json/' + name + '.json');

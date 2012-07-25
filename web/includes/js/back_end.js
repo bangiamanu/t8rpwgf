@@ -54,7 +54,7 @@ function loadCategoryData(xml) {
         };
         counter++;
     });
-    populateCategories();
+    list_api_populateCategories();
     backend_loadAvailableDestinations();
 }
 
@@ -529,17 +529,3 @@ function processEmail(xml) {
 }
 
 
-function shareEvents() {
-    if ($("#loggedin").val()=="facebook") {
-        if (emptycalendar) {
-            alert("You cannot share an empty calendar");
-        }        
-        else {
-            plankey = $("#plankey").val();
-            postToFacebook("",$("#user_first_name").val() +" would like to share his plan going to " + $("#destinationname").val(),"http://www.tripbrush.com/ShareAction.do?keypass=" + plankey);
-        }
-    }
-    else {
-        alert("You must be logged into facebook order to use this feature");
-    }
-}

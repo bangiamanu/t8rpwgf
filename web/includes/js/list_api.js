@@ -132,7 +132,7 @@ function list_api_setCategoryHighlight(clickedcategory){
 
 	// Populate the destinations in the category
 	if (clickedcategory.id != "custom")
-		populateDestinations(clickedcategory.id);
+		list_api_populateDestinations(clickedcategory.id);
 		
 		
 	// Move onto next guide
@@ -183,3 +183,64 @@ function pad(input) {
     if (input<10) return "0"+input;
     return input;
 }
+
+/********************** Population code **********************/
+// Accepts catgory as string (e.g., "theatre") and populates the destinations list based on that category
+function list_api_populateDestinations(category){
+    var destinations_list = getElement("destinations_list");
+    var str = "";
+    var destinations_to_populate = new Array();
+    
+    for (var i in available_destinations){
+        var evnt = available_destinations[i];
+        if (evnt.category.toString() == category.toString() || category.toString() == "all"){
+            destinations_to_populate.push(evnt);
+        }
+    }
+    
+    sortDestinationsAlphabetically(destinations_to_populate);
+    
+    for (i in destinations_to_populate){
+        evnt = destinations_to_populate[i];
+        str += "<li id='" + evnt.id + "' onmouseover='list_api_highlightDestination(" + evnt.id +")' onmouseout='list_api_removeDestinationHighlight(" + evnt.id + ")' onclick='destination_selected_from_list(" + evnt.id +")'";
+        if (evnt.is_grey){
+            str += "style='background-color: #ddd; color: #555;'";
+        }
+        str += ">";
+        str += "<p class='destinationtitle'>"+ evnt.title +"</p>";
+        str += "<img src='" + evnt.image_file_name_small +"' width='" + SMALL_IMAGE_SIZE + "' height='" + SMALL_IMAGE_SIZE + "' />";
+        str += "<p class='destinationdescription'>" + evnt.description_short + " "
+        str += "</li>";        
+    }
+    destinations_list.innerHTML  = str;
+}
+
+
+function list_api_populateCategories(){
+    var category_list = getElement("categories_list");
+    var str = "";
+    for (var i=0; i<categories.length;i++){
+        var cat = categories[i];
+        str += "<li onmouseover='list_api_highlightCategory(this)' onmouseout='list_api_removeCategoryHighlight(this)' onclick='list_api_setCategoryHighlight(this)' id='" + cat.name + "' class='category'>";
+        str += "<img src='" + cat.image_file_name + "' class='category_icon'/>"
+        str += "<p>" + cat.title + "</p>";
+        str += "</li><!-- category -->"
+    }
+    category_list.innerHTML = str;
+}
+
+// sorts events based on .title
+function sortDestinationsAlphabetically(array) {
+  var x, y, holder;
+  // The Bubble Sort method.
+  for(x = 0; x < array.length; x++) {
+    for(y = 0; y < (array.length-1); y++) {
+        if(array[y].title > array[y+1].title) {
+            holder = array[y+1];
+            array[y+1] = array[y];
+            array[y] = holder;
+        }
+    }
+  }
+}
+

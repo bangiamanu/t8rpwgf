@@ -6,6 +6,9 @@ function getElement(name) {
 // db: database id (-1 means its a new event that hasnt been added yet to the database)
 // timeslot is javascript timeslot
 function addEvent(destination_id){
+    //tracking code
+    _gaq.push(['_trackEvent', 'Map', 'Add', available_destinations[destination_id].title]);
+   
     emptycalendar = false;
 
     var timeslot = findFirstOpenSlot(destination_id);
@@ -42,6 +45,10 @@ function addEvent(destination_id){
 function deleteEvent(cal_event_id, db){
     // ungrey destination on list
     var cal_event = calendar_helper_getCalendarEvent(cal_event_id);
+    
+    //tracking code
+    _gaq.push(['_trackEvent', 'Map', 'Delete', cal_event.title]);
+    
     list_api_unGreyDestination(cal_event.available_destination_id);
 
     // and remove it from calendar and map
@@ -66,6 +73,9 @@ function deleteEvent(cal_event_id, db){
   - updates details panel
 */
 function destination_selected_from_list(destination_id){
+    //tracking code
+    _gaq.push(['_trackEvent', 'Destinations_list', 'Click', available_destinations[destination_id].title]);
+    
     list_api_selectDestinationOnList(destination_id);
 
     if (calendar_helper_isPlanned(destination_id)){
@@ -87,6 +97,9 @@ function event_selected_from_map(evnt){
     for (var i in calendar_events){
         var cal_event = calendar_events[i];
         if (cal_event.marker.position.equals(evnt.latLng)){
+            //tracking code
+            _gaq.push(['_trackEvent', 'Map', 'Click', cal_event.title]);
+
             calendar_and_map_api_selectEventOnCalendar(cal_event);
             calendar_and_map_api_selectEventOnMap(cal_event);
             list_api_selectDestinationOnList(cal_event.available_destination_id);
@@ -100,6 +113,9 @@ function event_selected_from_map(evnt){
         a selection was made on the calendar (i.e., an event was selected)
 */
 function destination_selected_from_calendar(cal_event){
+    //tracking code
+    _gaq.push(['_trackEvent', 'Calendar', 'Click', cal_event.title]);
+
     calendar_and_map_api_selectEventOnCalendar(cal_event);
     calendar_and_map_api_selectEventOnMap(cal_event);
 
@@ -127,66 +143,6 @@ function temporary_event_selected_from_map(evnt){
 }
 
 
-
-/********************** Population code **********************/
-// Accepts catgory as string (e.g., "theatre") and populates the destinations list based on that category
-function populateDestinations(category){
-    var destinations_list = getElement("destinations_list");
-    var str = "";
-    var destinations_to_populate = new Array();
-    
-    for (var i in available_destinations){
-        var evnt = available_destinations[i];
-        if (evnt.category.toString() == category.toString() || category.toString() == "all"){
-            destinations_to_populate.push(evnt);
-        }
-    }
-    
-    sortDestinationsAlphabetically(destinations_to_populate);
-    
-    for (i in destinations_to_populate){
-        evnt = destinations_to_populate[i];
-        str += "<li id='" + evnt.id + "' onmouseover='list_api_highlightDestination(" + evnt.id +")' onmouseout='list_api_removeDestinationHighlight(" + evnt.id + ")' onclick='destination_selected_from_list(" + evnt.id +")'";
-        if (evnt.is_grey){
-            str += "style='background-color: #ddd; color: #555;'";
-        }
-        str += ">";
-        str += "<p class='destinationtitle'>"+ evnt.title +"</p>";
-        str += "<img src='" + evnt.image_file_name_small +"' width='" + SMALL_IMAGE_SIZE + "' height='" + SMALL_IMAGE_SIZE + "' />";
-        str += "<p class='destinationdescription'>" + evnt.description_short + " "
-        str += "</li>";        
-    }
-    destinations_list.innerHTML  = str;
-}
-
-
-// sorts events based on .title
-function sortDestinationsAlphabetically(array) {
-  var x, y, holder;
-  // The Bubble Sort method.
-  for(x = 0; x < array.length; x++) {
-    for(y = 0; y < (array.length-1); y++) {
-        if(array[y].title > array[y+1].title) {
-            holder = array[y+1];
-            array[y+1] = array[y];
-            array[y] = holder;
-        }
-    }
-  }
-}
-
-function populateCategories(){
-    var category_list = getElement("categories_list");
-    var str = "";
-    for (var i=0; i<categories.length;i++){
-        var cat = categories[i];
-        str += "<li onmouseover='list_api_highlightCategory(this)' onmouseout='list_api_removeCategoryHighlight(this)' onclick='list_api_setCategoryHighlight(this)' id='" + cat.name + "' class='category'>";
-        str += "<img src='" + cat.image_file_name + "' class='category_icon'/>"
-        str += "<p>" + cat.title + "</p>";
-        str += "</li><!-- category -->"
-    }
-    category_list.innerHTML = str;
-}
 
 
 /********************** Google maps helpers **********************/

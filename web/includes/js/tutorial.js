@@ -55,11 +55,14 @@ function hideAllSteps(){
 }
 
 function endTutorial(){
-	current_step = "none";
-	showing_steps = false;
-	hideElement('white_out_step1');
-        $("#guidebox1text").animate({opacity:0, top:0, left:($(window).width() - 200), width:0, height:0},1000);
-        $(".tutorial").show(1000);
+    //tracking code
+    _gaq.push(['_trackEvent', 'Tutorial', 'End']);
+    
+    current_step = "none";
+    showing_steps = false;
+    hideElement('white_out_step1');
+    $("#guidebox1text").animate({opacity:0, top:0, left:($(window).width() - 200), width:0, height:0},1000);
+    $(".tutorial").show(1000);
 }
 
 function startTutorial(){
@@ -68,6 +71,13 @@ function startTutorial(){
 	refreshSteps();
         $(".tutorial").hide(1000);
 
+}
+
+function tutorialButtonPressed(){
+    //tracking code
+    _gaq.push(['_trackEvent', 'Tutorial', 'Start']);
+    
+    startTutorial();
 }
 
 function clearAllTips(){

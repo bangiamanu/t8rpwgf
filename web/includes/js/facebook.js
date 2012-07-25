@@ -149,7 +149,7 @@ function validateFriend() {
     
 function postToFacebook(picture,message,link) {
     console.log("Facebook" + message + " " + link);
-    /*FB.api('/me/feed', 'post', {
+    FB.api('/me/feed', 'post', {
         message: message,
         picture: picture,
         link: link
@@ -159,7 +159,7 @@ function postToFacebook(picture,message,link) {
         } else {
             console.log('Post ID: ' + response);
         }
-    }); */   
+    }); 
 }
 
 function loginfb() {
@@ -206,4 +206,19 @@ function logoutfb() {
 
 function parseFBLogout(xml) {
     processLogout(xml);
+}
+
+function facebook_shareEvents() {
+    if ($("#loggedin").val()=="facebook") {
+        if (emptycalendar) {
+            alert("You cannot share an empty calendar");
+        }        
+        else {
+            plankey = $("#plankey").val();
+            postToFacebook("",$("#user_first_name").val() +" would like to share his plan going to " + $("#destinationname").val(),"http://www.tripbrush.com/ShareAction.do?keypass=" + plankey);
+        }
+    }
+    else {
+        show_message("You must be logged into facebook order to use this feature");
+    }
 }

@@ -7,6 +7,9 @@
  * Called when the new plan button is pressed on toolbar
  */
 function plan_actions_new_plan(){
+    //tracking code
+    _gaq.push(['_trackEvent', 'Toolbar', 'New']);
+    
     calendar_and_map_api_deleteAllEvents(false);
     show_message("Plan has been cleared. You can access any old plans by clicking Open");
     var params = "command=NewPlan";
@@ -24,6 +27,9 @@ function plan_actions_new_plan(){
  * Called when the open_plan button is pressed on toolbar
  */
 function plan_actions_open_plan(){
+    //tracking code
+    _gaq.push(['_trackEvent', 'Toolbar', 'Open']);
+
     if ($("#loggedin").val() == "true")        
         acct_management_showSavedTrips();
     else
@@ -33,6 +39,9 @@ function plan_actions_open_plan(){
  * Called when the save_plan button is pressed on toolbar
  */
 function plan_actions_save_plan(){
+    //tracking code
+    _gaq.push(['_trackEvent', 'Toolbar', 'Save']);
+
     if ($("#loggedin").val() == "true")        
         show_message("Your plan is automatically saved everytime you make a change!");
     else
@@ -43,6 +52,9 @@ function plan_actions_save_plan(){
  * Called when the email_plan button is pressed on toolbar
  */
 function plan_actions_email_plan(){
+    //tracking code
+    _gaq.push(['_trackEvent', 'Toolbar', 'Email']);
+    
     show_message("Functionality coming soon. For now, please print the plan and email the PDF file :-)");
 }
 
@@ -50,6 +62,9 @@ function plan_actions_email_plan(){
  * Called when the print_plan button is pressed on toolbar
  */
 function plan_actions_print_plan(){
+    //tracking code
+    _gaq.push(['_trackEvent', 'Toolbar', 'Print']);
+    
     clearAllTips();
     var printWindow=window.open('print_loadpage.jsp','Print','width=600, height=300');
 }
@@ -58,12 +73,18 @@ function plan_actions_print_plan(){
  * Called when the share_plan_facebook button is pressed on toolbar
  */
 function plan_actions_share_plan_facebook(){
+    //tracking code
+    _gaq.push(['_trackEvent', 'Toolbar', 'Facebook']);
     
+    facebook_shareEvents();
 }
 
 /**
  * Called when the tweet_planbutton is pressed on toolbar
  */
 function plan_actions_tweet_plan(){
-        show_message("Functionality coming soon. We support facebook for now");
+    //tracking code
+    _gaq.push(['_trackEvent', 'Toolbar', 'Tweet']);
+    
+    show_message("Functionality coming soon. We support facebook for now");
 }
