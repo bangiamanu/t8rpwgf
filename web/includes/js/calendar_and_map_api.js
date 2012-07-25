@@ -87,6 +87,7 @@ function calendar_and_map_api_addEventToCalendarAndMap(db_id,destination_id,open
     google.maps.event.addListener(perm_marker, 'click', event_selected_from_map);		
 
     //Changing pointer in calendar_events to permanent marker
+    event_to_add.marker.setMap(null);
     cal_event.marker = perm_marker;
     
     //remove temporary marker

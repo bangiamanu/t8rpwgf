@@ -17,7 +17,8 @@ function clear_message(){
 
 function show_message(message){
     $("#message_content").html(message);
-    setTimeout("$('#message').fadeIn()",400);
+    setTimeout("$('#message').fadeIn()",400);    
+    setTimeout("$('#message').fadeOut('slow')",15000);
 }
 
 function acct_management_verify(showX){

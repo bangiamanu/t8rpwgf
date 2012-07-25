@@ -37,6 +37,7 @@ function addEvent(destination_id){
 }
 
 // deletes event as denoted by cal_event_id
+// if db is true, its also deleted from the database
 function deleteEvent(cal_event_id, db){
     // ungrey destination on list
     var cal_event = calendar_helper_getCalendarEvent(cal_event_id);

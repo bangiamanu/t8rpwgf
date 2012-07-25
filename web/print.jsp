@@ -5,8 +5,7 @@
 
 <html>
     <body>
-        <img src="http://classicprocessing.en.ecplaza.net/mainl.gif" />
-
+       
 <%
         Plan plan = (Plan)session.getAttribute(Constant.SESSION_PLAN);
         if (plan!=null) {
