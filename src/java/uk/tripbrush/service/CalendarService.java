@@ -105,7 +105,7 @@ public class CalendarService implements Serializable {
             for (int counter=0;counter<plan.getLength();counter++) {
                 AttractionOpenView aov = new AttractionOpenView();
                 aov.getFrom().setTime(plan.getStartdate().getTime());
-                aov.getTo().setTime(plan.getStartdate().getTime());
+                aov.getTo().setTime(plan.getEnddate().getTime());
                 int d = (counter+dow)%8;
                 if (d==0) d = 1;
                 AttractionTime at = htimes.get(d);

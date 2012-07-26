@@ -161,6 +161,7 @@ public class OlympicAttractionService {
             attraction.setImageFileName_small(getRowValue(row,3));
             attraction.setImageFileName(getRowValue(row,4));
             attraction.setPostcode(getRowValue(row,5));
+            attraction.setDescription_short(getRowValue(row,6));
             session.merge(attraction);
         }
 
@@ -177,7 +178,7 @@ public class OlympicAttractionService {
     }    
     
     public static void main(String[] args) throws Exception {
-        String file = "/Users/sseetal/Dropbox/Life Made Easy Ltd/Olympic Sched.xlsx";
+        String file = "C://Users//Manu//Documents//Manu//tripbrush//Olympics//Olympic Sched_v2.xlsx";
         //String file = "c://Users//Samir//Documents//My DropBox//Mauritius//input//Agro-Industry and FS//input.xlsx";
         InputStream input = new BufferedInputStream(new FileInputStream(file));
         process(input);      
