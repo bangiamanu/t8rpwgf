@@ -117,6 +117,8 @@ function calendar_and_map_api_removeEventFromCalendarAndMap(cal_event){
         // then delete event from calendar
         $('#calendar').weekCalendar("removeEvent", cal_event.id);
         calendar_events = $('#calendar').weekCalendar("serializeEvents");
+        
+        selected_calendar_event_id = "";
     }
     else{
         alert(REMOVE_EVENT_ERROR);

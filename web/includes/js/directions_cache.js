@@ -120,9 +120,9 @@ function getWalkingTime(origin, destination, functionToCall){
                 travelMode: google.maps.TravelMode.WALKING,
                 avoidHighways: false,
                 avoidTolls: false
-            }, callback);
+            }, 
 
-            function callback(response, status) {
+            function (response, status) {
                 if (status == google.maps.DistanceMatrixStatus.OK) {
                     addTimeToCache(origin, destination, google.maps.TravelMode.WALKING, response.rows[0].elements[0].duration)
                     functionToCall(response.rows[0].elements[0].duration);
@@ -134,7 +134,7 @@ function getWalkingTime(origin, destination, functionToCall){
                         console.log("Query limit. Origin: " + origin + " Destination: " + destination);                    
                 }
             removeOutstandingRequest(origin, destination, google.maps.DirectionsTravelMode.WALKING);                
-            }
+            });
         }
     }
 }
@@ -166,9 +166,9 @@ function getDrivingTime(origin, destination, functionToCall){
                 travelMode: google.maps.TravelMode.DRIVING,
                 avoidHighways: false,
                 avoidTolls: false
-            }, callback);
+            }, 
 
-            function callback(response, status) {
+            function (response, status) {
                 if (status == google.maps.DistanceMatrixStatus.OK) {
                     addTimeToCache(origin, destination, google.maps.TravelMode.DRIVING, response.rows[0].elements[0].duration)
                     functionToCall(response.rows[0].elements[0].duration);
@@ -180,7 +180,7 @@ function getDrivingTime(origin, destination, functionToCall){
                         console.log("Query limit. Origin: " + origin + " Destination: " + destination);                    
                 }
             removeOutstandingRequest(origin, destination, google.maps.DirectionsTravelMode.DRIVING);                
-            }
+            });
         }
     }
 }
@@ -211,9 +211,9 @@ function getTransitTime(origin, destination, functionToCall){
             addOutstandingRequest(origin, destination, google.maps.DirectionsTravelMode.TRANSIT);
             console.log("Making Google maps TRANSIT distance request. Origin:" + origin + " Destination:" + destination);
 
-            directionsService.route(request, callback);
+            directionsService.route(request, 
 
-            function callback(response, status) {
+            function (response, status) {
                 if (status == google.maps.DirectionsStatus.OK) {
                     addDirectionsToCache(origin, destination, response);
 
@@ -227,7 +227,7 @@ function getTransitTime(origin, destination, functionToCall){
                         console.log("Query limit. Origin: " + origin + " Destination: " + destination);                    
                 }
             removeOutstandingRequest(origin, destination, google.maps.DirectionsTravelMode.TRANSIT);                
-            }
+            });
         }
     }
 }
