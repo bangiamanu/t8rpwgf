@@ -5,15 +5,17 @@
 //onmouseover
 function list_api_highlightDestination(destination_id){
     var destination = getElement(destination_id);
-    destination.style.backgroundImage="url(includes/images/destinationhighlight.jpg)";
-    var filename = $("#" + destination_id + " > img").attr("src");
-    var filename_length = filename.length;
+    if (destination != null){
+        destination.style.backgroundImage="url(includes/images/destinationhighlight.jpg)";
+        var filename = $("#" + destination_id + " > img").attr("src");
+        var filename_length = filename.length;
 
-    var imagename = filename.substring(0,filename_length - 4);
-    var imageextension = filename.substring(filename_length - 6, filename_length);
+        var imagename = filename.substring(0,filename_length - 4);
+        var imageextension = filename.substring(filename_length - 6, filename_length);
 
-    if (imageextension != "co.jpg"){	
-        $("#" + destination_id + " > img").attr("src", imagename + "co.jpg");
+        if (imageextension != "co.jpg"){	
+            $("#" + destination_id + " > img").attr("src", imagename + "co.jpg");
+        }
     }
 }
 
@@ -52,7 +54,8 @@ function list_api_selectDestinationOnList(destination_id){
 	sizing_setUpMoreLink();
 	showDestinationDetails(destination_id);
 	showOpeningHours(destination_id);
-        list_api_showImages(destination_id);
+        if (is_contracted)
+            list_api_showImages(destination_id);
 			
 	// Move onto next guide
 	if (showing_steps && current_step == "step2"){

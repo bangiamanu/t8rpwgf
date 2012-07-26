@@ -178,7 +178,7 @@ public class OlympicAttractionService {
     }    
     
     public static void main(String[] args) throws Exception {
-        String file = "C://Users//Manu//Documents//Manu//tripbrush//Olympics//Olympic Sched_v2.xlsx";
+        String file = "C://Users//Manu//Documents//Manu//tripbrush//Olympics//Olympic Sched_v3.xlsx";
         //String file = "c://Users//Samir//Documents//My DropBox//Mauritius//input//Agro-Industry and FS//input.xlsx";
         InputStream input = new BufferedInputStream(new FileInputStream(file));
         process(input);      

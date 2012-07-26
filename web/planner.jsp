@@ -120,8 +120,8 @@
         };
           
         $(window).load(function(){
-            clearAllDialogs();
-            setTimeout(startTutorial,500);
+            setTimeout(clearAllDialogs, 3000);
+            setTimeout(startTutorial,3500);
         })            
     </script>
 
