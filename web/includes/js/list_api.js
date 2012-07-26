@@ -165,20 +165,24 @@ function showOpeningHours(destination_id){
     var hours = "";
     hours = "";
     hours += "<br/>";
-            for (i in destination.opening_hours){
-                    hour = destination.opening_hours[i];
-                    var month = hour.start.getMonth() + 1;
-                    var day = hour.start.getDate();
-                    var year = hour.start.getFullYear();
+    for (i in destination.opening_hours){
+        var hour = destination.opening_hours[i];
+        var month = hour.start.getMonth() + 1;
+        var day = hour.start.getDate();
+        var year = hour.start.getFullYear();
 
-                    var shour = hour.start.getHours();
-                    var smin = hour.start.getMinutes();
+        var shour = hour.start.getHours();
+        var smin = hour.start.getMinutes();
 
-                    var ehour = hour.end.getHours();
-                    var emin = hour.end.getMinutes();
+        var ehour = hour.end.getHours();
+        var emin = hour.end.getMinutes();
 
-                    hours += "<p>"+day+"/"+month+"/"+year+" " +pad(shour)+":"+pad(smin)+"-"+pad(ehour)+":"+pad(emin)+"</p>";
-            }
+        hours += "<p>"+day+"/"+month+"/"+year+" " +pad(shour)+":"+pad(smin)+"-"+pad(ehour)+":"+pad(emin)+"</p>";
+        var desc = destination.opening_hours[i].description;
+        if (desc!=null && desc!=""){
+            hours += "<p>" + desc + "</p>"
+        }
+    }
     $("#destination_hours").children().remove();	
     $("#destination_hours").append("<div>" + hours + "</div>");
 }
