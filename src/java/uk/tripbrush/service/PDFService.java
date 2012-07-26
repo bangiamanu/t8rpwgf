@@ -145,9 +145,21 @@ public class PDFService {
         titlecell.setBorder(Rectangle.NO_BORDER);
         titlecell.setHorizontalAlignment(Element.ALIGN_CENTER);
         titlecell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-        titlecell.setFixedHeight(tableheight);
+        titlecell.setFixedHeight(tableheight-100);
         
         table.addCell(titlecell);
+       
+        Paragraph dis = new Paragraph("We're not always right. Deal with it!");
+        
+        PdfPCell disclaimer = new PdfPCell();
+        disclaimer.setBorder(Rectangle.NO_BORDER);
+        disclaimer.setHorizontalAlignment(Element.ALIGN_CENTER);
+        disclaimer.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        disclaimer.setFixedHeight(tableheight);
+        disclaimer.addElement(dis);
+
+        table.addCell(disclaimer);        
+        
         document.add(table);
 
         document.close();
