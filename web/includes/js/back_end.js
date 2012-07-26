@@ -110,8 +110,9 @@ function loadAvailableDestinationsData(xml) {
             var tod = $(this).attr("tod");
             var toh = $(this).attr("toh");
             var ton = $(this).attr("ton");
+            var desc = $(this).attr("description");
 
-            openingtimes[opencounter] = {start:new Date(fromy, fromm, fromd, fromh, fromn), end:new Date(toy, tom, tod, toh, ton)};
+            openingtimes[opencounter] = {start:new Date(fromy, fromm, fromd, fromh, fromn), end:new Date(toy, tom, tod, toh, ton), description: desc};
             opencounter++;
         });
 
