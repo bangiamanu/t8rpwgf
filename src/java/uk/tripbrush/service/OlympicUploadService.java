@@ -106,7 +106,7 @@ public class OlympicUploadService {
     
     public static Category getOlympicCategory() {
         Session session = Database.getSession();
-        Category cat = (Category)session.createCriteria(PojoConstant.CATEGORY_MODEL).add(Restrictions.eq("description","olympic")).uniqueResult();
+        Category cat = (Category)session.createCriteria(PojoConstant.CATEGORY_MODEL).add(Restrictions.eq("name","olympic")).uniqueResult();
         if (cat==null) {
             cat = new Category();
             cat.setDescription("Olympic Events");
