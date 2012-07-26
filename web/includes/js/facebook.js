@@ -215,7 +215,7 @@ function facebook_shareEvents() {
         }        
         else {
             plankey = $("#plankey").val();
-            postToFacebook("",$("#user_first_name").val() +" would like to share his plan going to " + $("#destinationname").val(),"http://www.tripbrush.com/ShareAction.do?keypass=" + plankey);
+            postToFacebook("",$("#user_first_name").val() +" is creating his plan using tripbrush.com and wanted you to know about it. Visit us on tripbrush.com "); //+ $("#destinationname").val(),"http://www.tripbrush.com/ShareAction.do?keypass=" + plankey);
         }
     }
     else {
