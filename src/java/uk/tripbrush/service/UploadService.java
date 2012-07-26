@@ -101,11 +101,6 @@ public class UploadService {
     }
     
     public static void process(InputStream is) throws Exception {
-        XSSFWorkbook wb = new XSSFWorkbook(is);  
-        
-        XSSFSheet sheet = wb.getSheetAt(0);
-        Iterator rows = sheet.rowIterator();
-
         Session session = Database.getSession();
 
         Database.beginTransaction();
@@ -122,6 +117,14 @@ public class UploadService {
         for (Object atr: session.createCriteria(PojoConstant.ATTRACTION_MODEL).list()) {
             session.delete(atr);
         }
+        
+        XSSFWorkbook wb = new XSSFWorkbook(is);  
+        
+        XSSFSheet sheet = wb.getSheetAt(0);
+        Iterator rows = sheet.rowIterator();
+
+
+
 
 
         String[] row = getRow((XSSFRow) rows.next());
@@ -168,7 +171,8 @@ public class UploadService {
     }    
     
     public static void main(String[] args) throws Exception {
-        String file = "C://Users//Manu//Documents//Attraction Data Capture v13.xlsx";
+        //String file = "C://Users//Manu//Documents//Attraction Data Capture v13.xlsx";
+        String file = "/Users/sseetal/Dropbox/Life Made Easy Ltd/Attraction Data Capture v13.xlsx";
         //String file = "c://Users//Samir//Documents//My DropBox//Mauritius//input//Agro-Industry and FS//input.xlsx";
         InputStream input = new BufferedInputStream(new FileInputStream(file));
         process(input);      

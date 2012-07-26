@@ -122,8 +122,8 @@ public class CalendarService implements Serializable {
             List<AttractionEvent> etimes =  session.createCriteria(PojoConstant.ATTRACTIONEVENT_MODEL).add(Restrictions.eq("attraction", attraction)).add(Restrictions.ge("hday", plan.getStartdate())).add(Restrictions.le("hday", plan.getEnddate())).list();
             for (AttractionEvent time: etimes) {
                 AttractionOpenView aov = new AttractionOpenView();
-                aov.setFrom(time.getHday());
-                aov.setTo(time.getHday());
+                aov.getFrom().setTime(time.getHday().getTime());
+                aov.getTo().setTime(time.getHday().getTime());               
                 aov.getFrom().set(Calendar.HOUR_OF_DAY,time.getStarthour());
                 aov.getFrom().set(Calendar.MINUTE,time.getStartminute());
                 aov.getTo().set(Calendar.HOUR_OF_DAY,time.getEndhour());
