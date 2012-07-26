@@ -28,6 +28,7 @@
     <script type='text/javascript' src="includes/js/acct_management.js"></script> <!-- acct_management APIJS -->
     <script type='text/javascript' src="includes/js/date_math.js"></script> <!-- Date Math APIJS -->
     <script type='text/javascript' src="includes/js/plan_actions.js"></script> <!-- Print APIJS -->
+    <script type='text/javascript' src="includes/js/tracking.js"></script> <!-- Tracking APIJS -->
 
         <!-- Javascript date formatting library
 		 URL: http://www.svendtofte.com/javascript/javascript-date-string-formatting/
@@ -37,15 +38,20 @@
     
 <!-- Google Analytics Script -->
 <script type="text/javascript">
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-22565085-1']);
-  _gaq.push(['_trackPageview']);
+    tracking_ready();
+    if (!tracking)
+        console.log("tracking on. index.jsp");
+    if (!tracking){    
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-22565085-1']);
+        _gaq.push(['_trackPageview']);
 
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
+        (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+    }
 </script>
 
 </head>

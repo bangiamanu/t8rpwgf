@@ -181,6 +181,7 @@ function showOpeningHours(destination_id){
         var desc = destination.opening_hours[i].description;
         if (desc!=null && desc!=""){
             hours += "<p>" + desc + "</p>"
+            hours += "<br/>"
         }
     }
     $("#destination_hours").children().remove();	

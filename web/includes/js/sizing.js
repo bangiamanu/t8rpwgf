@@ -58,6 +58,8 @@ function sizing_contract(){
 	
 	sizing_setUpMoreLink();
 	calendar_and_map_api_refreshCurrentInfoWindow();
+        if (current_destination_id!="")
+            list_api_showImages(current_destination_id);
 }
 
 function sizing_expand(){

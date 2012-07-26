@@ -52,6 +52,9 @@ var dayofweek = new Date().getDay();
 var calendar_events;
 var selected_calendar_event_id;
 
+// global variable that says if tracking is turned on
+var tracking = true;
+
 
 // ********************** calendar_and_map_api **********************
 var TIMESLOT_LENGTH;

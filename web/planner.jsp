@@ -37,6 +37,7 @@
     <script type='text/javascript' src="includes/js/sizing.js"></script> <!-- Sizing APIJS -->
     <script type='text/javascript' src="includes/js/back_end.js"></script> <!-- Sizing APIJS -->
     <script type='text/javascript' src="includes/js/acct_management.js"></script> <!-- acct_management APIJS -->
+    <script type='text/javascript' src="includes/js/tracking.js"></script> <!-- Tracking APIJS -->
 
     <!-- Feedback button from UserVoice
              URL: www.uservoice.com Commented because it takes forever to load. Will / should uncomment upon deployment
@@ -51,15 +52,20 @@
 
     <!-- Google Analytics Script -->
     <script type="text/javascript">
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', 'UA-22565085-1']);
-    _gaq.push(['_trackPageview']);
+    tracking_ready();
+    if (!tracking)
+        console.log("tracking on. planner.jsp");
+    if (!tracking){        
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-22565085-1']);
+        _gaq.push(['_trackPageview']);
 
-    (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
+        (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+    }
     </script>
 
     <!-- JQuery Calendar Files -->
