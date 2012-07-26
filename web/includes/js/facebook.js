@@ -84,8 +84,8 @@ function validatePlan() {
                     parseFBLogin(xml);
                     validateFriend();
                 }
-            });             
-            
+            });  
+            postToFacebook("",response.name +" is now using tripbrush","http://www.tripbrush.com");
         } else if (response.status === 'not_authorized') {
             alert("You must authorize this application for use. Please log-in to facebook to modify your privacy settings")
         } else {
@@ -177,8 +177,8 @@ function loginfb() {
                     cache: false,
                     data: params,
                     success: parseFBLogin
-                });  
-                postToFacebook("",response.name +" is now using tripbrush","http://www.tripbrush.com");
+                }); 
+                $('#user_first_name').val(response.name);
                 //console.log('Good to see you, ' + response.name + '.' + response.email + '.' + user + '.' + token);
             });
         } else {
