@@ -85,7 +85,7 @@ function validatePlan() {
                     validateFriend();
                 }
             });  
-            postToFacebook("",response.name +" is now using tripbrush","http://www.tripbrush.com");
+            //postToFacebook("",response.name +" is now using tripbrush","http://www.tripbrush.com");
         } else if (response.status === 'not_authorized') {
             alert("You must authorize this application for use. Please log-in to facebook to modify your privacy settings")
         } else {
