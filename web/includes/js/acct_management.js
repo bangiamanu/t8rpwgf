@@ -21,6 +21,14 @@ function show_message(message){
     setTimeout("$('#message').fadeOut('slow')",15000);
 }
 
+function show_loading(){
+    show_message("Loading . . .");
+}
+
+function hide_loading(){
+    setTimeout("$('#message').fadeOut('slow')",400);
+}
+
 function acct_management_verify(showX){
     clearAllDialogs();
     $("#white_out").fadeIn();	

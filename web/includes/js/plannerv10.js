@@ -75,6 +75,7 @@ function deleteEvent(cal_event_id, db){
 function destination_selected_from_list(destination_id){
     //tracking code
     _gaq.push(['_trackEvent', 'Destinations_list', 'Click', available_destinations[destination_id].title]);
+    show_loading();
     
     list_api_selectDestinationOnList(destination_id);
 
@@ -82,6 +83,7 @@ function destination_selected_from_list(destination_id){
         var cal_event = calendar_helper_getCalendarEventFromDestinationId(destination_id);
         calendar_and_map_api_selectEventOnCalendar(cal_event);
         calendar_and_map_api_selectEventOnMap(cal_event);
+        hide_loading();        
     }
     else{
         calendar_and_map_api_addTemporaryEventToMap(destination_id);

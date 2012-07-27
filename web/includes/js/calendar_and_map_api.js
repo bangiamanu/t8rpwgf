@@ -157,6 +157,7 @@ function calendar_and_map_api_addTemporaryEventToMap(destination_id){
 
             // Create infowindow and open it on current marker
             calendar_and_map_api_updateCurrentInfoWindow(temporary_destination.id, current_marker);
+            hide_loading();            
         }
         else{
             if (status != google.maps.GeocoderStatus.OVER_QUERY_LIMIT)            
