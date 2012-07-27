@@ -2,6 +2,10 @@
 
 /********************** Destination highlight code **********************/
 
+function list_api_ready(){
+    list_api_setCategoryHighlight(getElement("art"));
+}
+
 //onmouseover
 function list_api_highlightDestination(destination_id){
     var destination = getElement(destination_id);

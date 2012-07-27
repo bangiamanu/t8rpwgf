@@ -126,8 +126,8 @@
         };
           
         $(window).load(function(){
-            setTimeout(clearAllDialogs, 3000);
-            setTimeout(startTutorial,3500);
+            setTimeout(clearAllDialogs, 2000);
+            setTimeout(startTutorial,2500);
         })            
     </script>
 
@@ -540,13 +540,16 @@
     </div>
 
     <div id="guidebox2text" class="guidebox">
-        <p style="color:#36c" align="center"><b>Step 2</b></p><br />
+        <p style="color:#36c" align="center"><b>Step 1</b></p><br />
         <p style="padding-bottom:2px">&lt;&lt; Choose where you would like to go</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p style="font-size:10px;float:right;">I already know how to use this. <a href="javascript:endTutorial()">End Tutorial</a></p>
     </div>
 
     <div id="guidebox3text" class="guidebox">
-        <p style="color:#36c" align="center"><b>Step 3</b></p><br />
-        <p style="padding-bottom:2px">Almost done! Click "Add to itinerary"</p>
+        <p style="color:#36c" align="center"><b>Step 2</b></p><br />
+        <p style="padding-bottom:2px">And simply click "Add to itinerary"</p>
     </div>
 
     <div id="print_tip" class="tipbox">
