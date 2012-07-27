@@ -293,8 +293,8 @@
                             <select id="pre_loaded_plans_choicebox" style="width: 100%" onchange="javascript:pre_designed_plans_dropBoxChange()">
                                 <option value="">. . . or check out these featured plans</option>
                                 <option value="landmarks">Show me the landmarks!</option>
-                                <option value="foodie">Foodie's London</option>
-                                <option value="museums">Museums junkie</option>
+                                <option value="">Foodie's London (coming soon!)</option>
+                                <option value="">Museums junkie (coming soon!)</option>
                                 <option value="">Others coming soon . . .</option>
                             </select>
                         </td>                        

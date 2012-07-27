@@ -148,7 +148,7 @@ public class PDFService {
         titlecell.setFixedHeight(tableheight-400);        
         table.addCell(titlecell);
        
-        Paragraph dis = new Paragraph("DISCLAIMER: While we have done our best to ensure that the information in this booklet is up to date and accurate, we sometimes rely on data from 3rd parties (such as Google maps) and there may be last minute changes. Please double check that the destinations and public transport options are available during the times you intend to visit them. We cannot assume any liability in case of delays / unavailability. \n\n If you find an error in our data, please email errors@tripbrush.com and we will fix it.");
+        Paragraph dis = new Paragraph("DISCLAIMER: While we have done our best to ensure that the information in this booklet is up to date and accurate, we sometimes rely on data from 3rd parties (such as Google maps) and there may be last minute changes. Please double check that the destinations and public transport options are available during the times you intend to visit them. Some attractions may also require reservations. We cannot assume any liability in case of delays / unavailability. \n\n If you find an error in our data, please email errors@tripbrush.com and we will fix it.");
         
         PdfPCell disclaimer = new PdfPCell();
         disclaimer.setBorder(Rectangle.NO_BORDER);
@@ -624,9 +624,12 @@ public class PDFService {
             c2.setPhrase(p);
             
             url = new URL(image_str);
+            try{
             image = Image.getInstance(url);
             c3.setImage(image);
-                        
+            }
+            catch(Exception e)
+            {}
             directions_table.addCell(c1);
             directions_table.addCell(c2);
             directions_table.addCell(c3);
