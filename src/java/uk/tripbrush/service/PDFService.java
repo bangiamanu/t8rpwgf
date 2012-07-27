@@ -124,7 +124,7 @@ public class PDFService {
 
         document.open();
 
-        int tableheight = 1000;
+        int tableheight = 740;
         int tablewidth = 500;
 
         //create first page
@@ -145,7 +145,7 @@ public class PDFService {
         titlecell.setBorder(Rectangle.NO_BORDER);
         titlecell.setHorizontalAlignment(Element.ALIGN_CENTER);
         titlecell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-        titlecell.setFixedHeight(tableheight-300);        
+        titlecell.setFixedHeight(tableheight-500);        
         table.addCell(titlecell);
        
         Paragraph dis = new Paragraph("DISCLAIMER: While we have done our best to ensure that the information in this booklet is up to date and accurate, we sometimes rely on data from 3rd parties (such as Google maps) and there may be last minute changes. Please double check that the destinations and public transport options are available during the times you intend to visit them. We cannot assume any liability in case of delays / unavailability. \n\n If you find an error in our data, please email errors@tripbrush.com and we will fix it");
@@ -154,7 +154,7 @@ public class PDFService {
         disclaimer.setBorder(Rectangle.NO_BORDER);
         disclaimer.setHorizontalAlignment(Element.ALIGN_CENTER);
         disclaimer.setVerticalAlignment(Element.ALIGN_BOTTOM);
-        disclaimer.setFixedHeight(tableheight);
+        disclaimer.setFixedHeight(490);
         disclaimer.addElement(dis);
 
         table.addCell(disclaimer);        
