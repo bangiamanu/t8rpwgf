@@ -101,8 +101,8 @@ function updateEvent(id,start,end) {
 function calendar_helper_refreshEvents(){
     for (var i in events_to_be_refreshed){
        var cal_event = events_to_be_refreshed[i];
-       calendar_helper_setTitleAndBackground(cal_event);
-       console.log("Refreshing " + cal_event.title)
+       if (cal_event!=null)
+           calendar_helper_setTitleAndBackground(cal_event);
     }
     events_to_be_refreshed = new Array();
 }

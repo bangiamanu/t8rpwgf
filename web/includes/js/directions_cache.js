@@ -191,7 +191,7 @@ function getDrivingTime(origin, destination, functionToCall){
  * destination: google.maps.latLng
  * functionToCall(google.maps.Duration): function to call after walking time is determined
  */
-function getTransitTime(origin, destination, functionToCall){
+function getTransitTime(origin, destination, departure_time, functionToCall){
     var cache_driving_time = getTimeFromCache(origin, destination, google.maps.TravelMode.TRANSIT);
     if (cache_driving_time != null){
         // if already in cache
@@ -204,6 +204,7 @@ function getTransitTime(origin, destination, functionToCall){
         var request = {
             origin:origin,
             destination:destination,
+            transitOptions: {departureTime: departure_time},
             travelMode: google.maps.DirectionsTravelMode.TRANSIT    // this is the default type of directions shown on map
         };
 

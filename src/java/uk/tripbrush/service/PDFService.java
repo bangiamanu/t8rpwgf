@@ -124,7 +124,7 @@ public class PDFService {
 
         document.open();
 
-        int tableheight = 740;
+        int tableheight = 1000;
         int tablewidth = 500;
 
         //create first page
@@ -330,14 +330,26 @@ public class PDFService {
 
                 
                 if (!StringUtil.isEmpty(sevent.getAttraction().getPhone())) {
-                    Paragraph eventphone = new Paragraph("Telephone: " + attraction.getPhone());
+                    Paragraph phone_label = new Paragraph("\nPhone Number");
+                    phone_label.getFont().setFamily("Arial");
+                    phone_label.getFont().setSize(12);                   
+                    phone_label.getFont().setStyle("bold");
+                    description.addElement(phone_label);
+
+                    Paragraph eventphone = new Paragraph(attraction.getPhone());
                     eventphone.getFont().setFamily("Arial");
                     eventphone.getFont().setSize(10);  
                     description.addElement(eventphone);
                 }
                 
                 if (!StringUtil.isEmpty(sevent.getAttraction().getAddress())) {
-                    Paragraph eventaddress = new Paragraph("Address: " + attraction.getAddress());
+                    Paragraph address_label = new Paragraph("\nAddress");
+                    address_label.getFont().setFamily("Arial");
+                    address_label.getFont().setSize(12);                   
+                    address_label.getFont().setStyle("bold");
+                    description.addElement(address_label);
+                    
+                    Paragraph eventaddress = new Paragraph(attraction.getAddress());
                     eventaddress.getFont().setFamily("Arial");
                     eventaddress.getFont().setSize(10);      
                     description.addElement(eventaddress);
@@ -379,7 +391,7 @@ public class PDFService {
                     String tpostcode = nextatt.getPostcode().replaceAll(" ","")+",UK";
                     
                     // Manu's Code
-                    long departure_time = sevent.getStartdate().getTimeInMillis();
+                    long departure_time = sevent.getEnddate().getTimeInMillis();
                     departure_time = departure_time / 1000;
                     String d_t = String.valueOf(departure_time);
                     
@@ -392,7 +404,7 @@ public class PDFService {
                     String status = stringify(json.get("status"));
                     
                     if (!status.equals("OK") || routes.get(0).getAsJsonObject().get("legs").getAsJsonArray().get(0).getAsJsonObject().get("duration").getAsJsonObject().get("value").getAsInt() > 60*(ConfigService.getMaxWalking())){
-                        json_string = Browser.getPage("http://maps.googleapis.com/maps/api/directions/json?origin=" + fpostcode + "&destination=" + tpostcode + "&sensor=false&mode=transit&departureTime=" + d_t).toString();                    
+                        json_string = Browser.getPage("http://maps.googleapis.com/maps/api/directions/json?origin=" + fpostcode + "&destination=" + tpostcode + "&sensor=false&mode=transit&departure_time=" + d_t).toString();                    
                         parser = new JsonParser();
                         json = parser.parse(json_string).getAsJsonObject();                    
                         routes = json.get("routes").getAsJsonArray();

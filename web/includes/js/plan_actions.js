@@ -66,7 +66,7 @@ function plan_actions_print_plan(){
     _gaq.push(['_trackEvent', 'Toolbar', 'Print']);
     
     clearAllTips();
-    var printWindow=window.open('print_loadpage.jsp','Print','width=600, height=300');
+    var printWindow=window.open('print_loadpage.jsp','Print','width=700, height=300');
 }
 
 /**
