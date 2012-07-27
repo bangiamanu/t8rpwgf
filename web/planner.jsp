@@ -141,41 +141,41 @@
         <p align="center"> . . . loading . . . </p>
     </div><!-- saved_trips -->
 
-        <div id="fb-root"></div>
-        <div id="toolbar">
-            <img id="logo" src="includes/images/tripbrushlogo_inverted_small.png" alt="Logo" width="138" height="30" />
-            <div id="loginactions">
-                <div id="signed_in" class="signed_in_or_out" style="display:none;">
-                        <table cellpadding="0" cellspacing="3" height="40px" border="0px">
-                                <tr>
-                                        <td><a href="javascript:tutorialButtonPressed()" style="display:none" class="tutorial"><img src="includes/images/tutorial_icon.png" /></a></td>
-                                        <td><a href="javascript:tutorialButtonPressed()" style="display:none" class="tutorial">Tutorial</a></td>
-                                        <td width="20px">&nbsp;</td>
-                                        <td><a href="javascript:acct_management_signIn()"><img src="includes/images/sign_in_icon.png" /></a></td>
-                                        <td><a href="javascript:acct_management_signIn()">Log in</a></td>
-                                        <td width="20px">&nbsp;</td>
-                                        <td><a href="javascript:acct_management_signUp()"><img src="includes/images/sign_up_icon.png" /></a></td>
-                                        <td><a href="javascript:acct_management_signUp()">Sign up</a></td>
-                                </tr>
-                        </table>
-                </div>
+    <div id="fb-root"></div>
+    <div id="toolbar">
+        <img id="logo" src="includes/images/tripbrushlogo_inverted_small.png" alt="Logo" width="138" height="30" />
+        <div id="loginactions">
+            <div id="signed_in" class="signed_in_or_out" style="display:none;">
+                <table cellpadding="0" cellspacing="3" height="40px" border="0px">
+                    <tr>
+                        <td><a href="javascript:tutorialButtonPressed()" style="display:none" class="tutorial"><img src="includes/images/tutorial_icon.png" /></a></td>
+                        <td><a href="javascript:tutorialButtonPressed()" style="display:none" class="tutorial">Tutorial</a></td>
+                        <td width="20px">&nbsp;</td>
+                        <td><a href="javascript:acct_management_signIn()"><img src="includes/images/sign_in_icon.png" /></a></td>
+                        <td><a href="javascript:acct_management_signIn()">Log in</a></td>
+                        <td width="20px">&nbsp;</td>
+                        <td><a href="javascript:acct_management_signUp()"><img src="includes/images/sign_up_icon.png" /></a></td>
+                        <td><a href="javascript:acct_management_signUp()">Sign up</a></td>
+                    </tr>
+                </table>
+            </div>
 
-                
-                <div id="signed_out" class="signed_in_or_out" style="display:none;">
-					<table cellpadding="0" cellspacing="3" height="40px" border="0px">
-						<tr>
-							<td>Welcome <div id="user_first_name"></div></td>
-							<td width="20px">&nbsp;</td>
-							<td><a href="javascript:acct_management_showProfile()"><img src="includes/images/profile_icon.png" /></a></td>
-							<td><a href="javascript:acct_management_showProfile()">Profile</a></td>
-							<td width="20px">&nbsp;</td>
-							<td><a href="javascript:acct_management_logOut()"><img src="includes/images/log_out_icon.png" /></a></td>
-							<td><a href="javascript:acct_management_logOut()">Log out</a></td>
-						</tr>
-					</table>
-				</div>
-	        </div><!-- loginactions -->
-		</div><!-- toolbar -->
+
+            <div id="signed_out" class="signed_in_or_out" style="display:none;">
+                <table cellpadding="0" cellspacing="3" height="40px" border="0px">
+                    <tr>
+                        <td>Welcome <div id="user_first_name"></div></td>
+                        <td width="20px">&nbsp;</td>
+                        <td><a href="javascript:acct_management_showProfile()"><img src="includes/images/profile_icon.png" /></a></td>
+                        <td><a href="javascript:acct_management_showProfile()">Profile</a></td>
+                        <td width="20px">&nbsp;</td>
+                        <td><a href="javascript:acct_management_logOut()"><img src="includes/images/log_out_icon.png" /></a></td>
+                        <td><a href="javascript:acct_management_logOut()">Log out</a></td>
+                    </tr>
+                </table>
+            </div>
+        </div><!-- loginactions -->
+        </div><!-- toolbar -->
 
         <div id="categorynamecolumn">
           <div class="headingtext">
@@ -425,7 +425,7 @@
                                         <td colspan="2" align="center">&nbsp;  </td>
                                 </tr>
                                 <tr>
-                                        <td colspan="2" align="center"><img src="includes/images/sign_up_with_facebook.png" /></td>
+                                        <td colspan="2" align="center"><a href="javascript:loginfb()"><img src="includes/images/sign_up_with_facebook.png" /></a></td>
                                 </tr>
                         </table>
                         <br/><br/>

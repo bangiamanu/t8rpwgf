@@ -99,62 +99,91 @@
 		<!-- Login page -->
         <div id="loginblackoverlay">
         </div>  <!-- blackoverlay -->
-		<div id="loginwhitecontent">
-        <!--[if IE]>
-	        <div> <p> We do not support Internet Explorer. Please consider using <a href='http://www.google.com/chrome/' target='_new'>Google Chrome</a>.</p><br/>
-	            <p> Over the years, Internet Explorer has become very complex and diverged from web standards. We are a small startup and don't have the resources to support it. However, we do realize that many people still use the browser and intend to support it in a future release</p><br/>
-	            <p> Meanwhile, please feel free to use any other browser (like Chrome, FireFox or Safari)</p><br/>
+            <div id="loginwhitecontent">
+                <div id="IE" style="display:none">
+                    <p style="font-size:12px"> We do not support Internet Explorer. Please consider using <a href='http://www.google.com/chrome/' target='_new'>Google Chrome</a>.</p><br/>
+                    <p style="font-size:12px"> Over the years, Internet Explorer has significantly diverged from web standards. We are a small startup and don't have the resources to support it. We intend to support the browser in a future release</p><br/>
+                    <p style="font-size:12px"> Also, the percent of people using IE is now very low (20% - 30%) and declining. Apologies for any inconvenience and please feel free to use any other browser (like Chrome, FireFox or Safari)</p><br/>
 
-        <input type="button" name="Close" id="Close" value="Close" onclick="javascript:hideLoginWindow()" />
-            </div>
-        <![endif]-->
-        <![if !IE]-->
-            <div id="dictionary_text">
-                  <p>tripbrush <img src="includes/images/speaker.jpg"/> <span style="font-family:Verdana, Geneva, sans-serif;font-weight:normal;font-style:italic"> [trip-bruhsh] </span></p>
-                  <p>noun</p>
-                  <ol>
-                    <li>An exquisite tool that crafts a magical holiday with just a few strokes</li>
-                    <li>An implement consisting of bristles attached to a handle that is used for painting, cleaning, and planning vacations</li>
-                  </ol>
-            </div>
-              <div id="loginform">
-                  <form action="LoginAction.do" method="post">
-                      <input type="hidden" name="command" value="confirm"/>
-              <table><tr><td align="right">
-                <label for="destination">Destination:</label>
-                </td><td>
-                <select name="destination" id="destination" onchange="javascript:selectlondon()">
-                	<option value="London" selected="selected">London</option>
-                	<option value="Other">Other cities coming soon!</option>
-                </select>
-                </td></tr><tr><td align="right">
-                <label for="fromdate">Start Date:</label>
-                </td><td>
-                <input type="text" name="fromdate" id="fromdate" value=""/>
-                </td></tr><tr><td align="right">
-                <label for="howlong">Duration:</label>
-                </td><td>
-                <select name="howlong" id="howlong" >
-                	<option value="1">1 day</option>
-                	<option value="2">2 days</option>
-                	<option value="3" selected="selected">3 days</option>
-                	<option value="4">4 days</option>
-                	<option value="5">5 days</option>
-                	<option value="6">6 days</option>
-                	<option value="7">7 days</option>
-                </select>
-                </td></tr></table>
-                  
-              </div>
-              <!-- signupform-->
-              <p id="submitbuttons">
-                <input type="button" name="Cancel" id="Cancel" value="Cancel" onclick="javascript:hideLoginWindow()" />
-                <input type="submit" name="Lets Paint >" id="Lets Paint &gt;" value="Lets Paint >" onclick="return verifypassword()"/>
-                <input type="submit" style="display:none" id="realsubmit"/>
-              </p>
-              </form>
-            <![endif]>        
-          </div><!-- whitecontent -->
+                    <input type="button" name="Close" id="Close" value="Close" onclick="javascript:hideLoginWindow()" />
+                </div>
+            
+            <div id="NoIE" style="display:block">
+                <div id="dictionary_text">
+                    <p>tripbrush <img src="includes/images/speaker.jpg"/> <span style="font-family:Verdana, Geneva, sans-serif;font-weight:normal;font-style:italic"> [trip-bruhsh] </span></p>
+                    <p>noun</p>
+                    <ol>
+                        <li>An exquisite tool that crafts a magical holiday with just a few strokes</li>
+                        <li>An implement consisting of bristles attached to a handle that is used for painting, cleaning, and planning vacations</li>
+                    </ol>
+                </div>
+                <div id="loginform">
+                    <form action="LoginAction.do" method="post">
+                        <input type="hidden" name="command" value="confirm"/>
+                        <table>
+                            <tr>
+                                <td align="right">
+                                <label for="destination">Destination:</label>
+                                </td><td>
+                                <select name="destination" id="destination" onchange="javascript:selectlondon()">
+                                    <option value="London" selected="selected">London</option>
+                                    <option value="Other">Other cities coming soon!</option>
+                                </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="right">
+                                <label for="fromdate">Start Date:</label>
+                                </td><td>
+                                <input type="text" name="fromdate" id="fromdate" value=""/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="right">
+                                <label for="howlong">Duration:</label>
+                                </td><td>
+                                <select name="howlong" id="howlong" >
+                                    <option value="1">1 day</option>
+                                    <option value="2">2 days</option>
+                                    <option value="3" selected="selected">3 days</option>
+                                    <option value="4">4 days</option>
+                                    <option value="5">5 days</option>
+                                    <option value="6">6 days</option>
+                                    <option value="7">7 days</option>
+                                </select>
+                                </td>
+                            </tr>
+                        </table>
+                        <p id="submitbuttons">
+                            <input type="button" name="Cancel" id="Cancel" value="Cancel" onclick="javascript:hideLoginWindow()" />
+                            <input type="submit" name="Lets Paint >" id="Lets Paint &gt;" value="Lets Paint >" onclick="return verifypassword()"/>
+                            <input type="submit" style="display:none" id="realsubmit"/>
+                        </p>
+                    </form>
+                </div> <!-- loginform -->
+            </div><!--- no IE --->
+            <script type="text/javascript">
+                function getInternetExplorerVersion()
+                // Returns the version of Windows Internet Explorer or a -1
+                // (indicating the use of another browser).
+                {
+                var rv = -1; // Return value assumes failure.
+                if (navigator.appName == 'Microsoft Internet Explorer')
+                {
+                    var ua = navigator.userAgent;
+                    var re  = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+                    if (re.exec(ua) != null)
+                        rv = parseFloat( RegExp.$1 );
+                }
+                return rv;
+                }
+                
+                if (getInternetExplorerVersion()!=-1){
+                    $("#IE").show();
+                    $("#NoIE").hide();
+                }
+            </script>
+        </div><!-- whitecontent -->
 
 
           
