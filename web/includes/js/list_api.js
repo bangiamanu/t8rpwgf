@@ -4,6 +4,7 @@
 
 function list_api_ready(){
     list_api_setCategoryHighlight(getElement("art"));
+    list_api_removeCategoryHighlight(getElement("art"));
 }
 
 //onmouseover

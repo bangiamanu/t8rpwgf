@@ -26,7 +26,7 @@ function refreshSteps(){
 		if (current_step == "step2"){
 			showElement('white_out_step2');
                         $("#guidebox2text").show();
-                        $("#guidebox2text").animate({opacity:1, top:51, left:382, width:250, height:100},1000);
+                        //$("#guidebox2text").animate({opacity:1, top:51, left:382, width:250, height:100},1000);
 		}
 
 		if (current_step == "step3"){
@@ -61,14 +61,14 @@ function endTutorial(){
     
     current_step = "none";
     showing_steps = false;
-    hideElement('white_out_step2');
-    $("#guidebox2text").animate({opacity:0, top:0, left:($(window).width() - 200), width:0, height:0},1000);
+    hideElement('white_out_step1');
+    $("#guidebox1text").animate({opacity:0, top:0, left:($(window).width() - 200), width:0, height:0},1000);
     $(".tutorial").show(1000);
 }
 
 function startTutorial(){
 	showing_steps = true;
-	current_step = "step2";
+	current_step = "step1";
 	refreshSteps();
         $(".tutorial").hide(1000);
 

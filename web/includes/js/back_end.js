@@ -56,6 +56,7 @@ function loadCategoryData(xml) {
     });
     list_api_populateCategories();
     backend_loadAvailableDestinations();
+    list_api_ready();
 }
 
 
@@ -134,7 +135,6 @@ function loadAvailableDestinationsData(xml) {
         };
         counter++;
     });
-    list_api_ready();
 }
 
 function checkin() {
