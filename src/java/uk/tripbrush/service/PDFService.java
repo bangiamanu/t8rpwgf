@@ -544,7 +544,6 @@ public class PDFService {
              }
             else{
                 logo_str = ConfigService.getUrl()+ "/includes/images/walk.png";                
-                //marker_text = "&markers=icon:http://chart.apis.google.com/chart?chst=d_map_pin_icon%26chld=wc-male%257CFFFFFF%257Ctest%257CFFFFFF%257C000000%7C" + start_lat + "," + start_lng;
                 marker_text = "";
             }
             
@@ -628,8 +627,12 @@ public class PDFService {
             image = Image.getInstance(url);
             c3.setImage(image);
             }
-            catch(Exception e)
-            {}
+            catch(Exception e){
+                url = new URL(ConfigService.getUrl()+ "/includes/images/error_small.jpg");
+                image = Image.getInstance(url);
+                c3.setImage(image);
+            }
+            
             directions_table.addCell(c1);
             directions_table.addCell(c2);
             directions_table.addCell(c3);
@@ -642,10 +645,18 @@ public class PDFService {
         }
         main_map_src += "&path=color:0x000000|weight:5|enc:" + stringify(overview_polyline_points);
         main_map_src += "&sensor=false";
-        URL url = new URL(main_map_src);
-        Image image = Image.getInstance(url);
         
-        table.addCell(image);
+        try{
+            URL url = new URL(main_map_src);
+            Image image = Image.getInstance(url);        
+            table.addCell(image);
+        }
+        catch(Exception e){
+            URL url = new URL(ConfigService.getUrl()+ "/includes/images/error_small.jpg");
+            Image image = Image.getInstance(url);
+            table.addCell(image);
+        }
+        
         table.addCell(new Phrase("\n"));
         table.addCell(directions_table);
     }

@@ -413,7 +413,7 @@ p{
 	margin-right:auto;
 }
 
-#sign_in, #verify, #emailevents, #sign_up, #forgot_password, #profile{
+#sign_in, #verify, #emailevents, #sign_up, #forgot_password, #profile, #home_info{
 	top: 30%;
 	width: 400px;
 }

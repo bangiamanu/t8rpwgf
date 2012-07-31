@@ -521,7 +521,14 @@
             <div id='emailclose'><img src='includes/images/close.png' id='close_image' onClick='clearAllDialogs()'/></div>
             We are now sending a copy of the plan to your email.
         </div>        
-        
+
+        <div id="home_info" class="white_dialog"><!--Email Events-->
+            <div id='home_info_close'><img src='includes/images/close.png' id='close_image' onClick='clearAllDialogs()'/></div>
+            Please enter the postcode of your hotel or wherever you are staying for the trip:
+            <input type="text" id="home_info_postcode" />
+            <input type="submit" /><input type="button" value="cancel" onclick="javascript:clearAllDialogs()"/>
+        </div>        
+
     </div><!-- container -->
 
     <!-- **************** guideboxes **************** -->
