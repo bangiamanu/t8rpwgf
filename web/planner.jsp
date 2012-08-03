@@ -251,7 +251,7 @@
 
         <div id="calendarcontainer">
             <div id="calendar_toolbar">
-                <table width="100%">
+                <table width="100%" cellspacing="0" cellpadding="0" align="center" style="text-align: center;">
                     <tr>
                         <td width="25px">
                             <a href="javascript:plan_actions_new_plan()">
@@ -268,6 +268,17 @@
                                 <img src="includes/images/save_icon_v2.png" height="20px" title="Save plan"/>
                             </a>
                         </td>
+                        <td width="10px">
+                            <img src="includes/images/icon_separator.jpg" height="20px"/>
+                        </td>
+                        <td width="25px">
+                            <a href="javascript:plan_actions_set_home_info()">
+                                <img src="includes/images/home_info_icon.png" height="20px" title="Set home address"/>
+                            </a>
+                        </td>
+                        <td width="10px">
+                            <img src="includes/images/icon_separator.jpg" height="20px"/>
+                        </td>
                         <td width="25px">
                             <a href="javascript:plan_actions_email_plan()" >
                                 <img src="includes/images/email_icon_v2.png" height="20px" title="Email plan"/>
@@ -278,6 +289,9 @@
                                 <img src="includes/images/print_icon_v2.png" height="20px" title="Print plan"/>
                             </a>
                         </td>
+                        <td width="10px">
+                            <img src="includes/images/icon_separator.jpg" height="20px"/>
+                        </td>
                         <td width="25px">
                             <a href="javascript:plan_actions_share_plan_facebook()">
                                 <img src="includes/images/facebook_icon.png" height="20px" title="Share on facebook"/>
@@ -287,6 +301,12 @@
                             <a href="javascript:plan_actions_tweet_plan()">
                                 <img src="includes/images/twitter_icon.png" height="20px" title="Tweet"/>
                             </a>
+                        </td>
+                        <td width="10px">
+                            <img src="includes/images/icon_separator.jpg" height="20px"/>
+                        </td>
+                        <td width="5px">
+                            &nbsp;
                         </td>
                         <td>
                             <select id="pre_loaded_plans_choicebox" style="width: 100%" onchange="javascript:pre_designed_plans_dropBoxChange()">
@@ -526,7 +546,7 @@
             <div id='home_info_close'><img src='includes/images/close.png' id='close_image' onClick='clearAllDialogs()'/></div>
             Please enter the postcode of your hotel or wherever you are staying for the trip:
             <input type="text" id="home_info_postcode" />
-            <input type="submit" /><input type="button" value="cancel" onclick="javascript:clearAllDialogs()"/>
+            <input type="submit" /><input type="button" value="Cancel" onclick="javascript:clearAllDialogs()"/>
         </div>        
 
     </div><!-- container -->

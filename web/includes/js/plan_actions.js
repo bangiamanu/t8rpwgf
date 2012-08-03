@@ -88,3 +88,15 @@ function plan_actions_tweet_plan(){
     
     show_message("Functionality coming soon. We support facebook for now");
 }
+
+/**
+ * Called when the set home info is pressed on toolbar
+ */
+function plan_actions_set_home_info(){
+    //tracking code
+    _gaq.push(['_trackEvent', 'Toolbar', 'Home_Info']);
+    
+    clearAllDialogs();
+    $("#white_out").fadeIn();	
+    setTimeout("$('#home_info').fadeIn()",400);
+}

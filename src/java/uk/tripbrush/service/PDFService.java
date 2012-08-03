@@ -46,6 +46,10 @@ import uk.tripbrush.view.MResult;
  */
 public class PDFService {
 
+    private static int tableheight = 740;
+    private static int tablewidth = 500;
+    private static PdfPCell datecell;
+
 
     public static String createPlan(Plan plan) throws Exception {
         createTitlePage(plan);
@@ -71,8 +75,6 @@ public class PDFService {
 
         document.open();
 
-        int tableheight = 740;
-        int tablewidth = 500;
 
         //create first page
         PdfPTable table = new PdfPTable(1);
@@ -124,9 +126,6 @@ public class PDFService {
 
         document.open();
 
-        int tableheight = 740;
-        int tablewidth = 500;
-
         //create first page
         PdfPTable table = new PdfPTable(1);
         table.getDefaultCell().setBorder(Rectangle.NO_BORDER);
@@ -176,9 +175,6 @@ public class PDFService {
         writer.setPageEvent(event);
 
         document.open();
-
-        int tableheight = 740;
-        int tablewidth = 500;
 
         //create first page
         PdfPTable table = new PdfPTable(1);
@@ -232,12 +228,7 @@ public class PDFService {
 
         document.open();
 
-        int tableheight = 740;
-        int tablewidth = 500;
-
         //create first page
-        
-        
         Calendar cal = Calendar.getInstance();
         cal.setTime(plan.getStartdate().getTime());
         cal.add(Calendar.DAY_OF_MONTH, datecounter);
@@ -245,182 +236,43 @@ public class PDFService {
         
         List<Event> todaysevents = plan.getEvents(cal);
         PdfPTable table;
+        
         if (!todaysevents.isEmpty()) {
             int counter = 0;
-            for (Event sevent: todaysevents) {
-                table = new PdfPTable(2);
-                table.getDefaultCell().setBorder(Rectangle.NO_BORDER);
-                table.setTotalWidth(tablewidth);
-                table.setLockedWidth(true);
-
-                int[] widths = {280,220};
-                table.setWidths(widths);    
+            for (Event sevent: todaysevents) {                
+                updateDateCell(cal);
                 
-                Chunk datetitle = new Chunk(DateUtil.getFullDay(cal));
-                //datetitle.setUnderline(0.1f,-2f);
-                datetitle.getFont().setFamily("Arial");
-                datetitle.getFont().setSize(12);
-                datetitle.getFont().setColor(51,102,00);
-                datetitle.getFont().setStyle("bold");
-                
-                PdfPCell datecell = new PdfPCell();
-                datecell.setBorder(Rectangle.NO_BORDER);
-                datecell.addElement(datetitle);
-                datecell.setColspan(2);
-
-                
-                Paragraph time = new Paragraph(sevent.getDuration() + "\n");
-                time.getFont().setFamily("Arial");
-                time.getFont().setSize(12);
-                
-                PdfPCell timecell = new PdfPCell(time);
-                timecell.setBorder(Rectangle.NO_BORDER);
-                timecell.setColspan(2);
-                
+                String home_postcode = "NW14SN"; // TODO: hardcoded for now
                 Attraction attraction = sevent.getAttraction();
-                
-                Paragraph eventname = new Paragraph(attraction.getName() + "\n");
-                eventname.getFont().setFamily("Arial");
-                eventname.getFont().setSize(12);
-                eventname.getFont().setStyle("bold");
-               
-                Paragraph eventdesc = new Paragraph(attraction.getDescription());
-                eventdesc.getFont().setFamily("Arial");
-                eventdesc.getFont().setSize(10);                
-                
-                PdfPCell eventcell = new PdfPCell();
-                eventcell.addElement(eventname);
-                eventcell.addElement(eventdesc);
-                eventcell.setBorder(Rectangle.NO_BORDER);
-                eventcell.setColspan(1);
-                
-                
-                URL url = new URL(ConfigService.getUrl()+ "/includes/images/data/"+attraction.getImageFileName());
-                PdfPCell piccell = new PdfPCell();
-                try{
-                    Image image = Image.getInstance(url);
-                    image.scaleToFit(250,250);
-                    piccell = new PdfPCell(image);
-                    piccell.setBorder(Rectangle.NO_BORDER);
-                    piccell.setColspan(1);
-                }
-                catch(Exception e){
-                }
-                
-                Paragraph eventhours = new Paragraph("Opening Hours");
-                eventhours.getFont().setFamily("Arial");
-                eventhours.getFont().setSize(12);                   
-                eventhours.getFont().setStyle("bold");
+                String fpostcode = attraction.getPostcode().replaceAll(" ","")+",UK";
 
+                long arrival_time = sevent.getStartdate().getTimeInMillis();
+                arrival_time = arrival_time / 1000;
+                String a_t = String.valueOf(arrival_time);
                 
-                CalendarService.loadAttractionTimes(plan, attraction);
-                PdfPCell description = new PdfPCell();
-                description.addElement(eventhours);
-                description.setBorder(Rectangle.NO_BORDER);
-                description.setColspan(2);        
+                long departure_time = sevent.getEnddate().getTimeInMillis();
+                departure_time = departure_time / 1000;
+                String d_t = String.valueOf(departure_time);
                 
-                for (AttractionOpenView view: attraction.getOpeningTimes()) {
-                    Paragraph eventtimes = new Paragraph(DateUtil.getDay(view.getFrom())+" " + DateUtil.getTime(view.getFrom()) + "-"+ DateUtil.getTime(view.getTo()));
-                    eventtimes.getFont().setFamily("Arial");
-                    eventtimes.getFont().setSize(10);
-                    description.addElement(eventtimes);
+                if (counter == 0 && home_postcode!=null){
+                    // First event for the day
+                    addDirections(document, "Home", attraction.getName(), home_postcode, fpostcode, null, a_t);                        
                 }
                 
-                
+                addEventDetails(cal, document, sevent, plan);
 
-                
-                if (!StringUtil.isEmpty(sevent.getAttraction().getPhone())) {
-                    Paragraph phone_label = new Paragraph("\nPhone Number");
-                    phone_label.getFont().setFamily("Arial");
-                    phone_label.getFont().setSize(12);                   
-                    phone_label.getFont().setStyle("bold");
-                    description.addElement(phone_label);
-
-                    Paragraph eventphone = new Paragraph(attraction.getPhone());
-                    eventphone.getFont().setFamily("Arial");
-                    eventphone.getFont().setSize(10);  
-                    description.addElement(eventphone);
-                }
-                
-                if (!StringUtil.isEmpty(sevent.getAttraction().getAddress())) {
-                    Paragraph address_label = new Paragraph("\nAddress");
-                    address_label.getFont().setFamily("Arial");
-                    address_label.getFont().setSize(12);                   
-                    address_label.getFont().setStyle("bold");
-                    description.addElement(address_label);
-                    
-                    Paragraph eventaddress = new Paragraph(attraction.getAddress());
-                    eventaddress.getFont().setFamily("Arial");
-                    eventaddress.getFont().setSize(10);      
-                    description.addElement(eventaddress);
-                }
-                
-                table.addCell(datecell);
-                table.addCell(timecell);
-                table.addCell(eventcell);
-                table.addCell(piccell);
-                table.addCell(description);
-                
-                document.add(table); 
-                document.newPage();
-                
                 if (counter!=todaysevents.size()-1) {
+                    // directions from this to next
                     Event nextevent = todaysevents.get(counter+1);
                     Attraction nextatt = nextevent.getAttraction();
-                    //add directions page
-                    PdfPTable table1 = new PdfPTable(1);
-                    table1.getDefaultCell().setBorder(Rectangle.NO_BORDER);
-                    table1.setTotalWidth(tablewidth);
-                    table1.setLockedWidth(true);
-
-                    int[] widths3 = {1};
-                    table1.setWidths(widths3);    
-
-                    table1.addCell(datecell);
-                    
-                    Paragraph directions = new Paragraph("Directions from A:" + attraction.getName() + " to B:" + nextatt.getName() + "\n\n");
-                    directions.getFont().setFamily("Arial");
-                    directions.getFont().setSize(10);
-
-                    PdfPCell dcell = new PdfPCell(directions);
-                    dcell.setBorder(Rectangle.NO_BORDER);
-                    dcell.setColspan(1);
-                    table1.addCell(dcell);
-                    
-                    String fpostcode = attraction.getPostcode().replaceAll(" ","")+",UK";
                     String tpostcode = nextatt.getPostcode().replaceAll(" ","")+",UK";
                     
-                    // Manu's Code
-                    long departure_time = sevent.getEnddate().getTimeInMillis();
-                    departure_time = departure_time / 1000;
-                    String d_t = String.valueOf(departure_time);
-                    
-                    String json_string;
-                    json_string = Browser.getPage("http://maps.googleapis.com/maps/api/directions/json?origin=" + fpostcode + "&destination=" + tpostcode + "&sensor=false&mode=walking").toString();
-                    JsonParser parser = new JsonParser();
-                    JsonObject json = parser.parse(json_string).getAsJsonObject();                    
-                    JsonArray routes = json.get("routes").getAsJsonArray();
-                    
-                    String status = stringify(json.get("status"));
-                    
-                    if (!status.equals("OK") || routes.get(0).getAsJsonObject().get("legs").getAsJsonArray().get(0).getAsJsonObject().get("duration").getAsJsonObject().get("value").getAsInt() > 60*(ConfigService.getMaxWalking())){
-                        json_string = Browser.getPage("http://maps.googleapis.com/maps/api/directions/json?origin=" + fpostcode + "&destination=" + tpostcode + "&sensor=false&mode=transit&departure_time=" + d_t).toString();                    
-                        parser = new JsonParser();
-                        json = parser.parse(json_string).getAsJsonObject();                    
-                        routes = json.get("routes").getAsJsonArray();
-                    }
-                    
-                    status = stringify(json.get("status"));
-                    if (status.equals("OK")){
-                        addPublicTransportDirections(table1,routes);
-                    }
-                    else{
-                        table1.addCell("Sorry there seems to be a bug where Google doesn't return certain directions. We are currently working with Google to address this. Apologies for the inconvenience. Please check back soon for a fix.");
-                    }
-                        
-                                        
-                    document.add(table1); 
-                    document.newPage();
+                    addDirections(document, attraction.getName(), nextatt.getName(), fpostcode, tpostcode, d_t, null);
+                }
+
+                if (counter == todaysevents.size()-1 && home_postcode!=null){
+                    //last event for the day
+                    addDirections(document, attraction.getName(), "Home", fpostcode, home_postcode, d_t, null);                        
                 }
                 counter++;
             }            
@@ -453,6 +305,181 @@ public class PDFService {
         }
                  
         document.close();
+    }
+    
+    public static void updateDateCell(Calendar cal){
+        Chunk datetitle = new Chunk(DateUtil.getFullDay(cal));
+        //datetitle.setUnderline(0.1f,-2f);
+        datetitle.getFont().setFamily("Arial");
+        datetitle.getFont().setSize(12);
+        datetitle.getFont().setColor(51,102,00);
+        datetitle.getFont().setStyle("bold");
+
+        datecell = new PdfPCell();
+        datecell.setBorder(Rectangle.NO_BORDER);
+        datecell.addElement(datetitle);
+        datecell.setColspan(2);
+    }
+    
+    public static void addEventDetails(Calendar cal, Document document, Event sevent, Plan plan) throws Exception{
+        PdfPTable table = new PdfPTable(2);
+        table.getDefaultCell().setBorder(Rectangle.NO_BORDER);
+        table.setTotalWidth(tablewidth);
+        table.setLockedWidth(true);
+
+        int[] widths = {280,220};
+        table.setWidths(widths);    
+
+        Paragraph time = new Paragraph(sevent.getDuration() + "\n");
+        time.getFont().setFamily("Arial");
+        time.getFont().setSize(12);
+
+        PdfPCell timecell = new PdfPCell(time);
+        timecell.setBorder(Rectangle.NO_BORDER);
+        timecell.setColspan(2);
+
+        Attraction attraction = sevent.getAttraction();
+
+        Paragraph eventname = new Paragraph(attraction.getName() + "\n");
+        eventname.getFont().setFamily("Arial");
+        eventname.getFont().setSize(12);
+        eventname.getFont().setStyle("bold");
+
+        Paragraph eventdesc = new Paragraph(attraction.getDescription());
+        eventdesc.getFont().setFamily("Arial");
+        eventdesc.getFont().setSize(10);                
+
+        PdfPCell eventcell = new PdfPCell();
+        eventcell.addElement(eventname);
+        eventcell.addElement(eventdesc);
+        eventcell.setBorder(Rectangle.NO_BORDER);
+        eventcell.setColspan(1);
+
+        URL url = new URL(ConfigService.getUrl()+ "/includes/images/data/"+attraction.getImageFileName());
+        PdfPCell piccell = new PdfPCell();
+        try{
+            Image image = Image.getInstance(url);
+            image.scaleToFit(250,250);
+            piccell = new PdfPCell(image);
+            piccell.setBorder(Rectangle.NO_BORDER);
+            piccell.setColspan(1);
+        }
+        catch(Exception e){
+        }
+
+        Paragraph eventhours = new Paragraph("Opening Hours");
+        eventhours.getFont().setFamily("Arial");
+        eventhours.getFont().setSize(12);                   
+        eventhours.getFont().setStyle("bold");
+
+        CalendarService.loadAttractionTimes(plan, attraction);
+        PdfPCell description = new PdfPCell();
+        description.addElement(eventhours);
+        description.setBorder(Rectangle.NO_BORDER);
+        description.setColspan(2);        
+
+        for (AttractionOpenView view: attraction.getOpeningTimes()) {
+            Paragraph eventtimes = new Paragraph(DateUtil.getDay(view.getFrom())+" " + DateUtil.getTime(view.getFrom()) + "-"+ DateUtil.getTime(view.getTo()));
+            eventtimes.getFont().setFamily("Arial");
+            eventtimes.getFont().setSize(10);
+            description.addElement(eventtimes);
+        }
+
+        if (!StringUtil.isEmpty(sevent.getAttraction().getPhone())) {
+            Paragraph phone_label = new Paragraph("\nPhone Number");
+            phone_label.getFont().setFamily("Arial");
+            phone_label.getFont().setSize(12);                   
+            phone_label.getFont().setStyle("bold");
+            description.addElement(phone_label);
+
+            Paragraph eventphone = new Paragraph(attraction.getPhone());
+            eventphone.getFont().setFamily("Arial");
+            eventphone.getFont().setSize(10);  
+            description.addElement(eventphone);
+        }
+
+        if (!StringUtil.isEmpty(sevent.getAttraction().getAddress())) {
+            Paragraph address_label = new Paragraph("\nAddress");
+            address_label.getFont().setFamily("Arial");
+            address_label.getFont().setSize(12);                   
+            address_label.getFont().setStyle("bold");
+            description.addElement(address_label);
+
+            Paragraph eventaddress = new Paragraph(attraction.getAddress());
+            eventaddress.getFont().setFamily("Arial");
+            eventaddress.getFont().setSize(10);      
+            description.addElement(eventaddress);
+        }
+
+        table.addCell(datecell);
+        table.addCell(timecell);
+        table.addCell(eventcell);
+        table.addCell(piccell);
+        table.addCell(description);
+
+        document.add(table); 
+        document.newPage();
+    }
+    
+    /**
+     * 
+     * @param table1 PDFTTable
+     * @param fpostcode starting postcode
+     * @param tpostcode ending postcode
+     * @param d_t departure time
+     * @param a_t arrival time
+     * @throws Exception 
+     */
+    public static void addDirections(Document document, String A_name, String B_name, String A_postcode, String B_postcode, String d_t, String a_t) throws Exception{
+        PdfPTable table1 = new PdfPTable(1);
+        table1.getDefaultCell().setBorder(Rectangle.NO_BORDER);
+        table1.setTotalWidth(tablewidth);
+        table1.setLockedWidth(true);
+
+        int[] widths3 = {1};
+        table1.setWidths(widths3);
+        
+        Paragraph directions = new Paragraph("Directions from A:" + A_name + " to B:" + B_name + "\n\n");
+        directions.getFont().setFamily("Arial");
+        directions.getFont().setSize(10);
+
+        PdfPCell dcell = new PdfPCell(directions);
+        dcell.setBorder(Rectangle.NO_BORDER);
+        dcell.setColspan(1);
+
+        table1.addCell(datecell);
+        table1.addCell(dcell);
+
+        
+        String json_string;
+        json_string = Browser.getPage("http://maps.googleapis.com/maps/api/directions/json?origin=" + A_postcode + "&destination=" + B_postcode + "&sensor=false&mode=walking").toString();
+        JsonParser parser = new JsonParser();
+        JsonObject json = parser.parse(json_string).getAsJsonObject();                    
+        JsonArray routes = json.get("routes").getAsJsonArray();
+
+        String status = stringify(json.get("status"));
+
+        if (!status.equals("OK") || routes.get(0).getAsJsonObject().get("legs").getAsJsonArray().get(0).getAsJsonObject().get("duration").getAsJsonObject().get("value").getAsInt() > 60*(ConfigService.getMaxWalking())){
+            if (d_t!=null)
+                json_string = Browser.getPage("http://maps.googleapis.com/maps/api/directions/json?origin=" + A_postcode + "&destination=" + B_postcode + "&sensor=false&mode=transit&departure_time=" + d_t).toString();
+            else
+                json_string = Browser.getPage("http://maps.googleapis.com/maps/api/directions/json?origin=" + A_postcode + "&destination=" + B_postcode + "&sensor=false&mode=transit&arrival_time=" + a_t).toString();
+            parser = new JsonParser();
+            json = parser.parse(json_string).getAsJsonObject();                    
+            routes = json.get("routes").getAsJsonArray();
+        }
+
+        status = stringify(json.get("status"));
+        if (status.equals("OK")){
+            addPublicTransportDirections(table1,routes);
+        }
+        else{
+            table1.addCell("Sorry there seems to be a bug where Google doesn't return certain directions. We are currently working with Google to address this. Apologies for the inconvenience. Please check back soon for a fix.");
+        }
+        
+        document.add(table1);
+        document.newPage();
+        
     }
 
     public static void addPublicTransportDirections(PdfPTable table, JsonArray routes) throws Exception{
@@ -682,9 +709,6 @@ public class PDFService {
         writer.setPageEvent(header);
 
         document.open();
-
-        int tableheight = 490;
-        int tablewidth = 740;
 
         //create first page
         PdfPTable table = new PdfPTable(plan.getLength() + 1);
