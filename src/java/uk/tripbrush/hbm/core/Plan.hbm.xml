@@ -17,6 +17,7 @@
     <property length="255" name="title" type="java.lang.String"/>
     <property length="5000" name="description" type="java.lang.String"/>
     <property length="10" name="reference" type="java.lang.String"/>
+    <property length="10" name="home_post_code" type="java.lang.String"/>
     <property name="view" type="int"/>
     <property name="length" type="int"/>
   </class>

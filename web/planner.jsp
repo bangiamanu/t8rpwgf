@@ -543,10 +543,12 @@
         </div>        
 
         <div id="home_info" class="white_dialog"><!--Email Events-->
+            <div id="homemessage"></div>
+            <div id="homeerror"></div>                         
             <div id='home_info_close'><img src='includes/images/close.png' id='close_image' onClick='clearAllDialogs()'/></div>
             Please enter the postcode of your hotel or wherever you are staying for the trip:
             <input type="text" id="home_info_postcode" />
-            <input type="submit" /><input type="button" value="Cancel" onclick="javascript:clearAllDialogs()"/>
+            <input type="submit" onclick="javascript:backend_setHome()" /><input type="button" value="Cancel"  onClick='clearAllDialogs()'/>
         </div>        
 
     </div><!-- container -->

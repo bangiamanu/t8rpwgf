@@ -313,7 +313,26 @@ function backend_changeName() {
 }
 
 function processChange(xml) {
-    if (processErrorMessages('changen',xml)) {
+    if (processErrorMessages('profile',xml)) {
+        //show message about password changed
+    }
+}
+
+function backend_setHome() {
+    var params = "command=SetHome&home="+$("#home_info_postcode").val();
+    $.ajax({
+        type: "POST",
+        url: "PlanAction.do",
+        cache: false,
+        data: params,
+        success: processHome
+    }); 
+    return false;      
+}
+
+function processHome(xml) {
+    if (processErrorMessages('home',xml)) {
+        clearAllDialogs();
         //show message about password changed
     }
 }
@@ -413,7 +432,7 @@ function processLoadPlan(xml) {
     $.xmlDOM( xml ).find("planx").each(function() {
         $("#editable").val($(this).attr("editable"));
         days_to_show = $(this).attr("numdays") // replace this function with backend code
-        
+        $("#home_info_postcode").val($(this).attr("home_post_code"));
         var startDateField = $(this).attr("startdate").split("/");
         calendar_start_date = new Date(startDateField[2],startDateField[1]-1,startDateField[0]);
     });

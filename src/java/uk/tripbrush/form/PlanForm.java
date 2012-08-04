@@ -14,6 +14,7 @@ public class PlanForm extends BaseForm {
    
     private int id;
     
+    private String home;
     private String fromTime;
     private String toTime;
     private int attractionId;
@@ -72,6 +73,20 @@ public class PlanForm extends BaseForm {
      */
     public void setAttractionId(int attractionId) {
         this.attractionId = attractionId;
+    }
+
+    /**
+     * @return the home
+     */
+    public String getHome() {
+        return home;
+    }
+
+    /**
+     * @param home the home to set
+     */
+    public void setHome(String home) {
+        this.home = home;
     }
 
 }

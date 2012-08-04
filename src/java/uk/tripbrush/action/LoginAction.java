@@ -57,7 +57,7 @@ public class LoginAction extends org.apache.struts.action.Action {
                 if (user==null) {
                     user = UserService.createTempUser();
                 }
-                Plan plan = PlanService.createNewPlan(qform.getDestination(),qform.getFromdate(),qform.getHowlong());
+                Plan plan = PlanService.createNewPlan(qform.getDestination(),qform.getFromdate(),qform.getHowlong(),qform.getHome());
                 PlanService.createPlan(user, plan);
                 request.getSession().setAttribute(Constant.SESSION_PLAN,plan);
                 request.getSession().setAttribute(Constant.SESSION_USER,user);
@@ -209,6 +209,16 @@ public class LoginAction extends org.apache.struts.action.Action {
                         }
                     }
                 }
+                else if (CommandConstant.CHANGE_NAME.equals(qform.getCommand())) {
+                    User sessionDb = (User)request.getSession().getAttribute(Constant.SESSION_USER);
+                    sessionDb.setName(qform.getName());
+                    UserService.saveUser(sessionDb);
+                }
+                else if (CommandConstant.SET_HOME.equals(qform.getCommand())) {
+                    User sessionDb = (User)request.getSession().getAttribute(Constant.SESSION_USER);
+                    sessionDb.setName(qform.getName());
+                    UserService.saveUser(sessionDb);
+                }                
             }
         }
         if (!errors.isEmpty()) {
