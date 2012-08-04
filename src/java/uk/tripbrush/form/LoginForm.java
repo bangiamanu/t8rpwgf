@@ -22,6 +22,7 @@ public class LoginForm extends BaseForm {
 
     private String keypass;
 
+    private String home;
     private String destination;
     private String fromdate;
     private int howlong;
@@ -236,6 +237,20 @@ public class LoginForm extends BaseForm {
      */
     public void setName(String name) {
         this.name = name;
+    }
+
+    /**
+     * @return the home
+     */
+    public String getHome() {
+        return home;
+    }
+
+    /**
+     * @param home the home to set
+     */
+    public void setHome(String home) {
+        this.home = home;
     }
 
 }

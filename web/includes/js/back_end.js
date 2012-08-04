@@ -75,7 +75,7 @@ function loadAvailableDestinationsData(xml) {
     counter = 0;
     $.xmlDOM( xml ).find("attraction").each(function() {
 
-
+        var uniqueId = $(this).attr("id");
         var id = $(this).attr("aid");
         var category= $(this).find("category").text();
         var title= URLDecode($(this).find("title").text());
@@ -118,7 +118,7 @@ function loadAvailableDestinationsData(xml) {
         });
 
 
-        available_destinations[id] = {
+        available_destinations[uniqueId] = {
             id:id,
             category: category,
             title: title,
@@ -313,7 +313,26 @@ function backend_changeName() {
 }
 
 function processChange(xml) {
-    if (processErrorMessages('changen',xml)) {
+    if (processErrorMessages('profile',xml)) {
+        //show message about password changed
+    }
+}
+
+function backend_setHome() {
+    var params = "command=SetHome&home="+$("#home_info_postcode").val();
+    $.ajax({
+        type: "POST",
+        url: "PlanAction.do",
+        cache: false,
+        data: params,
+        success: processHome
+    }); 
+    return false;      
+}
+
+function processHome(xml) {
+    if (processErrorMessages('home',xml)) {
+        clearAllDialogs();
         //show message about password changed
     }
 }
@@ -413,7 +432,7 @@ function processLoadPlan(xml) {
     $.xmlDOM( xml ).find("planx").each(function() {
         $("#editable").val($(this).attr("editable"));
         days_to_show = $(this).attr("numdays") // replace this function with backend code
-        
+        $("#home_info_postcode").val($(this).attr("home_post_code"));
         var startDateField = $(this).attr("startdate").split("/");
         calendar_start_date = new Date(startDateField[2],startDateField[1]-1,startDateField[0]);
     });
@@ -494,30 +513,6 @@ function backend_delete_event_from_database(cal_event){
         cache: false,
         data: params
     });
-}
-
-function emailEvents() {
-    if ($("#loggedin").val()=="true" || $("#loggedin").val()=="facebook") {
-        if (emptycalendar) {
-            alert("You cannot email an empty calendar");
-        }
-        else {
-            acct_managament_emailTrip();
-            var params = "command=EmailPlan";
-            $.ajax({
-                type: "POST",
-                url: "PlanAction.do",
-                cache: false,
-                data: params,
-                success: processEmail
-            }); 
-        }
-        return false;        
-    }
-    else {
-        alert("You must be logged in in order to use this feature");
-        return false;
-    }
 }
 
 function processEmail(xml) {

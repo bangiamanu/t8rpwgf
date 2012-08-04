@@ -41,6 +41,8 @@ public class Attraction  implements Serializable {
     
     private String phone;
     
+    private int uniqueId;
+    
     /**
      * @return the name
      */
@@ -256,6 +258,20 @@ public class Attraction  implements Serializable {
      */
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    /**
+     * @return the uniqueId
+     */
+    public int getUniqueId() {
+        return uniqueId;
+    }
+
+    /**
+     * @param uniqueId the uniqueId to set
+     */
+    public void setUniqueId(int uniqueId) {
+        this.uniqueId = uniqueId;
     }
 
 

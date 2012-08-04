@@ -242,7 +242,7 @@ public class PDFService {
             for (Event sevent: todaysevents) {                
                 updateDateCell(cal);
                 
-                String home_postcode = "NW14SN"; // TODO: hardcoded for now
+                String home_postcode = plan.getHome_post_code();
                 Attraction attraction = sevent.getAttraction();
                 String fpostcode = attraction.getPostcode().replaceAll(" ","")+",UK";
 
@@ -254,7 +254,7 @@ public class PDFService {
                 departure_time = departure_time / 1000;
                 String d_t = String.valueOf(departure_time);
                 
-                if (counter == 0 && home_postcode!=null){
+                if (counter == 0 && !home_postcode.equals("")){
                     // First event for the day
                     addDirections(document, "Home", attraction.getName(), home_postcode, fpostcode, null, a_t);                        
                 }
@@ -270,7 +270,7 @@ public class PDFService {
                     addDirections(document, attraction.getName(), nextatt.getName(), fpostcode, tpostcode, d_t, null);
                 }
 
-                if (counter == todaysevents.size()-1 && home_postcode!=null){
+                if (counter == todaysevents.size()-1 && !home_postcode.equals("")){
                     //last event for the day
                     addDirections(document, attraction.getName(), "Home", fpostcode, home_postcode, d_t, null);                        
                 }

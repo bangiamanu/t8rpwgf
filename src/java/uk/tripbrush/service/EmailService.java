@@ -48,7 +48,7 @@ public class EmailService {
     }
 
     public static void sendVerify(User user) {
-        String message = "Your code is" + user.getReference();
+        String message = "Your code is " + user.getReference();
         sendEmail(user.getEmail(),"Verify Account",message,null);
     }
 

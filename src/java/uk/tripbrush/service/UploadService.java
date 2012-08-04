@@ -131,7 +131,7 @@ public class UploadService {
         while (rows.hasNext()) {
             row = getRow((XSSFRow) rows.next());
             Attraction attraction = new Attraction();
-            attraction.setId(Integer.parseInt(getRowValue(row,0)));
+            attraction.setUniqueId(Integer.parseInt(getRowValue(row,0)));
             attraction.setCategory(CalendarService.getCategory(getRowValue(row,1)));
             if (attraction.getCategory()==null) {
                 continue;
@@ -171,9 +171,8 @@ public class UploadService {
     }    
     
     public static void main(String[] args) throws Exception {
-        String file = "C://Users//Manu//Documents//Attraction Data Capture v13.xlsx";
-        //String file = "/Users/sseetal/Dropbox/Life Made Easy Ltd/Attraction Data Capture v13.xlsx";
-        //String file = "c://Users//Samir//Documents//My DropBox//Mauritius//input//Agro-Industry and FS//input.xlsx";
+        //String file = "C://Users//Manu//Documents//Attraction Data Capture v13.xlsx";
+        String file = "/Users/sseetal/Dropbox/Life Made Easy Ltd/Attraction Data Capture v13.xlsx";
         InputStream input = new BufferedInputStream(new FileInputStream(file));
         process(input);      
     }

@@ -128,10 +128,11 @@ public class PlanService {
         session.saveOrUpdate(plan);
     }
 
-    public static Plan createNewPlan(String dest, String from, int length) {
+    public static Plan createNewPlan(String dest, String from, int length,String home) {
         Plan plan = new Plan();
         plan.setLocation(CommonService.getLocation(dest));
         plan.setEditable(true);
+        plan.setHome_post_code(home);
         plan.setLength(length);
         Calendar cal = Calendar.getInstance();
         cal.setTime(CommonService.getDate(from));

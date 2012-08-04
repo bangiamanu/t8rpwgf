@@ -39,6 +39,8 @@ public class Plan implements Serializable {
     private boolean verify;
     
     private int numevents;
+    
+    private String home_post_code;
 
 
     public Plan() {
@@ -280,5 +282,19 @@ public class Plan implements Serializable {
      */
     public void setNumevents(int numevents) {
         this.numevents = numevents;
+    }
+
+    /**
+     * @return the home_post_code
+     */
+    public String getHome_post_code() {
+        return home_post_code;
+    }
+
+    /**
+     * @param home_post_code the home_post_code to set
+     */
+    public void setHome_post_code(String home_post_code) {
+        this.home_post_code = home_post_code;
     }
 }

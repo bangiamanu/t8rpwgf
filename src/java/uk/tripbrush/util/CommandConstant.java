@@ -30,6 +30,7 @@ public class CommandConstant implements Serializable {
     public static final String VERIFY_USER ="VerifyUser";
     public static final String CHANGE_PASSWORD ="ChangePassword";
     public static final String CHANGE_NAME ="ChangeName";
+    public static final String SET_HOME ="SetHome";
     
 
     public static final String NEW_PLAN="NewPlan";

@@ -23,5 +23,6 @@
     <property length="1000" name="otherlinks" type="java.lang.String"/>
     <property length="1000" name="address" type="java.lang.String"/>
     <property length="20" name="phone" type="java.lang.String"/>
+    <property name="uniqueId" type="int"/>
   </class>
 </hibernate-mapping>

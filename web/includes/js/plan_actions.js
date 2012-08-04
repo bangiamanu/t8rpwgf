@@ -30,7 +30,7 @@ function plan_actions_open_plan(){
     //tracking code
     _gaq.push(['_trackEvent', 'Toolbar', 'Open']);
 
-    if ($("#loggedin").val() == "true")        
+    if ($("#loggedin").val() == "true" || $("#loggedin").val()=="facebook")        
         acct_management_showSavedTrips();
     else
         show_message("You need to be logged in to save. Please login / signup on the top right corner");    
@@ -42,7 +42,7 @@ function plan_actions_save_plan(){
     //tracking code
     _gaq.push(['_trackEvent', 'Toolbar', 'Save']);
 
-    if ($("#loggedin").val() == "true")        
+    if ($("#loggedin").val() == "true" || $("#loggedin").val()=="facebook")        
         show_message("Your plan is automatically saved everytime you make a change!");
     else
         show_message("You need to be logged in to save. Please login / signup on the top right corner");
@@ -55,7 +55,30 @@ function plan_actions_email_plan(){
     //tracking code
     _gaq.push(['_trackEvent', 'Toolbar', 'Email']);
     
-    show_message("Functionality coming soon. For now, please print the plan and email the PDF file :-)");
+    //show_message("Functionality coming soon. For now, please print the plan and email the PDF file :-)");
+
+    if ($("#loggedin").val()=="true" || $("#loggedin").val()=="facebook") {
+        if (emptycalendar) {
+            show_message("You cannot email an empty calendar");
+        }
+        else {
+            acct_managament_emailTrip();
+            var params = "command=EmailPlan";
+            $.ajax({
+                type: "POST",
+                url: "PlanAction.do",
+                cache: false,
+                data: params,
+                success: processEmail
+            }); 
+        }
+        return false;        
+    }
+    else {
+        show_message("You must be logged in in order to use this feature");
+        return false;
+    }
+
 }
 
 /**
