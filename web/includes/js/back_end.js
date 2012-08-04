@@ -75,7 +75,7 @@ function loadAvailableDestinationsData(xml) {
     counter = 0;
     $.xmlDOM( xml ).find("attraction").each(function() {
 
-
+        var uniqueId = $(this).attr("id");
         var id = $(this).attr("aid");
         var category= $(this).find("category").text();
         var title= URLDecode($(this).find("title").text());
@@ -118,7 +118,7 @@ function loadAvailableDestinationsData(xml) {
         });
 
 
-        available_destinations[id] = {
+        available_destinations[uniqueId] = {
             id:id,
             category: category,
             title: title,
