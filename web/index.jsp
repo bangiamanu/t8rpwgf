@@ -154,9 +154,10 @@
                                 </td>
                             </tr>
                         </table>
+                        <input type="hidden" name="tracking" id="tracking" value="true" />
                         <p id="submitbuttons">
                             <input type="button" name="Cancel" id="Cancel" value="Cancel" onclick="javascript:hideLoginWindow()" />
-                            <input type="submit" name="Lets Paint >" id="Lets Paint &gt;" value="Lets Paint >" onclick="return verifypassword()"/>
+                            <input type="submit" name="Lets Paint >" id="lets_paint" value="Lets Paint &gt;" onclick="return verifypassword()"/>
                             <input type="submit" style="display:none" id="realsubmit"/>
                         </p>
                     </form>

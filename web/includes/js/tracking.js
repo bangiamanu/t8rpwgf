@@ -23,4 +23,5 @@ function tracking_ready(){
     });
     
     tracking = $.getUrlVar('tracking');
+    $("#tracking").val(tracking);
 }
