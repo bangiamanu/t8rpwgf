@@ -515,30 +515,6 @@ function backend_delete_event_from_database(cal_event){
     });
 }
 
-function emailEvents() {
-    if ($("#loggedin").val()=="true" || $("#loggedin").val()=="facebook") {
-        if (emptycalendar) {
-            alert("You cannot email an empty calendar");
-        }
-        else {
-            acct_managament_emailTrip();
-            var params = "command=EmailPlan";
-            $.ajax({
-                type: "POST",
-                url: "PlanAction.do",
-                cache: false,
-                data: params,
-                success: processEmail
-            }); 
-        }
-        return false;        
-    }
-    else {
-        alert("You must be logged in in order to use this feature");
-        return false;
-    }
-}
-
 function processEmail(xml) {
     if (processErrorMessages('email',xml)) {
         //show message about password changed
