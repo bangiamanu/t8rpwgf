@@ -120,6 +120,7 @@
                 <div id="loginform">
                     <form action="LoginAction.do" method="post">
                         <input type="hidden" name="command" value="confirm"/>
+                        <input type="hidden" name="home" value=""/>
                         <table>
                             <tr>
                                 <td align="right">
