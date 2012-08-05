@@ -118,7 +118,7 @@ function loadAvailableDestinationsData(xml) {
         });
 
 
-        available_destinations[uniqueId] = {
+        available_destinations[counter] = {
             id:id,
             category: category,
             title: title,
