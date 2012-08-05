@@ -75,8 +75,8 @@ function loadAvailableDestinationsData(xml) {
     counter = 0;
     $.xmlDOM( xml ).find("attraction").each(function() {
 
-        var uniqueId = $(this).attr("id");
-        var id = $(this).attr("aid");
+        var uniqueId = $(this).attr("uniqueId");
+        var db_id = $(this).attr("id");
         var category= $(this).find("category").text();
         var title= URLDecode($(this).find("title").text());
         var description_short= URLDecode($(this).find("description_short").text());
@@ -120,6 +120,7 @@ function loadAvailableDestinationsData(xml) {
 
         available_destinations[counter] = {
             id:counter,
+            db_id: db_id,
             unique_id: uniqueId,
             category: category,
             title: title,
@@ -451,7 +452,7 @@ function processLoadPlan(xml) {
         // load it on the UI
         var event = {
             db_id: $(this).attr("id"),
-            available_destination_id: $(this).attr("aid"),
+            unique_id: $(this).attr("attractionUniqueId"),
             timeslot: timeslot
         };
 
@@ -492,7 +493,7 @@ function backend_add_event_to_database(cal_event){
         var destination_id = cal_event.available_destination_id;
         
         // TODO see if you can change the code in the next statement in the end to make it simpler
-        var params = "command=AddEvent&fromTime=" + cal_event.start.formatDate("d:m:Y:H:i") + "&toTime=" + cal_event.end.formatDate("d:m:Y:H:i")  +"&attractionId="+available_destinations[destination_id].id;
+        var params = "command=AddEvent&fromTime=" + cal_event.start.formatDate("d:m:Y:H:i") + "&toTime=" + cal_event.end.formatDate("d:m:Y:H:i")  +"&attractionId="+available_destinations[destination_id].db_id;
 
         $.ajax({
             type: "POST",

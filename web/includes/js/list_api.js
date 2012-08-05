@@ -277,3 +277,11 @@ function sortDestinationsAlphabetically(array) {
   }
 }
 
+function list_api_getDestinationFromUniqueId(unique_id){
+    for (var i in available_destinations){
+        if (available_destinations[i].unique_id == unique_id)
+            return available_destinations[i];
+    }
+    console.log("ERROR! function: list_api_getDestinationFromUniqueId, unique_id: " + unique_id);
+}
+

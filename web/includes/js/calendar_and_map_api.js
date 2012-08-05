@@ -16,10 +16,12 @@ function calendar_and_map_api_ready(){
  * destination_id: id from the available_destinations array
  * timeslot: timeslot object with start and end as javascript dates
  */
-function calendar_and_map_api_loadEvent(db_id, destination_id, timeslot){
+function calendar_and_map_api_loadEvent(db_id, unique_id, timeslot){
     
-    var destination_to_load = available_destinations[destination_id];
-
+    var destination_to_load = list_api_getDestinationFromUniqueId(unique_id);
+    
+    var destination_id = destination_to_load.id;
+    
     // geocode the address and store it in available_destinations
     // NOTE that this is an async call. Cannot immediately use marker
     // the async function adds it to calendar and map

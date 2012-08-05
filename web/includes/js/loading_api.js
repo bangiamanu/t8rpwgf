@@ -16,7 +16,7 @@ function slowLoop(i, events_to_be_loaded, success_function){
     var event = events_to_be_loaded[i];
            
     if (i<events_to_be_loaded.length){
-        calendar_and_map_api_loadEvent(event.db_id, event.available_destination_id, event.timeslot);
+        calendar_and_map_api_loadEvent(event.db_id, event.unique_id, event.timeslot);
         setTimeout(function(){slowLoop(i+1, events_to_be_loaded, success_function);}, 800);
     }
     else{

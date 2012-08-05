@@ -24,8 +24,9 @@ function saveJSON(){
     var json_object = new Array();
     
     for (var i in calendar_events){
+        var destination = available_destinations[calendar_events[i].available_destination_id];
         json_object.push({
-            available_destination_id: calendar_events[i].available_destination_id,
+            unique_id: destination.unique_id,
             timeslot: {
                 start: date_math_subtractDates(calendar_events[i].start, calendar_start_date),
                 end: date_math_subtractDates(calendar_events[i].end, calendar_start_date)
@@ -56,7 +57,7 @@ function loadJSON(filename){
             if (timeslot.start >= start && timeslot.end <= end){
                 var event = {
                     db_id: -1,
-                    available_destination_id: json_data[i].available_destination_id,
+                    unique_id: json_data[i].unique_id,
                     timeslot: timeslot
                 };
                 events_to_be_loaded.push(event);
