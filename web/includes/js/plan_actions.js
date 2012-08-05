@@ -30,7 +30,7 @@ function plan_actions_open_plan(){
     //tracking code
     _gaq.push(['_trackEvent', 'Toolbar', 'Open']);
 
-    if ($("#loggedin").val() == "true" && $("#facebook").val()=="true")        
+    if ($("#loggedin").val() == "true")        
         acct_management_showSavedTrips();
     else
         show_message("You need to be logged in to save. Please login / signup on the top right corner");    
@@ -42,7 +42,7 @@ function plan_actions_save_plan(){
     //tracking code
     _gaq.push(['_trackEvent', 'Toolbar', 'Save']);
 
-    if ($("#loggedin").val() == "true" && $("#facebook").val()=="true")        
+    if ($("#loggedin").val() == "true")        
         show_message("Your plan is automatically saved everytime you make a change!");
     else
         show_message("You need to be logged in to save. Please login / signup on the top right corner");
@@ -57,7 +57,7 @@ function plan_actions_email_plan(){
     
     //show_message("Functionality coming soon. For now, please print the plan and email the PDF file :-)");
 
-    if ($("#loggedin").val()=="true" && $("#facebook").val()=="true") {
+    if ($("#loggedin").val()=="true") {
         if (emptycalendar) {
             show_message("You cannot email an empty calendar");
         }
@@ -78,8 +78,14 @@ function plan_actions_email_plan(){
         show_message("You must be logged in in order to use this feature");
         return false;
     }
-
 }
+
+function processEmail(xml) {
+    if (processErrorMessages('email',xml)) {
+        //show message about password changed
+    }
+}
+
 
 /**
  * Called when the print_plan button is pressed on toolbar
