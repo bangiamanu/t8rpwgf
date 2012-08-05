@@ -200,6 +200,7 @@
             <input type="hidden" id="howlong" value="<%=howlong%>"/>
             <input type="hidden" id="fromdate" value="<%=fromdate%>"/>
             <input type="hidden" id="loggedin" value="false"/>
+            <input type="hidden" id="facebook" value="false"/>
             <input type="hidden" id="editable" value="true"/>
             <input type="hidden" id="fbid" value=""/>
             <input type="hidden" id="ofbid" value=""/>

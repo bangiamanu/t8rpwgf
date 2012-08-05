@@ -210,6 +210,7 @@ function processLogin(xml) {
         else {
             $("#user_first_name").html(command);
             $("#loggedin").val("true");
+            $("#facebook").val("false");
             $("#cname").html(command);
         }
     });
