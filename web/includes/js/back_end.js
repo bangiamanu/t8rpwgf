@@ -155,6 +155,7 @@ function processCheckin(xml) {
         if (command!="") {
             $("#user_first_name").html(command);
             $("#cname").html(command);
+            $("#loggedin").val("true");
             $(".signed_in_or_out").toggle();
             backend_populateSavedTrips();
         }
