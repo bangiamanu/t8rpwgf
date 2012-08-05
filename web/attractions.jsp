@@ -9,7 +9,7 @@
     List<Attraction> result = (List<Attraction>)request.getAttribute(Constant.REQUEST_MESSAGE);
     int counter = 0;
     for (Attraction c: result) {
-        out.println("<attraction id=\"" + (c.getUniqueId()) + "\" aid=\"" + c.getId() + "\">");
+        out.println("<attraction id=\"" + (c.getId()) + "\" uniqueId=\"" + c.getUniqueId() + "\">");
         out.println("<category>" + c.getCategory().getName() + "</category>");                        
         out.println("<title>" + URLEncoder.encode(c.getName()) + "</title>");
         if (c.getDescription_short().length()>100) {
