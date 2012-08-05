@@ -17,7 +17,7 @@
         <p>The bigger the plan, the longer it takes to generate a printout. This could take up to 3 minutes. Please wait!</p>
         <script type="text/javascript">
             $(window).load(function(){
-                window.location = "./print.jsp"; 
+                window.location = "./print_ics.jsp"; 
             })            
         </script>
         

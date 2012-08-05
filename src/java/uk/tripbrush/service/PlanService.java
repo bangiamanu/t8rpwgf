@@ -157,21 +157,21 @@ public class PlanService {
         }
         return result;
     }
-
-    public static void sendPlan(Plan plan) {
+    
+    public static String createICSFile(Plan plan) {
         try {
             net.fortuna.ical4j.model.Calendar calendar = new net.fortuna.ical4j.model.Calendar();
             calendar.getProperties().add(new ProdId("-//" + plan.getUser().getEmail() + "//TripBrush//EN"));
             calendar.getProperties().add(Version.VERSION_2_0);
             calendar.getProperties().add(CalScale.GREGORIAN);
-            StringBuffer bodyb = new StringBuffer();
+            //StringBuffer bodyb = new StringBuffer();
 
             String filename = ConfigService.getRoot() + "calendar" + plan.getId() + ".ics";
             UidGenerator ug = new UidGenerator("1");
-            bodyb.append("<table>");
-            bodyb.append("<tr><th>Attraction</th><th>Time</th><th>Location</th></tr>");
+            //bodyb.append("<table>");
+            //bodyb.append("<tr><th>Attraction</th><th>Time</th><th>Location</th></tr>");
 
-            HashMap<String, List<Event>> events = formatTime(plan);
+            HashMap<String, List<Event>> events = PlanService.formatTime(plan);
 
             List<String> dateevents = new ArrayList<String>();
             for (String key : events.keySet()) {
@@ -180,7 +180,7 @@ public class PlanService {
             Collections.sort(dateevents);
             for (String key : dateevents) {
                 List<Event> dateventslist = events.get(key);
-                bodyb.append("<tr><td colspan=3>" + key + "</td></tr>");
+                //bodyb.append("<tr><td colspan=3>" + key + "</td></tr>");
                 for (Event event : dateventslist) {
                     VEvent meeting = new VEvent(new net.fortuna.ical4j.model.DateTime(event.getStartdate().getTime()), new net.fortuna.ical4j.model.DateTime(event.getEnddate().getTime()), event.getAttraction().getName());
                     meeting.getProperties().add(new Location(event.getAttraction().getPostcode()));
@@ -189,28 +189,27 @@ public class PlanService {
 
                     calendar.getComponents().add(meeting);
 
-                    bodyb.append("<tr>");
+                    /*bodyb.append("<tr>");
                     bodyb.append("<td>");
                     bodyb.append(event.getAttraction().getName() + "</td><td>" + event.getTime() + "</td><td>" + event.getAttraction().getPostcode());
                     bodyb.append("</td>");
-                    bodyb.append("</tr>");
+                    bodyb.append("</tr>");*/
                 }
             }
             FileOutputStream fout = new FileOutputStream(filename);
             CalendarOutputter outputter = new CalendarOutputter();
             outputter.output(calendar, fout);
 
-            List<String> files = new ArrayList<String>();
-            files.add(filename);
-            bodyb.append("</table>");
-            
-            System.out.println(bodyb.toString());
-            
-            EmailService.sendEmail(plan.getUser().getEmail(), "Your Trip Calendar to " + plan.getLocation().getName(), "calendar.htm", bodyb.toString(), files);
-
-            
+            return filename;            
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }         
+        return null;        
+    }
+    
+    public static void sendPlan(Plan plan) {
+        PDFThread t = new PDFThread();
+        t.setPlan(plan);
+        t.init();
     }
 }

@@ -54,7 +54,7 @@ public class EmailService {
 
     public static void sendEmail(String email,String subject,String file,String body,List<String> attach) {
         String fullbody = loadEmail(file);
-        fullbody = fullbody.replaceAll("%TABLE%", body.toString());
+        fullbody = fullbody.replaceAll("%BODY%", body.toString());
         sendEmail(email,subject,fullbody,attach);
     }
     
@@ -110,13 +110,17 @@ public class EmailService {
 
                 // Part two is attachment
                 for (String file : attach) {
-                    messageBodyPart = new MimeBodyPart();
-                    DataSource source =
-                            new FileDataSource(file);
-                    messageBodyPart.setDataHandler(
-                            new DataHandler(source));
-                    messageBodyPart.setFileName(file);
-                    multipart.addBodyPart(messageBodyPart);
+                    if (file!=null) {
+                        messageBodyPart = new MimeBodyPart();
+                        DataSource source =
+                                new FileDataSource(file);
+                        messageBodyPart.setDataHandler(
+                                new DataHandler(source));
+                        String filename = "";
+                        int index = file.lastIndexOf("/");
+                        messageBodyPart.setFileName(filename.substring(index+1));
+                        multipart.addBodyPart(messageBodyPart);
+                    }
                 }
                 msg.setContent(multipart);
             }            
