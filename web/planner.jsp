@@ -537,10 +537,9 @@
         </div><!-- profile -->
 
         <div id="emailevents" class="white_dialog"><!--Email Events-->
-            <div id="emailmessage"></div>
+            <div id="emailmessage">We are now sending a copy of the plan to your email.</div>
             <div id="emailerror"></div>
-            <div id='emailclose'><img src='includes/images/close.png' id='close_image' onClick='clearAllDialogs()'/></div>
-            We are now sending a copy of the plan to your email.
+            <div id='emailclose'><img src='includes/images/close.png' id='close_image' onClick='clearAllDialogs()'/></div>            
         </div>        
 
         <div id="home_info" class="white_dialog"><!--Email Events-->
