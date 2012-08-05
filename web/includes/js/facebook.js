@@ -61,7 +61,8 @@ function parseFBLogin(xml) {
     $.xmlDOM( xml ).find("result").each(function() {
         var user = $(this).text();
         $("#user_first_name").html(user);
-        $("#loggedin").val("facebook");
+        $("#loggedin").val("true");
+        $("#facebook").val("false");
         $("#cname").html(user);
  	$(".signed_in_or_out").toggle(); // this changes the toolbar from signed out to signed in and vice versa.
         clearAllDialogs();
@@ -209,7 +210,7 @@ function parseFBLogout(xml) {
 }
 
 function facebook_shareEvents() {
-    if ($("#loggedin").val()=="facebook") {
+    if ($("#loggedin").val()=="true" && $("#facebook").val()=="true") {
         if (emptycalendar) {
             alert("You cannot share an empty calendar");
         }        

@@ -118,7 +118,7 @@ function loadAvailableDestinationsData(xml) {
         });
 
 
-        available_destinations[uniqueId] = {
+        available_destinations[counter] = {
             id:id,
             category: category,
             title: title,
@@ -155,6 +155,7 @@ function processCheckin(xml) {
         if (command!="") {
             $("#user_first_name").html(command);
             $("#cname").html(command);
+            $("#loggedin").val("true");
             $(".signed_in_or_out").toggle();
             backend_populateSavedTrips();
         }
@@ -210,6 +211,7 @@ function processLogin(xml) {
         else {
             $("#user_first_name").html(command);
             $("#loggedin").val("true");
+            $("#facebook").val("false");
             $("#cname").html(command);
         }
     });
@@ -514,11 +516,3 @@ function backend_delete_event_from_database(cal_event){
         data: params
     });
 }
-
-function processEmail(xml) {
-    if (processErrorMessages('email',xml)) {
-        //show message about password changed
-    }
-}
-
-

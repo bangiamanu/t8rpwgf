@@ -154,6 +154,8 @@ public class LoginAction extends org.apache.struts.action.Action {
                     MResult result = UserService.verifyUser(email, code);
                     if (result.getCode()==MResult.RESULT_OK) {
                         request.getSession().setAttribute(Constant.SESSION_USER, result.getObject());
+                        Plan plan = (Plan)request.getSession().getAttribute(Constant.SESSION_PLAN);
+                        plan.setUser((User)request.getSession().getAttribute(Constant.SESSION_USER));
                         errors.add(CommandConstant.MESSAGE, new ActionMessage("verify.ok"));
                     }
                     else {
