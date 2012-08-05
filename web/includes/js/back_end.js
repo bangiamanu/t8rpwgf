@@ -119,7 +119,8 @@ function loadAvailableDestinationsData(xml) {
 
 
         available_destinations[counter] = {
-            id:id,
+            id:counter,
+            unique_id: uniqueId,
             category: category,
             title: title,
             description_short: description_short,
