@@ -515,11 +515,3 @@ function backend_delete_event_from_database(cal_event){
         data: params
     });
 }
-
-function processEmail(xml) {
-    if (processErrorMessages('email',xml)) {
-        //show message about password changed
-    }
-}
-
-
