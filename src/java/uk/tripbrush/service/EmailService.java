@@ -118,7 +118,10 @@ public class EmailService {
                                 new DataHandler(source));
                         String filename = "";
                         int index = file.lastIndexOf("/");
-                        messageBodyPart.setFileName(filename.substring(index+1));
+                        if (index>0) {
+                            filename = file.substring(index+1);
+                        }
+                        messageBodyPart.setFileName(filename);
                         multipart.addBodyPart(messageBodyPart);
                     }
                 }
