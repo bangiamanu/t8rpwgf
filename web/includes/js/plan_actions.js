@@ -6,6 +6,9 @@
 /**
  * Called when the new plan button is pressed on toolbar
  */
+
+var printing_next = false;
+
 function plan_actions_new_plan(){
     //tracking code
     _gaq.push(['_trackEvent', 'Toolbar', 'New']);
@@ -55,8 +58,6 @@ function plan_actions_email_plan(){
     //tracking code
     _gaq.push(['_trackEvent', 'Toolbar', 'Email']);
     
-    //show_message("Functionality coming soon. For now, please print the plan and email the PDF file :-)");
-
     if ($("#loggedin").val()=="true") {
         if (emptycalendar) {
             show_message("You cannot email an empty calendar");
@@ -75,7 +76,7 @@ function plan_actions_email_plan(){
         return false;        
     }
     else {
-        show_message("You must be logged in in order to use this feature");
+        show_message("You must be logged in in order to use this feature. Please login from the upper right corner.");
         return false;
     }
 }
@@ -95,7 +96,32 @@ function plan_actions_print_plan(){
     _gaq.push(['_trackEvent', 'Toolbar', 'Print']);
     
     clearAllTips();
-    var printWindow=window.open('print_loadpage.jsp','Print','width=700, height=300');
+    if (emptycalendar) {
+        show_message("You cannot print an empty calendar");
+    }
+    else if ($("#home_info_postcode").val() == ""){
+        printing_next = true;
+        plan_actions_set_home_info("");
+    }
+    else{        
+        var printWindow=window.open('print_loadpage.jsp','Print','width=700, height=300');
+    }
+}
+
+/**
+ * Called when the Ics button is pressed on toolbar
+ */
+function plan_actions_create_plan_ics(){
+    //tracking code
+    _gaq.push(['_trackEvent', 'Toolbar', 'Ics']);
+    
+    clearAllTips();
+    if (emptycalendar) {
+        show_message("You cannot download an empty calendar");
+    }
+    else{
+        var printWindow=window.open('print_ics.jsp','Print','width=700, height=300');
+    }
 }
 
 /**
@@ -121,11 +147,22 @@ function plan_actions_tweet_plan(){
 /**
  * Called when the set home info is pressed on toolbar
  */
-function plan_actions_set_home_info(){
+function plan_actions_set_home_info(error){
     //tracking code
     _gaq.push(['_trackEvent', 'Toolbar', 'Home_Info']);
+    
+    if (error!=null)
+        $("#homeerror").html("<p>" + error + "</p><br/>");
     
     clearAllDialogs();
     $("#white_out").fadeIn();	
     setTimeout("$('#home_info').fadeIn()",400);
+}
+
+function plan_actions_skipPrinting(){
+    clearAllDialogs();
+    if (printing_next){
+        var printWindow=window.open('print_loadpage.jsp','Print','width=700, height=300');
+        printing_next = false;
+    }    
 }

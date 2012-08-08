@@ -337,10 +337,12 @@ function backend_setHome() {
 function processHome(xml) {
     if (processErrorMessages('home',xml)) {
         clearAllDialogs();
-        //show message about password changed
+        if (printing_next){
+            plan_actions_print_plan();
+            printing_next = false;
+        }
     }
 }
-
 // called when user clicks signin and is supposed to populate the saved_trips array
 function backend_populateSavedTrips(){
     

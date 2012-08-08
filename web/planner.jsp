@@ -36,6 +36,7 @@
     <script type='text/javascript' src="includes/js/directions_cache.js"></script> <!-- Directions APIJS -->
     <script type='text/javascript' src="includes/js/sizing.js"></script> <!-- Sizing APIJS -->
     <script type='text/javascript' src="includes/js/back_end.js"></script> <!-- Sizing APIJS -->
+    <script type='text/javascript' src="includes/js/home_info.js"></script> <!-- Home info APIJS -->
     <script type='text/javascript' src="includes/js/acct_management.js"></script> <!-- acct_management APIJS -->
     <script type='text/javascript' src="includes/js/tracking.js"></script> <!-- Tracking APIJS -->
 
@@ -288,6 +289,11 @@
                         <td width="25px" id="print_plan">
                             <a href="javascript:plan_actions_print_plan()">
                                 <img src="includes/images/print_icon_v2.png" height="20px" title="Print plan"/>
+                            </a>
+                        </td>
+                        <td width="25px">
+                            <a href="javascript:plan_actions_create_plan_ics()">
+                                <img src="includes/images/calendar_icon.png" height="20px" title="Export to Calendar"/>
                             </a>
                         </td>
                         <td width="10px">
@@ -543,12 +549,13 @@
         </div>        
 
         <div id="home_info" class="white_dialog"><!--Email Events-->
-            <div id="homemessage"></div>
-            <div id="homeerror"></div>                         
+            <div id="homeerror" style="color:red"></div> 
+            <div style="font-weight:bold;font-size: 14px;color:#36C"><p>Enter home address:</p></div>
             <div id='home_info_close'><img src='includes/images/close.png' id='close_image' onClick='clearAllDialogs()'/></div>
-            Please enter the postcode of your hotel or wherever you are staying for the trip:
+            <p>Please enter the postcode of your hotel or wherever you are staying for the trip:</p>
+            <br/><br/>
             <input type="text" id="home_info_postcode" />
-            <input type="submit" onclick="javascript:backend_setHome()" /><input type="button" value="Cancel"  onClick='clearAllDialogs()'/>
+            <input type="submit" onclick="javascript:validateHomePostcode()" /><input type="button" value="Skip >>"  onClick='plan_actions_skipPrinting()'/>
         </div>        
 
     </div><!-- container -->

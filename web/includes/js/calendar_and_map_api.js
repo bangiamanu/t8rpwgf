@@ -173,6 +173,9 @@ function calendar_and_map_api_updateCurrentInfoWindow(destination_id, marker){
     if (current_infoWindow != null){
         current_infoWindow.close();
     }
+    if (home_infoWindow!=null){
+        home_infoWindow.close();
+    }
     current_infoWindow = getInfoWindow(destination_id);
     current_infoWindow.open(map, marker);
     current_infoWindow.setPosition(marker.position);	
@@ -182,6 +185,9 @@ function calendar_and_map_api_updateCurrentInfoWindow(destination_id, marker){
 function calendar_and_map_api_closeCurrentInfoWindow(){
     if (current_infoWindow != null){
         current_infoWindow.close();
+    }
+    if (home_infoWindow!=null){
+        home_infoWindow.close();
     }
 }
 
@@ -200,6 +206,9 @@ function calendar_and_map_api_refreshCurrentInfoWindow(){
                 }
             }
         }
+    }
+    if (home_infoWindow!=null){
+        home_infoWindow.close();
     }
 }
 

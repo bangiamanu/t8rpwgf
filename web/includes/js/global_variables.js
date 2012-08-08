@@ -19,6 +19,10 @@ var zoom_level = 13;
 // temp marker that is changed everytime the selection is made
 var current_marker;
 
+// Denotes home
+var home_marker;
+var home_infoWindow;
+
 // stores the active infowindow as there can be only one at a time
 var current_infoWindow;
 
