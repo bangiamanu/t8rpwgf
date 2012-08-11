@@ -7,67 +7,67 @@
 function calendar_helper_populateCalendar(){
 	// Event listeners for calendar and intiialize calendar
 	$('#calendar').weekCalendar({
-		timeslotsPerHour: TIMESLOTS_PER_HOUR,
-		daysToShow: days_to_show,
-		date: calendar_start_date,
-		startOnFirstDayOfWeek: false,
-		buttons: false,
-		allowEventCreation: false,
-		businessHours: {start: 8, end: 24, limitDisplay: true},
-		height: function() {return window.innerHeight - 0.45*window.innerHeight - 105},
-		eventRender : function(calEvent, $event) {
-		},
-		eventAfterRender : function(calEvent, $event) {
-                    // Update the database
-                    if (calEvent.id !=null){
-                        updateEvent(calEvent.db_id,calEvent.start,calEvent.end);
-                    }
-                    
-                    // Set event params
-                    setIsValid(calEvent);                    
-                    calEvent.event_dom_handler = $event;
-                    
-                    // Update backgrounds of all events
-                    calendar_helper_refreshEvents();
-                },
-		eventNew : function(calEvent, $event) {
-		},
-		eventDrag : function(calEvent, $event) {
-                    var next_event = calendar_helper_getNextEvent(calEvent);
-                    
-                    if (next_event!=null){
-                        events_to_be_refreshed.push(next_event);
-                    }
-		},
-		eventDrop : function(calEvent, $event) {
-                    // $event is not the dom handler but the calevent itsself 
-                    // and there are 2 events of the same type on the calendar right now
-                    // making this a pretty useless event
-
-                    var next_event = calendar_helper_getNextEvent(calEvent);
-                    
-                    if (next_event!=null){
-                        events_to_be_refreshed.push(next_event);
-                    }
-
-                    events_to_be_refreshed.push(calEvent);
-		},
-		eventResize : function(calEvent, $event) {
-                    setIsValid(calEvent);
-                    calendar_helper_refreshEvents();
+            timeslotsPerHour: TIMESLOTS_PER_HOUR,
+            daysToShow: days_to_show,
+            date: calendar_start_date,
+            startOnFirstDayOfWeek: false,
+            buttons: false,
+            allowEventCreation: false,
+            businessHours: {start: 8, end: 24, limitDisplay: true},
+            height: function() {return window.innerHeight - 0.45*window.innerHeight - 105},
+            eventRender : function(calEvent, $event) {
+            },
+            eventAfterRender : function(calEvent, $event) {
+                // Update the database
+                if (calEvent.id !=null){
                     updateEvent(calEvent.db_id,calEvent.start,calEvent.end);
-                    //calendar_events[calEvent.id] = calEvent; //TODO
-		},
-		eventClick : function(calEvent, $event) {
-                    destination_selected_from_calendar(calEvent);
-		},
-		eventMouseover : function(calEvent, $event) {
-		},
-		eventMouseout : function(calEvent, $event) {
-		},
-		noEvents : function() {
-		},
-		data:{events:calendar_events}
+                }
+
+                // Set event params
+                setIsValid(calEvent);                    
+                calEvent.event_dom_handler = $event;
+
+                // Update backgrounds of all events
+                calendar_helper_refreshEvents();
+            },
+            eventNew : function(calEvent, $event) {
+            },
+            eventDrag : function(calEvent, $event) {
+                var next_event = calendar_helper_getNextEvent(calEvent);
+
+                if (next_event!=null){
+                    events_to_be_refreshed.push(next_event);
+                }
+            },
+            eventDrop : function(calEvent, $event) {
+                // $event is not the dom handler but the calevent itsself 
+                // and there are 2 events of the same type on the calendar right now
+                // making this a pretty useless event
+
+                var next_event = calendar_helper_getNextEvent(calEvent);
+
+                if (next_event!=null){
+                    events_to_be_refreshed.push(next_event);
+                }
+
+                events_to_be_refreshed.push(calEvent);
+            },
+            eventResize : function(calEvent, $event) {
+                setIsValid(calEvent);
+                calendar_helper_refreshEvents();
+                updateEvent(calEvent.db_id,calEvent.start,calEvent.end);
+                //calendar_events[calEvent.id] = calEvent; //TODO
+            },
+            eventClick : function(calEvent, $event) {
+                destination_selected_from_calendar(calEvent);
+            },
+            eventMouseover : function(calEvent, $event) {
+            },
+            eventMouseout : function(calEvent, $event) {
+            },
+            noEvents : function() {
+            },
+            data:{events:calendar_events}
 	});
 	// Activating tabs
 	$(".tabLink").each(function(){

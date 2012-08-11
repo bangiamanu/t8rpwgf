@@ -128,6 +128,7 @@
                                 </td><td>
                                 <select name="destination" id="destination" onchange="javascript:selectlondon()">
                                     <option value="London" selected="selected">London</option>
+                                    <option value="Paris">Paris</option>
                                     <option value="Other">Other cities coming soon!</option>
                                 </select>
                                 </td>

@@ -75,3 +75,88 @@ function directions_api_addTravelTimeToTitle(cal_event){
         calendar_helper_updateCalEventTitleAndBackground(cal_event, available_destinations[cal_event.available_destination_id].title);
     }
 }
+
+function directions_api_addDailyDirections(cal_event){
+    var markers = getMarkersByDay(cal_event);
+    
+    if (polyline!=null)
+        polyline.setMap(null);
+    polyline = new google.maps.Polyline({path:markers,strokeColor: "#36C",strokeOpacity: 0.6,strokeWeight: 3});
+    polyline.setMap(map);
+    
+}
+
+/**
+ * returns an array of locations for all the markers on the day of the cal_event
+ */
+function getMarkersByDay(cal_event){
+    var results = new Array();
+    calendar_events = $('#calendar').weekCalendar("serializeEvents");
+    calendar_helper_sortEvents(calendar_events);    
+
+    for (var i in calendar_events){
+        var evnt = calendar_events[i];
+        if (calendar_helper_dateEquals(evnt.start, cal_event.start))
+           results.push(evnt.marker.position)            
+    }
+    
+    return results;
+}
+
+
+/***************** UNUSED CODE ***************/
+
+/**
+ * This function returns an array of all the markers in a given day for a calendar event 
+ */
+function getWaypointsForTheDay(cal_event){
+    var eventsByDay = organiseEventsByDay();    
+    var origin, waypoints = new Array(), destination;
+    var results = {};
+
+    for (var i in eventsByDay){
+        if (calendar_helper_dateEquals(cal_event.start, eventsByDay[i].date)){
+            for (var j in eventsByDay[i].cal_events){
+                if (j==0){
+                    origin = eventsByDay[i].cal_events[j].marker.position;
+                }
+                else if (j == (eventsByDay[i].cal_events.length - 1)){
+                    destination = eventsByDay[i].cal_events[j].marker.position;
+                }
+                else{
+                    waypoints.push({location:eventsByDay[i].cal_events[j].marker.position})
+                }
+            }
+            results = {origin: origin, waypoints: waypoints, destination: destination};
+            return results;
+        }        
+    }
+    return null;
+}
+
+
+/**
+ * returns a result array which is an array of
+ * { origin, waypoints, destination }
+ */
+function organiseEventsByDay(){
+    var days = new Array();
+    for (var i=0;i<days_to_show;i++){
+        days.push({date: new Date(calendar_start_date.getTime() + i * 24 * 60 * 60 * 1000), cal_events: new Array()})
+    }
+    
+    calendar_events = $('#calendar').weekCalendar("serializeEvents");
+    calendar_helper_sortEvents(calendar_events);    
+
+    for (var i in calendar_events){
+        for (var j in days){
+            var evnt = calendar_events[i];
+            if (calendar_helper_dateEquals(evnt.start, days[j].date))
+                days[j].cal_events.push(evnt)            
+        }
+    }
+    
+    return days;
+}
+
+

@@ -99,12 +99,16 @@ function calendar_and_map_api_addEventToCalendarAndMap(db_id,destination_id,open
     // This needs to be last because the marker needs to be set (so the calendar can calculate distance)
     $('#calendar').weekCalendar("updateEvent", cal_event);
     calendar_events = $('#calendar').weekCalendar("serializeEvents");
-    
+
+    calendar_helper_updateCalEventTitleAndBackground(cal_event, cal_event.title)
+
     //refreshing the next event
     var next_event = calendar_helper_getNextEvent(cal_event);
     if (next_event!=null){
         events_to_be_refreshed.push(next_event);
-    }    
+    }
+    
+    directions_api_addDailyDirections(cal_event);
 }
 
 // accepts cal_event_id id from calendar_events array and removes it fron both calendar and map
@@ -125,6 +129,8 @@ function calendar_and_map_api_removeEventFromCalendarAndMap(cal_event){
     else{
         alert(REMOVE_EVENT_ERROR);
     }
+    
+    directions_api_addDailyDirections(cal_event);
 }
 
 // adds temporary destination to map with marker and infowindow
@@ -224,6 +230,7 @@ function calendar_and_map_api_selectEventOnCalendar(cal_event){
     
     //select the one now
     calendar_helper_refreshEvent(cal_event);
+    directions_api_addDailyDirections(cal_event);
 }
 
 // accepts an id from the array calendar_events and selects it on the map
@@ -251,12 +258,22 @@ function clearMapSelection(){
     if (current_marker!=null) {
         current_marker.setMap(null);
     }
+    if (home_infoWindow!=null) {
+        home_infoWindow.close();
+    }
+    if (polyline!=null) {
+        polyline.setMap(null);
+    }
+    directionsDisplay.setMap(null);
 }
 
 function clearInfoWindow(){
     if (current_infoWindow != null){
         current_infoWindow.close();
     }		
+    if (home_infoWindow!=null) {
+        home_infoWindow.close();
+    }
 }
 
 /* 
@@ -328,14 +345,14 @@ function findFirstOpenSlot(destination_id){
     }
 
     // double loop through the array of timeslots and the calendar events and mark all clashing timeslots as not free
-    for(var i in calendar_events){
+    for(i in calendar_events){
         for (var j in timeslots){
             if (isClash(timeslots[j], calendar_events[i]))
                 timeslots[j].is_free = false
         }
     }
 
-    for (var i in timeslots){
+    for (i in timeslots){
         if (timeslots[i].is_free){
             //alert(i + " " + timeslots[i].start + " " + timeslots[i].end)
             return timeslots[i];

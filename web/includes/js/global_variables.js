@@ -44,6 +44,9 @@ var NO_TIMESLOTS_AVAILABLE_ERROR;
 //TODO Samir, what is this?
 var emptycalendar = true;
 
+// The main line connecting all the destinations
+var polyline = null;
+
 
 // ********************** calendar_helper **********************
 // Constants

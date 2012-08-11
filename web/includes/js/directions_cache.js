@@ -93,6 +93,43 @@ function directions_cache_showDirections(origin, destination){
 }
 
 
+/**
+ * shows directions on the map
+ * Accepts
+ * origin: google.maps.latLng
+ * destination: google.maps.latLng
+ *
+ */
+function directions_cache_showDailyDirections(locations_hash){
+    var origin = locations_hash.origin;
+    var waypoints = locations_hash.waypoints;
+    var destination = locations_hash.destination;
+
+    // make new directions request
+    var request = {
+        origin:origin,
+        destination:destination,
+        waypoints: waypoints,
+        travelMode: google.maps.DirectionsTravelMode.DRIVING    
+    };
+
+    console.log("Making Google maps WAYPOINTS request. Origin:" + origin + " Destination:" + destination);
+
+    directionsService.route(request, function(result, status) {
+        if (status == google.maps.DirectionsStatus.OK) {
+            directionsDisplay.setOptions({preserveViewport:true});
+            directionsDisplay.setDirections(result);
+            addDirectionsToCache(origin, destination, result);
+        }
+        else{
+            if (status!="OVER_QUERY_LIMIT")
+                console.log(DIRECTIONS_NOT_FOUND_ERROR + " (Errorcode - " + status + ")");
+            else
+                console.log("Query limit. Origin: " + origin + " Destination: " + destination);
+        }
+    });
+}
+
 /*
  * Gets the walking time between origin and destination and calls functionToCall
  * origin: google.maps.latLng

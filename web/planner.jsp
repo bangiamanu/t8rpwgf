@@ -126,8 +126,8 @@
         };
           
         $(window).load(function(){
-            setTimeout(clearAllDialogs, 2000);
-            setTimeout(startTutorial,2500);
+            setTimeout(clearAllDialogs, 200);
+            setTimeout(startTutorial,250);
         })            
     </script>
 
