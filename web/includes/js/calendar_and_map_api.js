@@ -5,7 +5,8 @@
 /********************** Maps and Calendar API **********************/
 
 function calendar_and_map_api_ready(){
-    initGoogleMaps();	
+    if (internet_available)
+        initGoogleMaps();	
 }
 
 /*
@@ -137,41 +138,46 @@ function calendar_and_map_api_removeEventFromCalendarAndMap(cal_event){
 // takes destination_id from the available_destinations array
 // updates current_marker
 function calendar_and_map_api_addTemporaryEventToMap(destination_id){
-    var temporary_destination = available_destinations[destination_id];
+    if (internet_available){
+        var temporary_destination = available_destinations[destination_id];
 
-    // Geocoding
-    geocoder.geocode( {
-        'address': temporary_destination.postcode +",UK"
-    }, function(results, status) {
-        if (status == google.maps.GeocoderStatus.OK) {
-            var myLatlng = results[0].geometry.location;
-            if (current_marker!=null) {
-                current_marker.setMap(null);
+        // Geocoding
+        geocoder.geocode( {
+            'address': temporary_destination.postcode +",UK"
+        }, function(results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                var myLatlng = results[0].geometry.location;
+                if (current_marker!=null) {
+                    current_marker.setMap(null);
+                }
+
+                // Create current_marker
+                current_marker = new google.maps.Marker({
+                    map: map,
+                    position: myLatlng
+                });
+
+                // center and zoom map
+                //map.setCenter(current_marker.position);
+                map.setZoom(zoom_level);
+                google.maps.event.addListener(current_marker, 'click', temporary_event_selected_from_map);
+
+                // store market (in case its added permanently)
+                temporary_destination.marker = current_marker;
+
+                // Create infowindow and open it on current marker
+                calendar_and_map_api_updateCurrentInfoWindow(temporary_destination.id, current_marker);
+                hide_loading();            
             }
-
-            // Create current_marker
-            current_marker = new google.maps.Marker({
-                map: map,
-                position: myLatlng
-            });
-
-            // center and zoom map
-            //map.setCenter(current_marker.position);
-            map.setZoom(zoom_level);
-            google.maps.event.addListener(current_marker, 'click', temporary_event_selected_from_map);
-
-            // store market (in case its added permanently)
-            temporary_destination.marker = current_marker;
-
-            // Create infowindow and open it on current marker
-            calendar_and_map_api_updateCurrentInfoWindow(temporary_destination.id, current_marker);
-            hide_loading();            
-        }
-        else{
-            if (status != google.maps.GeocoderStatus.OVER_QUERY_LIMIT)            
-                alert(ADDRESS_NOT_FOUND);
-        }
-    });
+            else{
+                if (status != google.maps.GeocoderStatus.OVER_QUERY_LIMIT)            
+                    alert(ADDRESS_NOT_FOUND);
+            }
+        });
+    }
+    else{
+        show_message("Cannot connect to the internet. Please ensure you are connected.");        
+    }
 }
 
 // refresh current_infowindow for given destination id and marker

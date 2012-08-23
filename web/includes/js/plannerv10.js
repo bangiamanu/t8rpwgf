@@ -77,8 +77,6 @@ function destination_selected_from_list(destination_id){
     _gaq.push(['_trackEvent', 'Destinations_list', 'Click', available_destinations[destination_id].title]);
     show_loading();
     
-    list_api_selectDestinationOnList(destination_id);
-
     if (calendar_helper_isPlanned(destination_id)){
         var cal_event = calendar_helper_getCalendarEventFromDestinationId(destination_id);
         calendar_and_map_api_selectEventOnCalendar(cal_event);
@@ -150,17 +148,23 @@ function temporary_event_selected_from_map(evnt){
 /********************** Google maps helpers **********************/
 
 function initGoogleMaps() {
-    london_lat  = new google.maps.LatLng(51.504041, -0.112953);
-	var myOptions = {
-        zoom: 8,
-        center: london_lat,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-    };
+    try{
+        london_lat  = new google.maps.LatLng(51.504041, -0.112953);
+            var myOptions = {
+            zoom: 8,
+            center: london_lat,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
     geocoder = new google.maps.Geocoder();
     map = new google.maps.Map(document.getElementById("map_canvas"),myOptions);
 	directionsService = new google.maps.DirectionsService();
 	directionsDisplay = new google.maps.DirectionsRenderer();
 	directionsDisplay.setMap(map);
+    }
+    catch(e){
+        internet_available = false;
+        show_message("Cannot connect to the internet. Please ensure you are connected.");
+    }
 }
 
 

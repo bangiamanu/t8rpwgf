@@ -2,9 +2,11 @@
 
 
 function directions_api_ready(){
-    directionsService = new google.maps.DirectionsService();
-    directionsDisplay = new google.maps.DirectionsRenderer();
-    directionsDisplay.setMap(map);	
+    if (internet_available){
+        directionsService = new google.maps.DirectionsService();
+        directionsDisplay = new google.maps.DirectionsRenderer();
+        directionsDisplay.setMap(map);	
+    }
 }
 
 function directions_api_getDirectionHTML(cal_event){	

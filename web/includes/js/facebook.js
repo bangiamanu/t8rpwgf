@@ -1,12 +1,13 @@
 function loadFacebook() {
-    FB.init({
-        appId      : '329137340449337', // App ID
-        channelUrl : '//www.tripbrush.com/channel.html',
-        status     : true, // check login status
-        cookie     : true, // enable cookies to allow the server to access the session
-        xfbml      : true  // parse XFBML
-    });
-    // Additional initialization code here
+    if (internet_available){
+        FB.init({
+            appId      : '329137340449337', // App ID
+            channelUrl : '//www.tripbrush.com/channel.html',
+            status     : true, // check login status
+            cookie     : true, // enable cookies to allow the server to access the session
+            xfbml      : true  // parse XFBML
+        });
+    }
 }
 
 // Load the SDK Asynchronously

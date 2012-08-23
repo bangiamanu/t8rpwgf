@@ -97,6 +97,10 @@ p{
 
 }
 
+#categorynametext{
+    margin: 16px;
+} 
+
 #categorynamecolumn li{
 	display: block;	
 	padding-top:10px;
@@ -118,7 +122,6 @@ p{
 .headingtext{
 	text-align:center;
 	font-weight:bold;
-	margin:16px;
 	color: #254995;
 	font-size: 12px;
 }
@@ -154,6 +157,12 @@ p{
 	-webkit-box-shadow: 3px -2px 8px #888;
 	text-align:center;
 	z-index: 102;
+}
+
+#categorydescriptiontext{
+	position: fixed;
+	top: 50px;
+	left:121px;    
 }
 
 #trip_actions{
@@ -541,4 +550,8 @@ p{
 #print_tip{
 	top:51px;
 	left:500px;
+}
+
+.highlight_text{
+    background: yellow;
 }

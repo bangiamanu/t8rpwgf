@@ -16,6 +16,9 @@ var london_lat;
 var directionsDisplay;
 var zoom_level = 13;
 
+// for coding in planes. I hope!
+var internet_available = true;
+
 // temp marker that is changed everytime the selection is made
 var current_marker;
 

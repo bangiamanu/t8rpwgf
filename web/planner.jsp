@@ -30,6 +30,7 @@
     <script type='text/javascript' src="includes/js/calendar_and_map_api.js"></script> <!-- Calendar and map APIJS -->
     <script type='text/javascript' src="includes/js/list_api.js"></script> <!-- List APIJS -->
     <script type='text/javascript' src="includes/js/loading_api.js"></script> <!-- loading APIJS -->
+    <script type='text/javascript' src="includes/js/searchbox.js"></script> <!-- searchbox APIJS -->
     <script type='text/javascript' src="includes/js/print_api.js"></script> <!-- Print APIJS -->
     <script type='text/javascript' src="includes/js/plan_actions.js"></script> <!-- Print APIJS -->
     <script type='text/javascript' src="includes/js/directions_api.js"></script> <!-- Directions APIJS -->
@@ -98,13 +99,14 @@
     <script type="text/javascript">
         $(document).ready(function() {
                 // calling ready functions of APIs and other javascript files
-                global_variables_ready();
-                calendar_and_map_api_ready();
+                global_variables_ready(); // this needs to be first as it sets global variables.
+                calendar_and_map_api_ready(); // this needs to be second because it detects if internet is unavailable
                 sizing_ready();
                 backend_ready();
                 acct_management_ready();
                 //done_button_api_ready();
                 directions_api_ready();
+                searchbox_ready();
                 if ($("#showuser").val()!="true") {
                     $("#signed_in").show();
                 }
@@ -178,13 +180,17 @@
         </div><!-- toolbar -->
 
         <div id="categorynamecolumn">
-          <div class="headingtext">
+          <div class="headingtext" id="categorynametext">
             What would you like to do?
           </div>
 
-          <div id="divider"></div>
+          <div id="divider">
+              
+          </div>
 
-			<div id="categories_list"></div> <!-- this is populated by the populateCategories() function -->
+        <div id="categories_list">
+            <!-- this is populated by the populateCategories() function -->
+        </div> 
 
 <%
     int destination = plan.getLocation().getId();
@@ -219,6 +225,9 @@
           <div class="headingtext">
             Where would you like to go?
           </div> <!-- headingtext -->
+          <div style="padding-top: 12px"> 
+              <input type="text" value="Search" id="search_box" style="width: 95%;color: #C8C8C8;font-size: 10px;"/>
+          </div>
         </div> <!-- destinationheadingtext -->
 
         <div id="categorydescriptioncolumn">
