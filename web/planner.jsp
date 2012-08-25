@@ -31,6 +31,7 @@
     <script type='text/javascript' src="includes/js/list_api.js"></script> <!-- List APIJS -->
     <script type='text/javascript' src="includes/js/loading_api.js"></script> <!-- loading APIJS -->
     <script type='text/javascript' src="includes/js/searchbox.js"></script> <!-- searchbox APIJS -->
+    <script type='text/javascript' src="includes/js/custom_destinations.js"></script> <!-- Custom destinations APIJS -->
     <script type='text/javascript' src="includes/js/print_api.js"></script> <!-- Print APIJS -->
     <script type='text/javascript' src="includes/js/plan_actions.js"></script> <!-- Print APIJS -->
     <script type='text/javascript' src="includes/js/directions_api.js"></script> <!-- Directions APIJS -->
@@ -107,6 +108,7 @@
                 //done_button_api_ready();
                 directions_api_ready();
                 searchbox_ready();
+                custom_destinations_ready();
                 if ($("#showuser").val()!="true") {
                     $("#signed_in").show();
                 }
@@ -129,7 +131,7 @@
           
         $(window).load(function(){
             setTimeout(clearAllDialogs, 200);
-            setTimeout(startTutorial,250);
+            //setTimeout(startTutorial,250);
         })            
     </script>
 
@@ -190,6 +192,7 @@
 
         <div id="categories_list">
             <!-- this is populated by the populateCategories() function -->
+            
         </div> 
 
 <%
@@ -231,9 +234,45 @@
         </div> <!-- destinationheadingtext -->
 
         <div id="categorydescriptioncolumn">
-                <ul>
-                        <div id="destinations_list"></div> <!-- this is populated by the populateDestinations(category) function -->
-                </ul>
+            <ul>
+                    <div id="destinations_list"></div> <!-- this is populated by the populateDestinations(category) function -->
+            </ul>
+            <div id="custom_destinations" style="display:none;padding:5px;">
+                <br/>
+                <table width="100%" cellspacing="0" cellpadding="1px">
+                    <tr>
+                        <td colspan="2" align="left"><b>Love a location you cant find here? Add your own and we will map it for you!</b></td>
+                    </tr>
+                    <tr>
+                        <td align="right" width="50px"><span class="red">*</span> Name:</td>
+                        <td><input type="text" style="width:95%"  id="custom_destinations_title" /></td>
+                    </tr>
+                    <tr>
+                        <td align="right" width="50px">Address: </td>
+                        <td><input type="text" style="width:95%"  id="custom_destinations_address"/></td>
+                    </tr>
+                    <tr>
+                        <td align="right" width="50px"><span class="red">*</span> Postcode:</td>
+                        <td><input type="text" style="width:95%" id="custom_destinations_postcode" /></td>
+                    </tr>
+                    <tr>
+                        <td align="right" width="50px"><span class="red">*</span> Short Description:</td>
+                        <td><input type="text" style="width:95%"  id="custom_destinations_description_short" /></td>
+                    </tr>
+                    <tr>
+                        <td align="right" width="50px">Long Description: (optional)</td>
+                        <td><textarea style="width:95%" rows="5" id="custom_destinations_description_long"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td align="right" width="50px"></td>
+                        <td align="right">
+                            <input type="button" value="Add >>"id="custom_destinations_add"/>
+                            <input type="button" value="Clear"id="custom_destinations_clear" style="display:none"/>
+                            <input type="button" value="Update"id="custom_destinations_update" style="display:none"/>
+                        </td>
+                    </tr>
+                </table>
+            </div>
         </div><!-- categorydescriptioncolumn-->
 
         <div id="destination_details_pane">

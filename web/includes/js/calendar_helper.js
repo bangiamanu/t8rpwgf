@@ -51,6 +51,8 @@ function calendar_helper_populateCalendar(){
                 }
 
                 events_to_be_refreshed.push(calEvent);
+                // Update the daily lines on the map
+                directions_api_addDailyDirections(calEvent);
             },
             eventResize : function(calEvent, $event) {
                 setIsValid(calEvent);

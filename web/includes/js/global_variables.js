@@ -90,7 +90,7 @@ function global_variables_ready(){
     
     SMALL_IMAGE_SIZE = 62;
     REMOVE_EVENT_ERROR = "Couldnt find event on the map. Please contact support@tripbrush.com with a screenshot. Apologies for the inconvenience."
-    ADDRESS_NOT_FOUND = "Could not find the indicated address. Please make sure you are connected to the internet. If you are connected, please contact support@tripbrush.com with a screenshot. Apologies for the inconvenience."
+    ADDRESS_NOT_FOUND = "Could not find the indicated address. Please make sure you are entering the right postcode, If you feel this is in error, please contact support@tripbrush.com with a screenshot. Apologies for the inconvenience."
     CALENDAR_EVENT_NOT_FOUND = "Couldnt find destination in calendar. Please contact support@tripbrush.com with a screenshot. Apologies for the inconvenience."
     NO_TIMESLOTS_AVAILABLE_ERROR = "This place is not open during your visit. If you believe this is in error, please email a screenshot to error@tripbrush.com";
 

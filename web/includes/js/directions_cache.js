@@ -62,6 +62,7 @@ function directions_cache_showDirections(origin, destination){
     if (cache_directions != null){
     // Directions already exist in cache
         directionsDisplay.setDirections(cache_directions);
+        directionsDisplay.setMap(map);
     }
     else{
         // make new directions request and store it in cache            
@@ -78,6 +79,7 @@ function directions_cache_showDirections(origin, destination){
             directionsService.route(request, function(result, status) {
                 if (status == google.maps.DirectionsStatus.OK) {
                     directionsDisplay.setDirections(result);
+                    directionsDisplay.setMap(map);
                     addDirectionsToCache(origin, destination, result);
                 }
                 else{

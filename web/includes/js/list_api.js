@@ -89,6 +89,8 @@ function list_api_selectDestinationOnList(destination_id){
             refreshSteps();
     }
     destination_selected_from_list(destination_id);
+    
+    custom_destinations_destinationSelectedOnList(destination_id);
 }
 
 // clears list selection
@@ -132,7 +134,7 @@ function list_api_unGreyDestination(destination_id){
 
 
 //onmouseover
-function list_api_highlightCategoryByEvent(event){
+function categoryMouseOverHandler(event){
     list_api_highlightCategoryById(event.currentTarget.id)
 }
 
@@ -141,7 +143,7 @@ function list_api_highlightCategoryById(id){
 }
 
 //onmouseout
-function list_api_removeCategoryHighlightByEvent(event){
+function categoryMouseOutHandler(event){
     if (event.currentTarget.id != $("#selectedcategory").val())
         list_api_removeCategoryHighlightById(event.currentTarget.id);
 }
@@ -159,28 +161,39 @@ function list_api_clearCategory(){
 }
 
 //onclick
-function list_api_setCategoryHighlightByEvent(event){
-    var clicked_category_id = event.currentTarget.id;
+function categoryMouseClickHandler(event){
+    list_api_setCategoryHighlightById(event.currentTarget.id);
+}
+
+function list_api_setCategoryHighlightById(id){
+    var clicked_category_id = id;
     var currently_selected_category_id = $("#selectedcategory").val();
     
     list_api_highlightCategoryById(clicked_category_id);
     list_api_removeCategoryHighlightById(currently_selected_category_id);
-    $("#selectedcategory").val(clicked_category_id)
+    $("#selectedcategory").val(clicked_category_id);
 
     // Remove background from last selected category (if any)
     // clear selected events
     current_destination_id = null;
-
+    custom_destination_clearCustomDestination();
+    
     // Populate the destinations in the category
     list_api_populateCategory(clicked_category_id);
 
+    if (clicked_category_id == "custom"){
+        $("#custom_destinations").show();
+    }
+    else{
+        $("#custom_destinations").hide();        
+    }
+    
     // Move onto next guide
     if (showing_steps && current_step == "step1"){
             current_step = "step2";
             refreshSteps();
-    }
+    }    
 }
-
 /*************************** private functions (shouldnt be called outside this file) **********************************/
 
 /************************* Destination details pane *************************/
@@ -323,9 +336,9 @@ function list_api_populateCategories(){
                 .append(
                     $("<p>").append(cat.title)
                 )
-                .mouseover(list_api_highlightCategoryByEvent)
-                .mouseout(list_api_removeCategoryHighlightByEvent)
-                .click(list_api_setCategoryHighlightByEvent)
+                .mouseover(categoryMouseOverHandler)
+                .mouseout(categoryMouseOutHandler)
+                .click(categoryMouseClickHandler)
         );
     }
     //category_list.innerHTML = str;

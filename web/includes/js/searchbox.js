@@ -6,6 +6,7 @@
 function searchbox_ready(){
     $("#search_box").bind('click', searchbox_click);
     $("#search_box").bind('keyup', searchbox_keyup);
+    $("#search_box").bind('keydown', searchbox_keydown);
 }
 
 function searchbox_click(){
@@ -16,6 +17,13 @@ function searchbox_click(){
 function searchbox_keyup(){
     if ($("#search_box").val().length > 1)
         searchbox_search($("#search_box").val());
+    if ($("#search_box").val().length == 0)
+        $("#search_box").val("Search");
+}
+
+function searchbox_keydown(){
+    if ($("#search_box").val() == "Search")
+        $("#search_box").val("");
 }
 
 function searchbox_search(search_phrase){
@@ -50,6 +58,10 @@ function searchbox_showResults(search_results, search_phrase){
     list_api_populateDestinations(search_results, search_phrase);
     list_api_clearCategory();
     searchbox_highlightSearchPhraseForLongDescription();
+    
+    // Show custom box
+    $("#custom_destinations").show();
+    custom_destination_clearCustomDestination();
 }
 
 function searchbox_highlightSearchPhrase(destination_id, search_phrase){

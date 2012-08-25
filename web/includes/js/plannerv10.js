@@ -84,10 +84,10 @@ function destination_selected_from_list(destination_id){
         hide_loading();        
     }
     else{
-        calendar_and_map_api_addTemporaryEventToMap(destination_id);
-        calendar_and_map_api_clearCalendarSelection();
+            calendar_and_map_api_addTemporaryDestinationToMap(available_destinations[destination_id]);
+            calendar_and_map_api_clearCalendarSelection();
+        }
     }
-}
 
 /*
         a selection was made on the map (i.e., a marker was selected)
@@ -102,7 +102,10 @@ function event_selected_from_map(evnt){
 
             calendar_and_map_api_selectEventOnCalendar(cal_event);
             calendar_and_map_api_selectEventOnMap(cal_event);
-            list_api_selectDestinationOnList(cal_event.available_destination_id);
+            try{
+                list_api_selectDestinationOnList(cal_event.available_destination_id);
+            }
+            catch(e){}
             return;
         }
     }
@@ -119,7 +122,11 @@ function destination_selected_from_calendar(cal_event){
     calendar_and_map_api_selectEventOnCalendar(cal_event);
     calendar_and_map_api_selectEventOnMap(cal_event);
 
-    list_api_selectDestinationOnList(cal_event.available_destination_id);
+    // TODO do this only if the destination is visible. If not, remove selection
+    try{
+        list_api_selectDestinationOnList(cal_event.available_destination_id);        
+    }
+    catch(e){}
 }
 
 

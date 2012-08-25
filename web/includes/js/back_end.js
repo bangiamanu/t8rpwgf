@@ -133,7 +133,8 @@ function loadAvailableDestinationsData(xml) {
             is_grey: false,
             other_links: links,
             opening_hours: openingtimes,
-            postcode: postcode
+            postcode: postcode,
+            address: null
         };
         counter++;
     });
@@ -519,4 +520,10 @@ function backend_delete_event_from_database(cal_event){
         cache: false,
         data: params
     });
+}
+
+
+function backend_updateCustomDestination(destination_id){
+    var destination = available_destinations[destination_id];
+    // TODO Samir to add code here to update destination details for custom destination.
 }

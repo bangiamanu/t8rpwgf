@@ -137,15 +137,16 @@ function calendar_and_map_api_removeEventFromCalendarAndMap(cal_event){
 // adds temporary destination to map with marker and infowindow
 // takes destination_id from the available_destinations array
 // updates current_marker
-function calendar_and_map_api_addTemporaryEventToMap(destination_id){
+function calendar_and_map_api_addTemporaryDestinationToMap(temporary_destination, success_function){
     if (internet_available){
-        var temporary_destination = available_destinations[destination_id];
-
-        // Geocoding
+            // Geocoding
         geocoder.geocode( {
             'address': temporary_destination.postcode +",UK"
         }, function(results, status) {
             if (status == google.maps.GeocoderStatus.OK) {
+                if (success_function)
+                    success_function();
+
                 var myLatlng = results[0].geometry.location;
                 if (current_marker!=null) {
                     current_marker.setMap(null);
@@ -167,13 +168,14 @@ function calendar_and_map_api_addTemporaryEventToMap(destination_id){
 
                 // Create infowindow and open it on current marker
                 calendar_and_map_api_updateCurrentInfoWindow(temporary_destination.id, current_marker);
-                hide_loading();            
+                hide_loading();  
+                
             }
             else{
                 if (status != google.maps.GeocoderStatus.OVER_QUERY_LIMIT)            
                     alert(ADDRESS_NOT_FOUND);
             }
-        });
+        });    
     }
     else{
         show_message("Cannot connect to the internet. Please ensure you are connected.");        
